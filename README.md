@@ -4,7 +4,7 @@
 Nuranest is an AI-powered psychology center application that helps users manage their mental health through real-time interaction with therapists. The app features chat-based communication with sentiment analysis, voice and video calling using WebRTC or Agora, appointment scheduling, and more.
 
 ---
-<!--
+
 ## App Information:
 
 | **App Name**        | Nuranest                             |
@@ -17,7 +17,6 @@ Nuranest is an AI-powered psychology center application that helps users manage 
 | **Developed By**    | Nuranest Team                        |
 
 ---
--->
 
 ## Features:
 - **User Login & Profile Management**
@@ -54,7 +53,7 @@ Nuranest is an AI-powered psychology center application that helps users manage 
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/Nuranest.git
+    git clone https://github.com/supunchamuditha/nuranest
     ```
 
 2. Navigate to the project directory:
