@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuranest/screens/login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -22,7 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
-              const SizedBox(height: 100), // Top margin
+              const SizedBox(height: 90), // Top margin
 
               const CircleAvatar(
                 radius: 52, // Profile image
@@ -174,7 +175,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
 
               // Confirm Password Field
               TextField(
@@ -252,7 +253,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigate to login screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      );
                     },
                     child: const Text(
                       "Sign In",

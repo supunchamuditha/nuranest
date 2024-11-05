@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/screens/signup_screen.dart';
+import 'package:nuranest/screens/user_home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -148,10 +149,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
               ElevatedButton(
                 onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignupScreen()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                      // );
                     },
                 style: ElevatedButton.styleFrom(
                   padding:
@@ -256,7 +257,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignupScreen()),
+                      );
+                    },
                     child: const Text(
                       "Sign up",
                       style: TextStyle(
@@ -265,6 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.43,
                         color: Color.fromRGBO(150, 139, 255, 1),
+                        
                       ),
                     ),
                   ),
