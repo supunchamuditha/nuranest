@@ -386,55 +386,80 @@ Widget _buildPsychologistCard(BuildContext context) {
   // }
 
   Widget _buildArticlesCard(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      color: Color(0xFFEFDED6), // Light beige color
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Like to Read Articles?",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to articles
-                    },
-                    child: Row(
-                      children: const [
-                        Text(
-                          "Go to Articles",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                        Icon(Icons.arrow_forward_ios, size: 14, color: Colors.blueAccent),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.article, color: Colors.orange, size: 48),
-          ],
+  return Card(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30),
+    ),
+    color: const Color(0xFFF5EDD3), // Light beige color
+    child: Container(
+      // Remove padding from Padding widget and add to Container
+      padding: const EdgeInsets.all(0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        image: DecorationImage(
+          image: AssetImage('lib/assets/images/read_articles.png'), // Replace with your image path
+          fit: BoxFit.cover,
+          
         ),
+        
       ),
-    );
-  }
+      
+      child: Column(
+        
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 150), // Add space if you need it between image and button row
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFAF9F5).withOpacity(1), // Light background with transparency
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RichText(
+                  text: const TextSpan(
+                    text: 'Go to ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Make Appointment',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Add navigation or functionality here
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(0),
+                    shape: const CircleBorder(),
+                    backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
+                  ),
+                  child: const Icon(
+                    Icons.play_arrow,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
 
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
