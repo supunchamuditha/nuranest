@@ -37,14 +37,14 @@ class AppointmentsScreen extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            _buildPsychologistGrid(),
+            _buildPsychologistOnlineGrid(),
             const SizedBox(height: 16),
             const Text(
               "Most Popular",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            _buildPsychologistGrid(),
+            _buildPsychologistPopularGrid(),
           ],
         ),
       ),
@@ -305,7 +305,7 @@ Widget _buildPsychologistCard(BuildContext context) {
 
 
 
-Widget _buildPsychologistGrid() {
+Widget _buildPsychologistOnlineGrid() {
   return SizedBox(
     height: 150, // Set the height to fit the CircleAvatar and text
     child: ListView.builder(
@@ -313,7 +313,59 @@ Widget _buildPsychologistGrid() {
       itemCount: 6,
       itemBuilder: (context, index) {
         return Container(
-          width: MediaQuery.of(context).size.width / 4, // Show 3 items per screen width
+          width: MediaQuery.of(context).size.width / 3.8, // Show 3 items per screen width
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundImage: AssetImage("lib/assets/images/psychologist_avatar.png"), // Update the path
+                  ),
+                  Positioned(
+                    top: 4,
+                    right: 4,
+                    child: Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: Colors.green, // Green color for "online" status
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 1), // White border to separate from avatar
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                "Dr. Example...",
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                "Psychologist",
+                style: TextStyle(color: Colors.grey, fontSize: 10),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        );
+      },
+    ),
+  );
+}
+
+Widget _buildPsychologistPopularGrid() {
+  return SizedBox(
+    height: 150, // Set the height to fit the CircleAvatar and text
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: 6,
+      itemBuilder: (context, index) {
+        return Container(
+          width: MediaQuery.of(context).size.width / 3.8, // Show 3 items per screen width
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -339,7 +391,6 @@ Widget _buildPsychologistGrid() {
     ),
   );
 }
-
 
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
