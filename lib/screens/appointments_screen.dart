@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nuranest/screens/my_appointments_screen.dart';
+import 'package:nuranest/screens/psychologist_profile_screen.dart';
 
 class AppointmentsScreen extends StatelessWidget {
   const AppointmentsScreen({Key? key}) : super(key: key);
@@ -164,6 +166,10 @@ class AppointmentsScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MyAppointmentsScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),
@@ -304,7 +310,6 @@ Widget _buildPsychologistCard(BuildContext context) {
 }
 
 
-
 Widget _buildPsychologistOnlineGrid() {
   return SizedBox(
     height: 150, // Set the height to fit the CircleAvatar and text
@@ -312,44 +317,54 @@ Widget _buildPsychologistOnlineGrid() {
       scrollDirection: Axis.horizontal,
       itemCount: 6,
       itemBuilder: (context, index) {
-        return Container(
-          width: MediaQuery.of(context).size.width / 3.8, // Show 3 items per screen width
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage("lib/assets/images/psychologist_avatar.png"), // Update the path
-                  ),
-                  Positioned(
-                    top: 4,
-                    right: 4,
-                    child: Container(
-                      width: 12,
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: Colors.green, // Green color for "online" status
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 1), // White border to separate from avatar
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PsychologistProfileScreen(), // Replace with the profile screen widget
+              ),
+            );
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width / 3.8, // Show 3 items per screen width
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: AssetImage("lib/assets/images/psychologist_avatar.png"), // Update the path
+                    ),
+                    Positioned(
+                      top: 4,
+                      right: 4,
+                      child: Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: Colors.green, // Green color for "online" status
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 1), // White border to separate from avatar
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text(
-                "Dr. Example...",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                "Psychologist",
-                style: TextStyle(color: Colors.grey, fontSize: 10),
-                textAlign: TextAlign.center,
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Dr. Example...",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  "Psychologist",
+                  style: TextStyle(color: Colors.grey, fontSize: 10),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -364,33 +379,44 @@ Widget _buildPsychologistPopularGrid() {
       scrollDirection: Axis.horizontal,
       itemCount: 6,
       itemBuilder: (context, index) {
-        return Container(
-          width: MediaQuery.of(context).size.width / 3.8, // Show 3 items per screen width
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundImage: AssetImage("lib/assets/images/psychologist_avatar.png"), // Update the path
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PsychologistProfileScreen(), // Replace with the profile screen widget
               ),
-              const SizedBox(height: 4),
-              Text(
-                "Dr. Example...",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                "Psychologist",
-                style: TextStyle(color: Colors.grey, fontSize: 10),
-                textAlign: TextAlign.center,
-              ),
-            ],
+            );
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width / 3.8, // Show 3 items per screen width
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage("lib/assets/images/psychologist_avatar.png"), // Update the path
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Dr. Example...",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  "Psychologist",
+                  style: TextStyle(color: Colors.grey, fontSize: 10),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         );
       },
     ),
   );
 }
+
 
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(

@@ -1,118 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/screens/appointments_screen.dart';
-import 'package:nuranest/screens/my_appointments_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  // List of mood labels for easy reference
-  final List<String> moodLabels = ["Angry", "Sad", "Calm", "Happy", "Excited"];
-  
-  // Selected mood index (default to "Calm")
-  int selectedMoodIndex = 2;
+class MyAppointmentsScreen extends StatelessWidget {
+  const MyAppointmentsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F0FF), // Light background color
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          "My Appointments",
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildSearchBar(),
             const SizedBox(height: 20),
-            const Text(
-              "Hey, Name 👋",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              "How are you feeling today?",
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
+            _buildReminderCard(context),
             const SizedBox(height: 16),
-            _buildMoodSelector(), // Mood selector widget
-            const SizedBox(height: 30),
-            _buildReminderCard(context), // Additional content cards
-            const SizedBox(height: 20),
             _buildPsychologistCard(context),
-            const SizedBox(height: 20),
-            _buildArticlesCard(context),
+            const SizedBox(height: 16),
+            _setAppointmentCard(context),
+            const SizedBox(height: 16),
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(), // Bottom navigation bar
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
-  Widget _buildMoodSelector() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF7F0F5),
-        borderRadius: BorderRadius.circular(30),
+  Widget _buildSearchBar() {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    decoration: BoxDecoration(
+      color: Colors.grey[200],
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: TextField(
+      decoration: InputDecoration(
+        icon: Icon(Icons.search, color: Colors.grey), // Search icon on the left
+        hintText: "Search",
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
+        border: InputBorder.none, // Remove the default underline border
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(moodLabels.length, (index) {
-          return _buildMoodIcon(
-            'lib/assets/icon/${moodLabels[index].toLowerCase()}.png', 
-            moodLabels[index], 
-            index == selectedMoodIndex, // Highlight the selected mood
-            index,
-          );
-        }),
-      ),
-    );
-  }
-
-  Widget _buildMoodIcon(String iconPath, String label, bool isActive, int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedMoodIndex = index; // Update selected mood index
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: isActive ? const Color(0xFFFFE86C) : Colors.transparent, // Yellow background for active icon
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Column(  
-          children: [
-            Image.asset(
-              iconPath,
-              width: 40,
-              height: 40,
-              color: const Color(0xFFD4A373), // Icon color
-            ),
-            if (isActive)
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFD4A373),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
+      style: TextStyle(color: Colors.black), // Text color in the search bar
+    ),
+  );
+}
 
 
-Widget _buildReminderCard(BuildContext context) {
+  Widget _buildReminderCard(BuildContext context) {
   return Center(
     child: Container(
       padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
@@ -150,7 +100,7 @@ Widget _buildReminderCard(BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text(
-                        "I'm Here To Remind You,",
+                        "DR.Shanesz Fernando",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -159,7 +109,7 @@ Widget _buildReminderCard(BuildContext context) {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        "You have a session with Mr. Fernando today.",
+                        "07.00 PM - 08.00 PM",
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black54,
@@ -185,14 +135,14 @@ Widget _buildReminderCard(BuildContext context) {
               children: [
                 RichText(
                   text: const TextSpan(
-                    text: 'Go to ',
+                    text: '   Meet My',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 17,
                     ),
                     children: [
                       TextSpan(
-                        text: 'my Appointments',
+                        text: ' Psychologist',
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -204,11 +154,6 @@ Widget _buildReminderCard(BuildContext context) {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MyAppointmentsScreen()),
-                    );
-
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),
@@ -229,7 +174,114 @@ Widget _buildReminderCard(BuildContext context) {
   );
 }
 
+
 Widget _buildPsychologistCard(BuildContext context) {
+  return Center(
+    child: Container(
+      padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7E7E0), // Light pink background color
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(2, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title text, avatar row, and online status
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(width: 12),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0), // Left padding for the name and role text
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Dr. Shanesh Fernando",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "07.00PM - 08.00PM",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          // Online status indicator aligned with "Psychologist"
+                          Row(
+                            children: [
+                              Container(
+                                width: 10,
+                                height: 10,
+                                decoration: const BoxDecoration(
+                                  color: Colors.green,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              const Text(
+                                "Online      ",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // New rounded corner box for appointments
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFAF9F5), // Change this color as needed
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  '   31/12/2024',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _setAppointmentCard(BuildContext context) {
   return Center(
     child: Container(
       padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
@@ -260,7 +312,7 @@ Widget _buildPsychologistCard(BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text(
-                        "Meet your psychologist",
+                        "Want to make another appointmnt ?",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -288,7 +340,7 @@ Widget _buildPsychologistCard(BuildContext context) {
               children: [
                 RichText(
                   text: const TextSpan(
-                    text: 'Go to ',
+                    text: '   Go to ',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 17,
@@ -331,78 +383,6 @@ Widget _buildPsychologistCard(BuildContext context) {
   );
 }
 
-  Widget _buildArticlesCard(BuildContext context) {
-  return Card(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(30),
-    ),
-    color: const Color(0xFFF5EDD3), // Light beige color
-    child: Container(
-      // Remove padding from Padding widget and add to Container
-      padding: const EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        image: DecorationImage(
-          image: AssetImage('lib/assets/images/read_articles.png'), // Replace with your image path
-          fit: BoxFit.cover,
-        ),
-      ),
-      
-      child: Column(
-        
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 155), // Add space if you need it between image and button row
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF9F5).withOpacity(0.9), // Light background with transparency
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RichText(
-                  text: const TextSpan(
-                    text: 'Go to ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'articals',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Add navigation or functionality here
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(0),
-                    shape: const CircleBorder(),
-                    backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
-                  ),
-                  child: const Icon(
-                    Icons.play_arrow,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
 
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
@@ -417,7 +397,4 @@ Widget _buildPsychologistCard(BuildContext context) {
       showUnselectedLabels: true,
     );
   }
-
-
-
 }
