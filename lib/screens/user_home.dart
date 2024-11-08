@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/screens/appointments_screen.dart';
 import 'package:nuranest/screens/my_appointments_screen.dart';
+import 'package:nuranest/screens/get_started_screen.dart';
+import 'package:nuranest/screens/profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,6 +12,55 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Add this for navigation
+  int _selectedIndex = 0;
+
+  // List of screens for navigation
+  final List<Widget> _pages = [
+    const HomeScreenContent(), // Home Screen Content (not the HomeScreen itself)
+    const GetStartedScreen(),  // Replace with your actual GetStartedScreen
+    const MyAppointmentsScreen(),   // Replace with your actual MakePaymentPage
+    const ProfilePage(),       // Replace with your actual LoginScreen
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F0FF),
+      body: _pages[_selectedIndex], // Display the selected screen
+
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex, // This will control the selected tab
+        onTap: _onItemTapped, // Update the selected index on tap
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Get Started'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined), label: ' My Appointments'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+      ),
+    );
+  }
+}
+
+// Separate widget for HomeScreen content (previously in your HomeScreen)
+class HomeScreenContent extends StatefulWidget {
+  const HomeScreenContent({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenContentState createState() => _HomeScreenContentState();
+}
+
+class _HomeScreenContentState extends State<HomeScreenContent> {
   // List of mood labels for easy reference
   final List<String> moodLabels = ["Angry", "Sad", "Calm", "Happy", "Excited"];
   
@@ -18,39 +69,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F0FF), // Light background color
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              "Hey, Name 👋",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          const Text(
+            "Hey, Name 👋",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
-            const SizedBox(height: 8),
-            const Text(
-              "How are you feeling today?",
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-            const SizedBox(height: 16),
-            _buildMoodSelector(), // Mood selector widget
-            const SizedBox(height: 30),
-            _buildReminderCard(context), // Additional content cards
-            const SizedBox(height: 20),
-            _buildPsychologistCard(context),
-            const SizedBox(height: 20),
-            _buildArticlesCard(context),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "How are you feeling today?",
+            style: TextStyle(fontSize: 16, color: Colors.black),
+          ),
+          const SizedBox(height: 16),
+          _buildMoodSelector(),
+          const SizedBox(height: 30),
+          _buildReminderCard(context),
+          const SizedBox(height: 20),
+          _buildPsychologistCard(context),
+          const SizedBox(height: 20),
+          _buildArticlesCard(context),
+        ],
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(), // Bottom navigation bar
     );
   }
 
@@ -65,8 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(moodLabels.length, (index) {
           return _buildMoodIcon(
-            'lib/assets/icon/${moodLabels[index].toLowerCase()}.png', 
-            moodLabels[index], 
+            'lib/assets/icon/${moodLabels[index].toLowerCase()}.png',
+            moodLabels[index],
             index == selectedMoodIndex, // Highlight the selected mood
             index,
           );
@@ -88,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: isActive ? const Color(0xFFFFE86C) : Colors.transparent, // Yellow background for active icon
           borderRadius: BorderRadius.circular(30),
         ),
-        child: Column(  
+        child: Column(
           children: [
             Image.asset(
               iconPath,
@@ -111,125 +158,123 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-Widget _buildReminderCard(BuildContext context) {
-  return Center(
-    child: Container(
-      padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF7E7E0), // Light pink background color
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(2, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Title text and avatar row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0), // Left padding for the image
-                child: CircleAvatar(
-                  radius: 24,
-                  backgroundImage: const AssetImage("lib/assets/images/reminder_avatar.png"), // Replace with your actual path
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0), // Left padding for the reminder text
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "I'm Here To Remind You,",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        "You have a session with Mr. Fernando today.",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // New rounded corner box for appointments
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF9F5), // Change this color as needed
-              borderRadius: BorderRadius.circular(30),
+  Widget _buildReminderCard(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF7E7E0), // Light pink background color
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(2, 2),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RichText(
-                  text: const TextSpan(
-                    text: 'Go to ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'my Appointments',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title text and avatar row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0), // Left padding for the image
+                  child: CircleAvatar(
+                    radius: 24,
+                    backgroundImage: const AssetImage("lib/assets/images/reminder_avatar.png"), // Replace with your actual path
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MyAppointmentsScreen()),
-                    );
-
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(0),
-                    shape: const CircleBorder(),
-                    backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
-                  ),
-                  child: const Icon(
-                    Icons.play_arrow,
-                    color: Colors.black,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0), // Left padding for the reminder text
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "I'm Here To Remind You,",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          "You have a session with Mr. Fernando today.",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+            const SizedBox(height: 16),
 
-Widget _buildPsychologistCard(BuildContext context) {
+            // New rounded corner box for appointments
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFAF9F5), // Change this color as needed
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                    text: const TextSpan(
+                      text: 'Go to ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'my Appointments',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MyAppointmentsScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
+                      shape: const CircleBorder(),
+                      backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
+                    ),
+                    child: const Icon(
+                      Icons.play_arrow,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPsychologistCard(BuildContext context) {
   return Center(
     child: Container(
       padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
@@ -404,20 +449,5 @@ Widget _buildPsychologistCard(BuildContext context) {
   );
 }
 
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Calendar'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.grey,
-      showUnselectedLabels: true,
-    );
-  }
-
-
-
 }
+

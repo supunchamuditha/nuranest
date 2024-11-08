@@ -31,8 +31,8 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: const Color.fromARGB(255, 245, 240, 255), // Same background color
       appBar: AppBar(
         title: const Text('My Profile'),
-        centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 239, 222, 214),
+        centerTitle: false,
+        backgroundColor: const Color.fromARGB(255, 245, 240, 255),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -112,70 +112,122 @@ class _ProfilePageState extends State<ProfilePage> {
 
               const SizedBox(height: 20),
 
-              // Birthdate TextField
-              GestureDetector(
-                onDoubleTap: toggleEditMode,
-                child: TextField(
-                  controller: birthDateController,
-                  enabled: isEditing,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: const Icon(Icons.cake, color: Color.fromRGBO(0, 0, 0, 0.5)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(31.0),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 17),
+                // Birthdate TextField with label
+                GestureDetector(
+                  onDoubleTap: toggleEditMode,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          ' Birth date',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: TextField(
+                          controller: birthDateController,
+                          enabled: isEditing,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(31.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 17),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+
+                const SizedBox(height: 20),
+
+                // Gender TextField with label
+                GestureDetector(
+                  onDoubleTap: toggleEditMode,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          ' Gender',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: TextField(
+                          controller: genderController,
+                          enabled: isEditing,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(31.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 17),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Address TextField with label
+                GestureDetector(
+                  onDoubleTap: toggleEditMode,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          ' Address',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: TextField(
+                          controller: addressController,
+                          enabled: isEditing,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(31.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 17),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
 
               const SizedBox(height: 20),
 
-              // Gender TextField
-              GestureDetector(
-                onDoubleTap: toggleEditMode,
-                child: TextField(
-                  controller: genderController,
-                  enabled: isEditing,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: const Icon(Icons.person_outline, color: Color.fromRGBO(0, 0, 0, 0.5)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(31.0),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 17),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Address TextField
-              GestureDetector(
-                onDoubleTap: toggleEditMode,
-                child: TextField(
-                  controller: addressController,
-                  enabled: isEditing,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: const Icon(Icons.location_on, color: Color.fromRGBO(0, 0, 0, 0.5)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(31.0),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 17),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Save Button
+              // Save Button - wider than previous version
               ElevatedButton(
                 onPressed: () {
                   if (isEditing) {
@@ -186,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 98),
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 150), // Make it wider
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -201,6 +253,75 @@ class _ProfilePageState extends State<ProfilePage> {
                     letterSpacing: 1,
                     color: Colors.black,
                   ),
+                ),
+              ),
+
+              const SizedBox(height: 10), // Space before new buttons
+
+             const Text(
+                  'Double tap to change details',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1,
+                    color: Color.fromARGB(90, 0, 0, 0),
+                  ),
+                ),
+
+              const SizedBox(height: 10),
+
+              // Enroll as Psychologist Button
+              ElevatedButton(
+                onPressed: () {
+                  // Add action for enrolling as psychologist
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 90),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: const BorderSide(color: Color.fromARGB(255, 239, 222, 214), width: 1), // Border color
+                  ),
+                  backgroundColor:const Color.fromARGB(255, 245, 240, 255), // Remove background color
+                ),
+                child: const Text(
+                  'Enroll as Psychologist',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1,
+                    color: Colors.black,
+                  ),
+                  overflow: TextOverflow.ellipsis, // Ensure the text is in one line
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // View Payment History Button
+              ElevatedButton(
+                onPressed: () {
+                  // Add action for viewing payment history
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 90),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: const BorderSide(color: Color.fromARGB(255, 239, 222, 214), width: 1), // Border color
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 245, 240, 255), // Remove background color
+                ),
+                child: const Text(
+                  'View Payment History',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1,
+                    color: Colors.black,
+                  ),
+                  overflow: TextOverflow.ellipsis, // Ensure the text is in one line
                 ),
               ),
             ],
