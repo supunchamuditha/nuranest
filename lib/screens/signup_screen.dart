@@ -215,10 +215,13 @@ class _SignupScreenState extends State<SignupScreen> {
               // Create Account Button
               ElevatedButton(
                 onPressed: () {
-                  // Sign up logic here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 98),
+                  padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 17),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
