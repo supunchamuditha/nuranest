@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/screens/appointments_screen.dart';
+import 'package:nuranest/screens/chatlist.dart';
 import 'package:nuranest/screens/my_appointments_screen.dart';
-import 'package:nuranest/screens/get_started_screen.dart';
 import 'package:nuranest/screens/profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // List of screens for navigation
   final List<Widget> _pages = [
     const HomeScreenContent(), // Home Screen Content (not the HomeScreen itself)
-    const GetStartedScreen(),  // Replace with your actual GetStartedScreen
+    ChatListPage(),  // Replace with your actual GetStartedScreen
     const MyAppointmentsScreen(),   // Replace with your actual MakePaymentPage
     const ProfilePage(),       // Replace with your actual LoginScreen
   ];
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onItemTapped, // Update the selected index on tap
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Get Started'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
           BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined), label: ' My Appointments'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
