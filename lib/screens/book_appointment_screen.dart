@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuranest/screens/make_payment.dart';
 
 class BookAppointmentPage extends StatefulWidget {
   @override
@@ -52,6 +53,12 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
     });
   }
 
+  void _onAppointmentLocationSelected(String type) {
+    setState(() {
+      _selectedAppointmentType = type;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,8 +76,9 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text("Dr.Shanez Fernando"),
             Text("Monday to Sunday 8:00AM to 6:00PM"),
-            Text("Consultation Fee: 5\$"),
+            Text("Consultation Fee for 1 hour session: 5\$"),
             SizedBox(height: 16),
 
             // Date input field
@@ -156,6 +164,29 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
             ),
             SizedBox(height: 8),
             Text("Doctor's location: No 123, Vidya mawatha Colombo 7"),
+            SizedBox(height: 18),
+            Text("Where you can attend appointments(Physical)"),
+            Row(
+              children: [
+                OutlinedButton(
+                  onPressed: () => _onAppointmentLocationSelected("Doctors"),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: _selectedAppointmentType == "Doctors" ? Colors.blue[100] : Colors.white,
+                    side: BorderSide(color: Colors.black),
+                  ),
+                  child: Text("Doctor's Location", style: TextStyle(color: _selectedAppointmentType == "Doctors" ? Colors.black : Colors.black)),
+                ),
+                SizedBox(width: 8),
+                OutlinedButton(
+                  onPressed: () => _onAppointmentLocationSelected("My"),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: _selectedAppointmentType == "My" ? Colors.blue[100] : Colors.white,
+                    side: BorderSide(color: Colors.black),
+                  ),
+                  child: Text("My Location", style: TextStyle(color: _selectedAppointmentType == "My" ? Colors.black : Colors.black)),
+                ),
+              ],
+            ),
 
             // Address and message fields
             SizedBox(height: 16),
@@ -171,7 +202,12 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to confirmation or next step
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MakePaymentPage(), // Replace with the profile screen widget
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFB0E5FC),
