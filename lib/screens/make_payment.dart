@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuranest/screens/transaction_completed_screen.dart';
 
 class MakePaymentPage extends StatefulWidget {
   @override
@@ -129,7 +130,10 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
                       child: ElevatedButton(
                         onPressed: (isCheckboxChecked && isPaymentMethodSelected)
                             ? () {
-                                // Handle payment action
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => TransactionCompletedPage()),
+                                );
                               }
                             : null,
                         style: ElevatedButton.styleFrom(
