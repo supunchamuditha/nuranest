@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                 style: ElevatedButton.styleFrom(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 98),
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -197,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 98),
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -222,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 98),
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
