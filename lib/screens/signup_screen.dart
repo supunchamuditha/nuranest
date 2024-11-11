@@ -161,11 +161,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 obscureText: _obscureText,
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "                               password should be comprised of at least 8 characters",
+                  "Password should be comprised of at least 8 characters, with Lowercase letter, uppercase letter and any special character among (@,#,!,*,%)",
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 10,
@@ -175,7 +175,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
 
               // Confirm Password Field
               TextField(
@@ -229,12 +229,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   minimumSize: const Size(360, 48),
                 ),
                 child: const Text(
-                  "Create and Log in",
+                  "Create and Log In",
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    letterSpacing: 1,
+                    letterSpacing: 0,
                     color: Colors.black,
                   ),
                 ),

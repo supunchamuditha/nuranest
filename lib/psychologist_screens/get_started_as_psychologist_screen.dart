@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nuranest/screens/login_screen.dart';
+import 'package:nuranest/psychologist_screens/psychologist_home.dart';
 
-class GetStartedScreen extends StatelessWidget {
-  const GetStartedScreen(
+
+class GetStartedasPsychologistScreen extends StatelessWidget {
+  const GetStartedasPsychologistScreen(
       {super.key}); // ignore: avoid_unused_constructor_parameters
 
   @override
@@ -29,7 +30,7 @@ class GetStartedScreen extends StatelessWidget {
 
                   //The Text
                   const Text(
-                    "Let's get started",
+                    "Congratulations",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 24,
@@ -45,7 +46,18 @@ class GetStartedScreen extends StatelessWidget {
 
                   //Description Text
                   const Text(
-                    "Welcome to NuraNest, your journey to mental wellness.",
+                    "Your requested to Enroll as a psychologist",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.01,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Verification is Approved",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
@@ -61,7 +73,7 @@ class GetStartedScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                        MaterialPageRoute(builder: (context) => PsychologistHome()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -78,7 +90,7 @@ class GetStartedScreen extends StatelessWidget {
                           ),
                         )),
                     child: const Text(
-                      "Get Start",
+                      "Start Journy",
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                   )

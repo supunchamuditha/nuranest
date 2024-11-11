@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
+import 'package:nuranest/psychologist_screens/get_started_as_psychologist_screen.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class AfterRequestProfile extends StatefulWidget {
+  const AfterRequestProfile({super.key});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _AfterRequestProfileState createState() => _AfterRequestProfileState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+
+class _AfterRequestProfileState extends State<AfterRequestProfile> {
   // Text controllers to hold profile information
   TextEditingController nameController = TextEditingController(text: 'Supun Madushanka');
   TextEditingController emailController = TextEditingController(text: 'supun1221@gmail.com');
@@ -259,47 +260,36 @@ class _ProfilePageState extends State<ProfilePage> {
 
               const SizedBox(height: 10), // Space before new buttons
 
-             const Text(
-                  'Double tap to change details',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 1,
-                    color: Color.fromARGB(90, 0, 0, 0),
-                  ),
-                ),
-
               const SizedBox(height: 10),
 
               // Enroll as Psychologist Button
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>const EnrollAsPsychologistScreen()),
-                    );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 90),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    side: const BorderSide(color: Color.fromARGB(255, 239, 222, 214), width: 1), // Border color
-                  ),
-                  backgroundColor:const Color.fromARGB(255, 245, 240, 255), // Remove background color
+              const Text(
+                "You request will be reviewed by our team and you will be notified once it is approved.",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
                 ),
-                child: const Text(
-                  'Enroll as Psychologist',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 1,
-                    color: Colors.black,
-                  ),
-                  overflow: TextOverflow.ellipsis, // Ensure the text is in one line
-                ),
+                textAlign: TextAlign.center,
               ),
+              GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const GetStartedasPsychologistScreen()),
+                      );
+                    },
+                    child: const Text(
+                      "Check your request status",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: Color.fromRGBO(150, 139, 255, 1),
+                      ),
+                    ),
+                  ),
 
               const SizedBox(height: 20),
 
@@ -336,3 +326,4 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+

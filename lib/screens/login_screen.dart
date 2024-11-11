@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 10), // Space between welcome text and subtitle
 
               const Text(
-                "Log into your existing account of <app name>",
+                "Log into your existing account of NuraNest",
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 12,
@@ -230,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   minimumSize: const Size(360, 48),
                 ),
                 child: const Text(
-                  "Facebook",
+                  "Apple ID",
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 14,
