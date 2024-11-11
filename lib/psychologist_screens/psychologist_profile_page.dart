@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
 
 class PsychologistProfilePage extends StatefulWidget {
   const PsychologistProfilePage({super.key});
