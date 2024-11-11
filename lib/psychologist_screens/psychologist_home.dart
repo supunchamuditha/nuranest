@@ -3,7 +3,7 @@ import 'package:nuranest/psychologist_screens/articles.dart';
 import 'package:nuranest/psychologist_screens/profile_setup.dart';
 import 'package:nuranest/psychologist_screens/psychologist_appointments.dart';
 import 'package:nuranest/psychologist_screens/psychologist_chatlist_page.dart';
-import 'package:nuranest/screens/profile_page.dart';
+import 'package:nuranest/psychologist_screens/psychologist_profile_page.dart';
 
 class PsychologistHome extends StatefulWidget {
   const PsychologistHome({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _PsychologistHomeState extends State<PsychologistHome> {
     const HomeScreenContent(), // Home Screen Content (not the HomeScreen itself)
     PsychologistChatlistPage(),  // Replace with your actual GetStartedScreen
     const PsychologistAppointments(),   // Replace with your actual MakePaymentPage
-    const ProfilePage(),       // Replace with your actual LoginScreen
+     PsychologistProfilePage(),       // Replace with your actual LoginScreen
   ];
 
   void _onItemTapped(int index) {
