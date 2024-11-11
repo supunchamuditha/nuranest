@@ -3,6 +3,7 @@ import 'package:nuranest/screens/appointments_screen.dart';
 import 'package:nuranest/screens/chatlist.dart';
 import 'package:nuranest/screens/my_appointments_screen.dart';
 import 'package:nuranest/screens/profile_page.dart';
+import 'package:nuranest/screens/user_article.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -416,7 +417,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                     ),
                     children: [
                       TextSpan(
-                        text: 'articals',
+                        text: 'articles',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -428,7 +429,10 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Add navigation or functionality here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const UserArticle()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),

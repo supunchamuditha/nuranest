@@ -23,7 +23,7 @@ class PsychologistAppointments extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Handle back button press
+            Navigator.pop(context); // This will pop the current screen from the navigation stack.
           },
         ),
       ),
@@ -182,35 +182,6 @@ class PsychologistAppointments extends StatelessWidget {
 
           const Spacer(), // Pushes bottom navigation to bottom
 
-          // Bottom navigation bar
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            color: const Color(0xFFEFE0D6), // Bottom navigation background color
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.home, color: Colors.black),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: const Icon(Icons.chat_bubble_outline, color: Colors.black),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: const Icon(Icons.calendar_today, color: Colors.black),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: CircleAvatar(
-                    radius: 15,
-                    backgroundImage: AssetImage('lib/assets/images/18.png'), // Replace with the actual image path
-                  ),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

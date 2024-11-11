@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nuranest/psychologist_screens/articles.dart';
 import 'package:nuranest/psychologist_screens/profile_setup.dart';
 import 'package:nuranest/psychologist_screens/psychologist_appointments.dart';
-import 'package:nuranest/screens/chatlist.dart';
-import 'package:nuranest/screens/my_appointments_screen.dart';
+import 'package:nuranest/psychologist_screens/psychologist_chatlist_page.dart';
 import 'package:nuranest/screens/profile_page.dart';
 
 class PsychologistHome extends StatefulWidget {
@@ -19,8 +19,8 @@ class _PsychologistHomeState extends State<PsychologistHome> {
   // List of screens for navigation
   final List<Widget> _pages = [
     const HomeScreenContent(), // Home Screen Content (not the HomeScreen itself)
-    ChatListPage(),  // Replace with your actual GetStartedScreen
-    const MyAppointmentsScreen(),   // Replace with your actual MakePaymentPage
+    PsychologistChatlistPage(),  // Replace with your actual GetStartedScreen
+    const PsychologistAppointments(),   // Replace with your actual MakePaymentPage
     const ProfilePage(),       // Replace with your actual LoginScreen
   ];
 
@@ -349,7 +349,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                     ),
                     children: [
                       TextSpan(
-                        text: 'articals',
+                        text: 'articles',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -361,7 +361,10 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Add navigation or functionality here
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>  const PsychologistArticle()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),
