@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:nuranest/psychologist_screens/psychologist_appointments.dart';
 import 'package:nuranest/psychologist_screens/psychologist_chatlist_page.dart';
 import 'package:nuranest/screens/profile_page.dart';
-import 'package:nuranest/screens/user_article_view.dart';
 
-class UserArticle extends StatefulWidget {
-  const UserArticle({Key? key}) : super(key: key);
+class UserArticleView extends StatefulWidget {
+  const UserArticleView({Key? key}) : super(key: key);
 
   @override
-  _UserArticleState createState() => _UserArticleState();
+  _UserArticleViewState createState() => _UserArticleViewState();
 }
 
-class _UserArticleState extends State<UserArticle> {
+class _UserArticleViewState extends State<UserArticleView> {
   // Add this for navigation
   int _selectedIndex = 0;
 
@@ -106,59 +105,66 @@ Widget _buildSearchBar() {
       borderRadius: BorderRadius.circular(30),
     ),
     color: const Color(0xFFF5EDD3), // Light beige color
-    child: Container(
-      // Remove padding from Padding widget and add to Container
-      padding: const EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        image: DecorationImage(
-          image: AssetImage('lib/assets/images/read_articles.png'), // Replace with your image path
-          fit: BoxFit.cover,
-        ),
-      ),
-      
-      child: Column(  
+    child: Padding(
+      padding: const EdgeInsets.all(20), // Add padding around the content
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 155), // Add space if you need it between image and button row
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "Effects of Sleep Deprivation",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              Image.asset(
+                'lib/assets/images/character_icon.png', // Replace with your image path
+                width: 50,
+                height: 50,
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            "Sleep deprivation has a significant impact on cognitive function, emotional stability, and physical health. Lack of adequate sleep impairs memory, concentration, and decision-making, while increasing irritability and emotional sensitivity.\n\n"
+            "Prolonged sleep deprivation can lead to severe mental health issues, including anxiety and depression, as well as weakened immunity and a higher risk of chronic illnesses like heart disease and diabetes.\n\n"
+            "Prioritizing sleep is crucial for overall well-being and performance.",
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 20),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFFFAF9F5).withOpacity(0.9), // Light background with transparency
-              borderRadius: BorderRadius.circular(30),
+              color: const Color(0xFFEFE9DD),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RichText(
-                  text: const TextSpan(
-                    text: 'View ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'article',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+                Text(
+                  "ACSC SampleName\n2014/01/01",
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 14,
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const UserArticleView()),
-                    );
+                    // Add navigation or functionality here
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),
-                    shape: const CircleBorder(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                     backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
                   ),
                   child: const Icon(
@@ -174,6 +180,4 @@ Widget _buildSearchBar() {
     ),
   );
 }
-
 }
-

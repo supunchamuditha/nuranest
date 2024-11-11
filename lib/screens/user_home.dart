@@ -77,7 +77,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
         children: [
           const SizedBox(height: 20),
           const Text(
-            "Hey, Name 👋",
+            "Hey, <Name> 👋",
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -206,7 +206,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          "You have a session with Mr. Fernando today.",
+                          "You have a session with \n <Psychologist_name> today.",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black54,

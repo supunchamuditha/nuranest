@@ -45,7 +45,7 @@ class GetStartedScreen extends StatelessWidget {
 
                   //Description Text
                   const Text(
-                    "The text about the getting started and description about app",
+                    "Welcome to NuraNest, your journey to mental wellness.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
