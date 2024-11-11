@@ -1,0 +1,412 @@
+{
+    "User": [
+        {
+            "id": 1,
+            "username": "youngtiffany",
+            "name": "Nathan Arnold",
+            "email": "karen32@yahoo.com",
+            "password": "hashed_password",
+            "gender": "male",
+            "job": "Records manager",
+            "address": "0139 John Fords Suite 492\nJacksonberg, AK 92443",
+            "contactNo": "736-973-7215x14341",
+            "status": "inactive"
+        },
+        {
+            "id": 2,
+            "username": "medinasteven",
+            "name": "Brandy Levine",
+            "email": "kerrebony@young-walter.org",
+            "password": "hashed_password",
+            "gender": "male",
+            "job": "Ship broker",
+            "address": "55618 Katherine Curve\nEstradatown, CO 17183",
+            "contactNo": "705.864.1819",
+            "status": "inactive"
+        },
+        {
+            "id": 3,
+            "username": "caitlin27",
+            "name": "Theresa Smith",
+            "email": "abbottjames@tran-pitts.net",
+            "password": "hashed_password",
+            "gender": "other",
+            "job": "Producer, television/film/video",
+            "address": "Unit 6895 Box 8123\nDPO AA 99518",
+            "contactNo": "(907)084-6657x38140",
+            "status": "active"
+        },
+        {
+            "id": 4,
+            "username": "jessicajones",
+            "name": "Dana Beasley",
+            "email": "tyler16@gmail.com",
+            "password": "hashed_password",
+            "gender": "male",
+            "job": "Information officer",
+            "address": "291 Spence Locks\nMeyerside, TX 25312",
+            "contactNo": "169-262-4154x8418",
+            "status": "active"
+        },
+        {
+            "id": 5,
+            "username": "nnelson",
+            "name": "Benjamin Brown",
+            "email": "bridgesandrew@nelson.com",
+            "password": "hashed_password",
+            "gender": "male",
+            "job": "Chiropractor",
+            "address": "827 Johnson Drives Apt. 761\nDorseychester, AL 24961",
+            "contactNo": "852.056.7052x7344",
+            "status": "active"
+        },
+        {
+            "id": 6,
+            "username": "dustin96",
+            "name": "Rebecca Cuevas",
+            "email": "kyle75@gmail.com",
+            "password": "hashed_password",
+            "gender": "other",
+            "job": "Journalist, broadcasting",
+            "address": "9739 Hughes Coves Apt. 746\nNew Shannonland, NC 88186",
+            "contactNo": "976.859.9070",
+            "status": "inactive"
+        },
+        {
+            "id": 7,
+            "username": "kellyvickie",
+            "name": "Sara Ramirez",
+            "email": "edwardleach@armstrong.org",
+            "password": "hashed_password",
+            "gender": "male",
+            "job": "Scientist, research (life sciences)",
+            "address": "PSC 2005, Box 4709\nAPO AE 64713",
+            "contactNo": "667.706.2065x00157",
+            "status": "active"
+        },
+        {
+            "id": 8,
+            "username": "stewartrebecca",
+            "name": "Beth Moore",
+            "email": "michael13@gmail.com",
+            "password": "hashed_password",
+            "gender": "male",
+            "job": "Automotive engineer",
+            "address": "Unit 3033 Box 7281\nDPO AP 70646",
+            "contactNo": "(229)981-3506x58282",
+            "status": "active"
+        },
+        {
+            "id": 9,
+            "username": "barneslori",
+            "name": "Melissa Coleman",
+            "email": "hwilkerson@beck.net",
+            "password": "hashed_password",
+            "gender": "male",
+            "job": "Scientist, clinical (histocompatibility and immunogenetics)",
+            "address": "USNV Ward\nFPO AP 63633",
+            "contactNo": "(562)602-8098",
+            "status": "inactive"
+        },
+        {
+            "id": 10,
+            "username": "bjimenez",
+            "name": "Stephen Hays",
+            "email": "ethomas@gmail.com",
+            "password": "hashed_password",
+            "gender": "female",
+            "job": "Engineer, biomedical",
+            "address": "37106 Michael Club\nSouth Sharishire, GA 31893",
+            "contactNo": "404-303-9679x5966",
+            "status": "active"
+        }
+    ],
+    "Patient": [
+        {
+            "id": 1,
+            "medicalHistory": "Begin worry article better."
+        },
+        {
+            "id": 2,
+            "medicalHistory": "Beat trade third certainly simple."
+        },
+        {
+            "id": 3,
+            "medicalHistory": "Account talk much Congress just suggest probably book."
+        },
+        {
+            "id": 4,
+            "medicalHistory": "Official whom hundred."
+        },
+        {
+            "id": 5,
+            "medicalHistory": "Pm star management since recent indeed."
+        },
+        {
+            "id": 6,
+            "medicalHistory": "Enter major wide inside drug push become."
+        },
+        {
+            "id": 7,
+            "medicalHistory": "Hotel peace age vote quickly Congress."
+        },
+        {
+            "id": 8,
+            "medicalHistory": "Usually federal weight once first."
+        },
+        {
+            "id": 9,
+            "medicalHistory": "Air stage perhaps expert fund director teacher student."
+        },
+        {
+            "id": 10,
+            "medicalHistory": "Person information spend cultural effect teach nation."
+        }
+    ],
+    "Doctor": [
+        {
+            "id": 1,
+            "qualification": "MBBS, Orthopedics",
+            "specialty": "Orthopedic Surgeon",
+            "workplace": "Shah LLC",
+            "consultationFee": 364
+        },
+        {
+            "id": 2,
+            "qualification": "MS, Orthopedics",
+            "specialty": "Cardiologist",
+            "workplace": "Ellis-Kim",
+            "consultationFee": 328
+        },
+        {
+            "id": 3,
+            "qualification": "MD, Cardiology",
+            "specialty": "Cardiologist",
+            "workplace": "Scott-Atkins",
+            "consultationFee": 202
+        },
+        {
+            "id": 4,
+            "qualification": "MBBS, Orthopedics",
+            "specialty": "Dermatologist",
+            "workplace": "Sanchez-Calhoun",
+            "consultationFee": 103
+        },
+        {
+            "id": 5,
+            "qualification": "MBBS, Neurology",
+            "specialty": "Orthopedic Surgeon",
+            "workplace": "Bender, Walton and Hayes",
+            "consultationFee": 461
+        },
+        {
+            "id": 6,
+            "qualification": "MS, Neurology",
+            "specialty": "Dermatologist",
+            "workplace": "Little-Smith",
+            "consultationFee": 337
+        },
+        {
+            "id": 7,
+            "qualification": "MD, Dermatology",
+            "specialty": "Cardiologist",
+            "workplace": "Marshall, Walker and Lopez",
+            "consultationFee": 438
+        },
+        {
+            "id": 8,
+            "qualification": "MS, Cardiology",
+            "specialty": "Orthopedic Surgeon",
+            "workplace": "Figueroa-Jones",
+            "consultationFee": 130
+        },
+        {
+            "id": 9,
+            "qualification": "MBBS, Orthopedics",
+            "specialty": "Orthopedic Surgeon",
+            "workplace": "Peterson Group",
+            "consultationFee": 413
+        },
+        {
+            "id": 10,
+            "qualification": "MS, Neurology",
+            "specialty": "Cardiologist",
+            "workplace": "Lewis-Wu",
+            "consultationFee": 293
+        }
+    ],
+    "Appointment": [
+        {
+            "id": 1,
+            "appointmentDate": "2024-05-18",
+            "appointmentTime": "9:00 PM",
+            "appointmentType": "Checkup",
+            "appointmentLocation": "49146 Daniel Lake\nHendersonside, NH 11932",
+            "additionalInfo": "Size gas teacher.",
+            "status": "completed"
+        },
+        {
+            "id": 2,
+            "appointmentDate": "2024-01-03",
+            "appointmentTime": "10:30 PM",
+            "appointmentType": "Checkup",
+            "appointmentLocation": "923 Jeffrey Falls Suite 234\nEast Michael, TN 18371",
+            "additionalInfo": "Nothing everybody.",
+            "status": "pending"
+        },
+        {
+            "id": 3,
+            "appointmentDate": "2024-03-16",
+            "appointmentTime": "15:30 AM",
+            "appointmentType": "Follow-up",
+            "appointmentLocation": "22992 Patricia Trail\nChambersland, WI 64747",
+            "additionalInfo": "Letter environmental great ok.",
+            "status": "active"
+        },
+        {
+            "id": 4,
+            "appointmentDate": "2024-11-08",
+            "appointmentTime": "16:00 PM",
+            "appointmentType": "Follow-up",
+            "appointmentLocation": "2797 Sanders Oval\nWest Rodneymouth, NE 17175",
+            "additionalInfo": "Marriage letter cost reveal everyone.",
+            "status": "active"
+        },
+        {
+            "id": 5,
+            "appointmentDate": "2024-12-20",
+            "appointmentTime": "10:30 AM",
+            "appointmentType": "Follow-up",
+            "appointmentLocation": "865 Theodore Creek Suite 148\nKingburgh, MI 92358",
+            "additionalInfo": "The world result attention.",
+            "status": "scheduled"
+        },
+        {
+            "id": 6,
+            "appointmentDate": "2024-03-10",
+            "appointmentTime": "9:30 PM",
+            "appointmentType": "Consultation",
+            "appointmentLocation": "54231 Stephen Haven\nSouth Judithbury, OH 58267",
+            "additionalInfo": "Finally yeah.",
+            "status": "cancelled"
+        },
+        {
+            "id": 7,
+            "appointmentDate": "2024-05-06",
+            "appointmentTime": "10:00 PM",
+            "appointmentType": "Follow-up",
+            "appointmentLocation": "54364 Jason Circle Apt. 366\nGomezfurt, GA 23054",
+            "additionalInfo": "Some cup.",
+            "status": "pending"
+        },
+        {
+            "id": 8,
+            "appointmentDate": "2024-02-10",
+            "appointmentTime": "10:00 PM",
+            "appointmentType": "Checkup",
+            "appointmentLocation": "6050 Theresa Islands Suite 070\nStevenbury, AZ 88483",
+            "additionalInfo": "Green recently admit series.",
+            "status": "scheduled"
+        },
+        {
+            "id": 9,
+            "appointmentDate": "2024-02-05",
+            "appointmentTime": "16:30 AM",
+            "appointmentType": "Checkup",
+            "appointmentLocation": "8322 Garcia Stream Apt. 464\nSouth April, NJ 32033",
+            "additionalInfo": "See spring her determine.",
+            "status": "active"
+        },
+        {
+            "id": 10,
+            "appointmentDate": "2024-10-26",
+            "appointmentTime": "10:30 PM",
+            "appointmentType": "Consultation",
+            "appointmentLocation": "20994 Hamilton Alley Suite 367\nJessicaville, MO 83485",
+            "additionalInfo": "Story off eat.",
+            "status": "completed"
+        }
+    ],
+    "Payment": [
+        {
+            "id": 1,
+            "paymentMethod": "Credit Card",
+            "paymentDetails": "",
+            "paymentDate": "2024-12-11",
+            "amount": 455,
+            "status": "completed"
+        },
+        {
+            "id": 2,
+            "paymentMethod": "Cash",
+            "paymentDetails": "",
+            "paymentDate": "2024-10-15",
+            "amount": 281,
+            "status": "completed"
+        },
+        {
+            "id": 3,
+            "paymentMethod": "Credit Card",
+            "paymentDetails": "",
+            "paymentDate": "2024-02-05",
+            "amount": 479,
+            "status": "failed"
+        },
+        {
+            "id": 4,
+            "paymentMethod": "Credit Card",
+            "paymentDetails": "Amex ending in 5422",
+            "paymentDate": "2024-05-10",
+            "amount": 124,
+            "status": "failed"
+        },
+        {
+            "id": 5,
+            "paymentMethod": "Credit Card",
+            "paymentDetails": "",
+            "paymentDate": "2024-09-09",
+            "amount": 233,
+            "status": "completed"
+        },
+        {
+            "id": 6,
+            "paymentMethod": "Cash",
+            "paymentDetails": "",
+            "paymentDate": "2024-08-18",
+            "amount": 109,
+            "status": "failed"
+        },
+        {
+            "id": 7,
+            "paymentMethod": "Credit Card",
+            "paymentDetails": "",
+            "paymentDate": "2024-04-15",
+            "amount": 405,
+            "status": "failed"
+        },
+        {
+            "id": 8,
+            "paymentMethod": "Cash",
+            "paymentDetails": "Visa ending in 1081",
+            "paymentDate": "2024-02-27",
+            "amount": 457,
+            "status": "failed"
+        },
+        {
+            "id": 9,
+            "paymentMethod": "Cash",
+            "paymentDetails": "",
+            "paymentDate": "2024-11-24",
+            "amount": 116,
+            "status": "pending"
+        },
+        {
+            "id": 10,
+            "paymentMethod": "Credit Card",
+            "paymentDetails": "",
+            "paymentDate": "2024-07-04",
+            "amount": 67,
+            "status": "completed"
+        }
+    ]
+}
