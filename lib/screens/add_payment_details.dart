@@ -83,6 +83,7 @@ class AddTransactionMethodScreen extends StatelessWidget {
             // Add Card Button
             ElevatedButton(
               onPressed: () {
+                Navigator.pop(context);
                 // Handle add card functionality
               },
               style: ElevatedButton.styleFrom(
