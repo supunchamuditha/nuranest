@@ -90,7 +90,7 @@ class GetStartedasPsychologistScreen extends StatelessWidget {
                           ),
                         )),
                     child: const Text(
-                      "Start Journy",
+                      "Start Journey",
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                   )
