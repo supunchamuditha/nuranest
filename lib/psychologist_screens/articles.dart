@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/psychologist_screens/psychologist_appointments.dart';
+import 'package:nuranest/psychologist_screens/psychologist_article_view.dart';
 import 'package:nuranest/psychologist_screens/psychologist_chatlist_page.dart';
 import 'package:nuranest/screens/profile_page.dart';
 
@@ -150,7 +151,10 @@ Widget _buildSearchBar() {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Add navigation or functionality here
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const PsychologistArticleView()),
+                      );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),

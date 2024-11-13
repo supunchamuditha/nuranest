@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuranest/psychologist_screens/profile_setup.dart';
 import 'package:nuranest/psychologist_screens/view_user_profile.dart';
 
 class PsychologistAppointments extends StatelessWidget {
@@ -103,7 +104,10 @@ class PsychologistAppointments extends StatelessWidget {
           // "Change my appointment details" button
           ElevatedButton(
             onPressed: () {
-              
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>  ProfileSetupScreen()),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFEFE0D6), // Light peach color for button background

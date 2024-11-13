@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuranest/screens/chat_screen.dart';
 
 class ViewUserProfileScreen extends StatelessWidget {
   @override
@@ -56,7 +57,14 @@ class ViewUserProfileScreen extends StatelessWidget {
               ),
               IconButton(
                 icon: Image.asset('lib/assets/icon/email.png'),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                  context,
+                    MaterialPageRoute(
+                    builder: (context) => ChatScreen('Chat Partner Name'),
+                  ),
+                  );
+                },
                 padding: const EdgeInsets.only(left: 20 , right: 20),
               ),
               IconButton(

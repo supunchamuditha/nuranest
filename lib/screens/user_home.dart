@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/screens/appointments_screen.dart';
+import 'package:nuranest/screens/chatbot.dart';
 import 'package:nuranest/screens/chatlist.dart';
 import 'package:nuranest/screens/my_appointments_screen.dart';
 import 'package:nuranest/screens/profile_page.dart';
@@ -71,37 +72,70 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          const Text(
-            "Hey, <Name> 👋",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+  return Scaffold(
+    body: Stack(
+      children: [
+        // Main Content (ScrollView)
+        SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                "Hey, <Name> 👋",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "How are you feeling today?",
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              const SizedBox(height: 16),
+              _buildMoodSelector(),
+              const SizedBox(height: 30),
+              _buildReminderCard(context),
+              const SizedBox(height: 20),
+              _buildPsychologistCard(context),
+              const SizedBox(height: 20),
+              _buildArticlesCard(context),
+            ],
+          ),
+        ),
+        // Floating Button
+        Positioned(
+          bottom: 16, // Fixed distance from the bottom
+          right: 16,  // Fixed distance from the right
+          child: SizedBox(
+            width: 70, // Custom width
+            height: 70, // Custom height
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AIChatPage()),
+                );
+              },
+              backgroundColor: Color.fromARGB(255, 233, 218, 212), // Gray-beige color
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50), // Adjust this value for desired rounding
+              ),
+              child: Icon(
+                Icons.chat,
+                color: Colors.black, // Icon color for better contrast
+                size: 30, // Adjust icon size to fit the button
+              ),
             ),
           ),
-          const SizedBox(height: 8),
-          const Text(
-            "How are you feeling today?",
-            style: TextStyle(fontSize: 16, color: Colors.black),
-          ),
-          const SizedBox(height: 16),
-          _buildMoodSelector(),
-          const SizedBox(height: 30),
-          _buildReminderCard(context),
-          const SizedBox(height: 20),
-          _buildPsychologistCard(context),
-          const SizedBox(height: 20),
-          _buildArticlesCard(context),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _buildMoodSelector() {
     return Container(
@@ -394,58 +428,67 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
           fit: BoxFit.cover,
         ),
       ),
-      
+ 
+ 
       child: Column(
-        
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 155), // Add space if you need it between image and button row
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF9F5).withOpacity(0.9), // Light background with transparency
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RichText(
-                  text: const TextSpan(
-                    text: 'Go to ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'articles',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const UserArticle()),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFAF9F5).withOpacity(0.9), // Light background with transparency
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                    text: const TextSpan(
+                      text: 'Go to ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
                       ),
-                    ],
+                      children: [
+                        TextSpan(
+                          text: 'articles',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const UserArticle()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(0),
-                    shape: const CircleBorder(),
-                    backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
+                  ElevatedButton(
+                    onPressed: () {
+                      // Optional: You can leave this or remove it
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const UserArticle()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
+                      shape: const CircleBorder(),
+                      backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
+                    ),
+                    child: const Icon(
+                      Icons.play_arrow,
+                      color: Colors.black,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.play_arrow,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

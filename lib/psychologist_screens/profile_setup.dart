@@ -90,12 +90,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   // context,
-                  //   // MaterialPageRoute(
-                  //   //   builder: (context) => MakePaymentPage(), // Replace with the profile screen widget
-                  //   // ),
-                  // );
+                  Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFB0E5FC),
