@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
+import 'package:nuranest/screens/payment_details.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -278,7 +279,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>const EnrollAsPsychologistScreen()),
-                    );
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 90),
@@ -306,7 +307,10 @@ class _ProfilePageState extends State<ProfilePage> {
               // View Payment History Button
               ElevatedButton(
                 onPressed: () {
-                  // Add action for viewing payment history
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PaymentDetailsScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 90),
