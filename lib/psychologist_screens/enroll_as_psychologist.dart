@@ -61,6 +61,7 @@ class _EnrollAsPsychologistScreenState extends State<EnrollAsPsychologistScreen>
               const SizedBox(height: 30),
 
               // Buttons
+                
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -69,43 +70,48 @@ class _EnrollAsPsychologistScreenState extends State<EnrollAsPsychologistScreen>
                     );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 150), // Make it wider
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  backgroundColor: const Color(0xFFEFEEDD),
-                  minimumSize: const Size(double.infinity, 48),
+                  backgroundColor: const Color.fromARGB(255, 239, 222, 214),
                 ),
                 child: const Text(
-                  "Send Request",
+                  'Save',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
+                    letterSpacing: 1,
                     color: Colors.black,
                   ),
                 ),
               ),
+
+
               const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
-                  // Implement cancel action
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>const AfterRequestProfile()),
+                    );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 150), // Make it wider
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  backgroundColor: const Color(0xFFF58484),
-                  minimumSize: const Size(double.infinity, 48),
+                  backgroundColor: const Color.fromARGB(255, 255, 146, 146),
                 ),
                 child: const Text(
-                  "Cancel",
+                  'Cancel',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    letterSpacing: 1,
+                    color: Colors.black,
                   ),
                 ),
               ),
