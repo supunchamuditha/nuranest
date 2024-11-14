@@ -11,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   // Text controllers to hold profile information
-  TextEditingController nameController = TextEditingController(text: 'Supun Madushanka');
+  TextEditingController nameController = TextEditingController(text: 'Supun Chamuditha');
   TextEditingController emailController = TextEditingController(text: 'supun1221@gmail.com');
   TextEditingController phoneController = TextEditingController(text: '0112345678');
   TextEditingController birthDateController = TextEditingController(text: '2002-05-06');

@@ -7,11 +7,11 @@ class BookAppointmentPage extends StatefulWidget {
 }
 
 class _BookAppointmentPageState extends State<BookAppointmentPage> {
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
   String? _selectedTime;
   String? _selectedAppointmentType; // "Physical" or "Online"
-
+  String? _selectedAppointmentLocation; // "Doctors" or "My"
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -37,22 +37,26 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
   void _onAppointmentTypeSelected(String type) {
     setState(() {
       _selectedAppointmentType = type;
+      // Reset location selection if switching appointment type
+      if (type == "Online") _selectedAppointmentLocation = null;
     });
   }
 
-  void _onAppointmentLocationSelected(String type) {
-    setState(() {
-      _selectedAppointmentType = type;
-    });
+  void _onAppointmentLocationSelected(String location) {
+    if (_selectedAppointmentType == "Physical") {
+      setState(() {
+        _selectedAppointmentLocation = location;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Appointment'),
+        title: const Text('Book Appointment'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -63,10 +67,14 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Dr.Shanez Fernando"),
-            Text("Monday to Sunday 8:00AM to 6:00PM"),
-            Text("Consultation Fee for 1 hour session: 5\$"),
-            SizedBox(height: 16),
+            // Doctor Details
+            const Text(
+              "Dr. Shanez Fernando",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const Text("Monday to Sunday, 8:00 AM to 6:00 PM"),
+            const Text("Consultation Fee for 1-hour session: \$5"),
+            const SizedBox(height: 16),
 
             // Date input field
             GestureDetector(
@@ -76,7 +84,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   controller: _dateController,
                   decoration: InputDecoration(
                     hintText: "Select Date",
-                    fillColor: const Color.fromARGB(255, 255, 255, 255),
+                    fillColor: Colors.white,
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -85,7 +93,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
 
             // Time input field
             TextField(
@@ -93,14 +101,14 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               readOnly: true,
               decoration: InputDecoration(
                 hintText: "Select Time",
-                fillColor: const Color.fromARGB(255, 255, 255, 255),
+                fillColor: Colors.white,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Time slots
             Wrap(
@@ -110,79 +118,90 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   onPressed: () => _onTimeSlotSelected(time),
                   style: OutlinedButton.styleFrom(
                     backgroundColor: _selectedTime == time ? Colors.blue[100] : Colors.white,
-                    side: BorderSide(color: Colors.black),
+                    side: const BorderSide(color: Colors.black),
                   ),
-                  child: Text(time, style: TextStyle(color: _selectedTime == time ? Colors.black : Colors.black)),
+                  child: Text(
+                    time,
+                    style: TextStyle(color: _selectedTime == time ? Colors.black : Colors.black),
+                  ),
                 );
               }).toList(),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Appointment type
-            Text("How you can attend appointments"),
+            const Text("How you can attend appointments"),
             Row(
               children: [
-                OutlinedButton(
+                _buildOutlinedButton(
+                  label: "Physical",
+                  isSelected: _selectedAppointmentType == "Physical",
                   onPressed: () => _onAppointmentTypeSelected("Physical"),
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: _selectedAppointmentType == "Physical" ? Colors.blue[100] : Colors.white,
-                    side: BorderSide(color: Colors.black),
-                  ),
-                  child: Text("Physical", style: TextStyle(color: _selectedAppointmentType == "Physical" ? Colors.black : Colors.black)),
                 ),
-                SizedBox(width: 8),
-                OutlinedButton(
+                const SizedBox(width: 8),
+                _buildOutlinedButton(
+                  label: "Online",
+                  isSelected: _selectedAppointmentType == "Online",
                   onPressed: () => _onAppointmentTypeSelected("Online"),
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: _selectedAppointmentType == "Online" ? Colors.blue[100] : Colors.white,
-                    side: BorderSide(color: Colors.black),
-                  ),
-                  child: Text("Online", style: TextStyle(color: _selectedAppointmentType == "Online" ? Colors.black : Colors.black)),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Information text
-            Text(
-              "This physical appointments for the home visits and free locations. "
-              "If you want to meet doctor in a private hospital you can make an appointment "
-              "via hospital websites",
+            const Text(
+              "Physical appointments are for home visits and free locations. "
+              "If you want to meet the doctor in a private hospital, you can make an appointment via hospital websites.",
             ),
-            SizedBox(height: 8),
-            Text("Doctor's location: No 123, Vidya mawatha Colombo 7"),
-            SizedBox(height: 18),
-            Text("Where you can attend appointments(Physical)"),
+            const SizedBox(height: 8),
+            const Text("Doctor's location: No 123, Vidya Mawatha, Colombo 7"),
+            const SizedBox(height: 18),
+
+            // Appointment location
+            const Text("Where you can attend appointments (Physical)"),
             Row(
               children: [
-                OutlinedButton(
-                  onPressed: () => _onAppointmentLocationSelected("Doctors"),
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: _selectedAppointmentType == "Doctors" ? Colors.blue[100] : Colors.white,
-                    side: BorderSide(color: Colors.black),
-                  ),
-                  child: Text("Doctor's Location", style: TextStyle(color: _selectedAppointmentType == "Doctors" ? Colors.black : Colors.black)),
+                _buildOutlinedButton(
+                  label: "Doctor's Location",
+                  isSelected: _selectedAppointmentLocation == "Doctors",
+                  onPressed: _selectedAppointmentType == "Physical"
+                      ? () => _onAppointmentLocationSelected("Doctors")
+                      : null,
                 ),
-                SizedBox(width: 8),
-                OutlinedButton(
-                  onPressed: () => _onAppointmentLocationSelected("My"),
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: _selectedAppointmentType == "My" ? Colors.blue[100] : Colors.white,
-                    side: BorderSide(color: Colors.black),
-                  ),
-                  child: Text("My Location", style: TextStyle(color: _selectedAppointmentType == "My" ? Colors.black : Colors.black)),
+                const SizedBox(width: 8),
+                _buildOutlinedButton(
+                  label: "My Location",
+                  isSelected: _selectedAppointmentLocation == "My",
+                  onPressed: _selectedAppointmentType == "Physical"
+                      ? () => _onAppointmentLocationSelected("My")
+                      : null,
                 ),
               ],
             ),
 
             // Address and message fields
-            SizedBox(height: 16),
-            Text("Address"),
-            TextField(),
-            SizedBox(height: 8),
-            Text("Leave a message"),
-            TextField(maxLines: 3),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
+            const Text("Address"),
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Enter your address",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text("Leave a message"),
+            TextField(
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: "Enter your message",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
 
             // Book appointment button
             SizedBox(
@@ -192,12 +211,12 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MakePaymentPage(), // Replace with the profile screen widget
+                      builder: (context) => MakePaymentPage(),
                     ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFB0E5FC),
+                  backgroundColor: const Color(0xFFB0E5FC),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -211,6 +230,27 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
             ),
             const SizedBox(height: 20),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Helper method to build buttons
+  Widget _buildOutlinedButton({
+    required String label,
+    required bool isSelected,
+    required VoidCallback? onPressed,
+  }) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        backgroundColor: isSelected ? Colors.blue[100] : Colors.white,
+        side: const BorderSide(color: Colors.black),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: onPressed != null ? Colors.black : Colors.grey,
         ),
       ),
     );
