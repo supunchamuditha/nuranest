@@ -179,18 +179,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Validate the form
-                      if (_formKey.currentState!.validate()) {
-                        // If the form is valid, navigate to the HomeScreen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
+                      // If the form is valid, navigate to the HomeScreen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
 
-                        // Clear the text fields
-                        emailController.clear();
-                        passwordController.clear();
-                      }
+                      // Clear the text fields
+                      emailController.clear();
+                      passwordController.clear();
                     }
                   },
                   style: ElevatedButton.styleFrom(
