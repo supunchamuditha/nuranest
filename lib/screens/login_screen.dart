@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:nuranest/screens/signup_screen.dart';
 import 'package:nuranest/screens/user_home.dart';
 import 'package:nuranest/utils/userValidators.dart';
@@ -18,6 +21,72 @@ class _LoginScreenState extends State<LoginScreen> {
 // Define the email and password controllers
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+// Define the _isLoading variable
+  bool _isLoading = false;
+
+// Define the _login method
+  Future<void> _login() async {
+    try {
+      // Get the API URL from the .env file
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the login URL
+      final loginUrl = '$apiUrl/auth/login';
+
+      // Get the email and password from the text fields
+      final email = emailController.text;
+      final password = passwordController.text;
+
+      // Set the _isLoading variable to true
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Make a POST request to the login URL
+      final response = await http.post(
+        Uri.parse(loginUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+        }),
+      );
+
+      // Check if the response status code is 200
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        _showMessage(
+            '${responseData['message'] ?? 'Login successful. Welcome!'}');
+
+        // If the form is valid, navigate to the HomeScreen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        final errorData = jsonDecode(response.body);
+        _showMessage(errorData['message'] ?? 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      _showMessage('An error occurred. Please try again');
+    } finally {
+      // Set the _isLoading variable to false
+      setState(() {
+        _isLoading = false;
+      });
+
+      // Clear the text fields
+      emailController.clear();
+      passwordController.clear();
+    }
+  }
+
+  // Define the _showMessage method
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
 
   @override
   void dispose() {
@@ -177,39 +246,52 @@ class _LoginScreenState extends State<LoginScreen> {
                         60), // Space between forgot password and login button
 
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // If the form is valid, navigate to the HomeScreen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _login();
+                        // If the form is valid, navigate to the HomeScreen
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                        // );
 
-                      // Clear the text fields
-                      emailController.clear();
-                      passwordController.clear();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                        // // Clear the text fields
+                        // emailController.clear();
+                        // passwordController.clear();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      backgroundColor: const Color.fromRGBO(239, 222, 214, 1),
+                      minimumSize: const Size(360, 48),
                     ),
-                    backgroundColor: const Color.fromRGBO(239, 222, 214, 1),
-                    minimumSize: const Size(360, 48),
-                  ),
-                  child: const Text(
-                    "Log in",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                    // child: const Text(
+                    //   "Log in",
+                    //   style: TextStyle(
+                    //     fontFamily: 'Poppins',
+                    //     fontSize: 14,
+                    //     fontWeight: FontWeight.w500,
+                    //     letterSpacing: 1,
+                    //     color: Colors.black,
+                    //   ),
+                    // ),
+
+                    child: _isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text(
+                            "Log in",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1,
+                              color: Colors.black,
+                            ),
+                          )),
 
                 const SizedBox(height: 20),
                 // Space between login button and connect with text
