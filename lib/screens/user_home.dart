@@ -7,9 +7,10 @@ import 'package:nuranest/screens/profile_page.dart';
 import 'package:nuranest/screens/user_article.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
 }
 
