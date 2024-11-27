@@ -17,7 +17,7 @@ bool validatePassword(String? value) {
   }
 
   // Check if the length is at least 8
-  if (value.length < 8) {
+  if (value.length < 8 || value.length > 20) {
     return false;
   }
 

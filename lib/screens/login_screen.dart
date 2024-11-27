@@ -64,6 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
         );
+
+        // Clear the text fields
+        emailController.clear();
+        passwordController.clear();
+        
       } else {
         final errorData = jsonDecode(response.body);
         _showMessage(errorData['message'] ?? 'Login failed. Please try again.');
@@ -75,10 +80,6 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = false;
       });
-
-      // Clear the text fields
-      emailController.clear();
-      passwordController.clear();
     }
   }
 
