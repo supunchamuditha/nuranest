@@ -5,6 +5,8 @@ import 'package:nuranest/screens/chatlist.dart';
 import 'package:nuranest/screens/my_appointments_screen.dart';
 import 'package:nuranest/screens/profile_page.dart';
 import 'package:nuranest/screens/user_article.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert'; // Import for JSON decoding
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,9 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
   // List of screens for navigation
   final List<Widget> _pages = [
     const HomeScreenContent(), // Home Screen Content (not the HomeScreen itself)
-    ChatListPage(),  // Replace with your actual GetStartedScreen
-    const MyAppointmentsScreen(),   // Replace with your actual MakePaymentPage
-    const ProfilePage(),       // Replace with your actual LoginScreen
+    ChatListPage(), // Replace with your actual GetStartedScreen
+    const MyAppointmentsScreen(), // Replace with your actual MakePaymentPage
+    const ProfilePage(), // Replace with your actual LoginScreen
   ];
 
   void _onItemTapped(int index) {
@@ -44,7 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined), label: ' My Appointments'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today_outlined),
+              label: ' My Appointments'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         selectedItemColor: Colors.black,
@@ -66,76 +70,106 @@ class HomeScreenContent extends StatefulWidget {
 class _HomeScreenContentState extends State<HomeScreenContent> {
   // List of mood labels for easy reference
   final List<String> moodLabels = ["Angry", "Sad", "Calm", "Happy", "Excited"];
-  
+  String? userName = 'User'; // Default username
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userDetails = prefs.getString('user'); // Get the user JSON string
+
+    if (userDetails != null) {
+      // Parse the JSON string into a Map
+      Map<String, dynamic> user = json.decode(userDetails);
+
+      setState(() {
+        // Retrieve the firstName from the JSON
+        userName = user['firstName'] ?? 'User'; // Default to 'User' if null
+      });
+
+      // print('First Name: $userName'); // Log the first name
+    } else {
+      setState(() {
+        userName = 'User'; // Default to 'User' if no data is found
+      });
+    }
+  }
+
   // Selected mood index (default to "Calm")
   int selectedMoodIndex = 2;
 
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-    body: Stack(
-      children: [
-        // Main Content (ScrollView)
-        SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              const Text(
-                "Hey, <Name> 👋",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Main Content (ScrollView)
+          SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                Text(
+                  "Hey, $userName 👋",
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                "How are you feeling today?",
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-              const SizedBox(height: 16),
-              _buildMoodSelector(),
-              const SizedBox(height: 30),
-              _buildReminderCard(context),
-              const SizedBox(height: 20),
-              _buildPsychologistCard(context),
-              const SizedBox(height: 20),
-              _buildArticlesCard(context),
-            ],
+                const SizedBox(height: 8),
+                const Text(
+                  "How are you feeling today?",
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
+                const SizedBox(height: 16),
+                _buildMoodSelector(),
+                const SizedBox(height: 30),
+                _buildReminderCard(context),
+                const SizedBox(height: 20),
+                _buildPsychologistCard(context),
+                const SizedBox(height: 20),
+                _buildArticlesCard(context),
+              ],
+            ),
           ),
-        ),
-        // Floating Button
-        Positioned(
-          bottom: 16, // Fixed distance from the bottom
-          right: 16,  // Fixed distance from the right
-          child: SizedBox(
-            width: 70, // Custom width
-            height: 70, // Custom height
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AIChatPage()),
-                );
-              },
-              backgroundColor: Color.fromARGB(255, 233, 218, 212), // Gray-beige color
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50), // Adjust this value for desired rounding
-              ),
-              child: Icon(
-                Icons.chat,
-                color: Colors.black, // Icon color for better contrast
-                size: 30, // Adjust icon size to fit the button
+          // Floating Button
+          Positioned(
+            bottom: 16, // Fixed distance from the bottom
+            right: 16, // Fixed distance from the right
+            child: SizedBox(
+              width: 70, // Custom width
+              height: 70, // Custom height
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AIChatPage()),
+                  );
+                },
+                backgroundColor:
+                    Color.fromARGB(255, 233, 218, 212), // Gray-beige color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      50), // Adjust this value for desired rounding
+                ),
+                child: Icon(
+                  Icons.chat,
+                  color: Colors.black, // Icon color for better contrast
+                  size: 30, // Adjust icon size to fit the button
+                ),
               ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+    );
+  }
 
   Widget _buildMoodSelector() {
     return Container(
@@ -158,7 +192,8 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
     );
   }
 
-  Widget _buildMoodIcon(String iconPath, String label, bool isActive, int index) {
+  Widget _buildMoodIcon(
+      String iconPath, String label, bool isActive, int index) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -168,7 +203,9 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFFFFE86C) : Colors.transparent, // Yellow background for active icon
+          color: isActive
+              ? const Color(0xFFFFE86C)
+              : Colors.transparent, // Yellow background for active icon
           borderRadius: BorderRadius.circular(30),
         ),
         child: Column(
@@ -218,16 +255,19 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 10.0), // Left padding for the image
+                  padding: const EdgeInsets.only(
+                      left: 10.0), // Left padding for the image
                   child: CircleAvatar(
                     radius: 24,
-                    backgroundImage: const AssetImage("lib/assets/images/reminder_avatar.png"), // Replace with your actual path
+                    backgroundImage: const AssetImage(
+                        "lib/assets/images/reminder_avatar.png"), // Replace with your actual path
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0), // Left padding for the reminder text
+                    padding: const EdgeInsets.only(
+                        left: 10.0), // Left padding for the reminder text
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
@@ -288,13 +328,15 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyAppointmentsScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const MyAppointmentsScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(0),
                       shape: const CircleBorder(),
-                      backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
+                      backgroundColor:
+                          const Color(0xFFFFE86C), // Yellowish button color
                     ),
                     child: const Icon(
                       Icons.play_arrow,
@@ -311,140 +353,58 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
   }
 
   Widget _buildPsychologistCard(BuildContext context) {
-  return Center(
-    child: Container(
-      padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF7E7E0), // Light pink background color
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(2, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Title text and avatar row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(width: 12),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0), // Left padding for the reminder text
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Meet your psychologist",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // New rounded corner box for appointments
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF9F5), // Change this color as needed
-              borderRadius: BorderRadius.circular(30),
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF7E7E0), // Light pink background color
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(2, 2),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RichText(
-                  text: const TextSpan(
-                    text: 'Go to ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Make Appointment',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title text and avatar row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10.0), // Left padding for the reminder text
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "Meet your psychologist",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AppointmentsScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(0),
-                    shape: const CircleBorder(),
-                    backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
-                  ),
-                  child: const Icon(
-                    Icons.play_arrow,
-                    color: Colors.black,
+                        SizedBox(height: 4),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+            const SizedBox(height: 16),
 
-  Widget _buildArticlesCard(BuildContext context) {
-  return Card(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(30),
-    ),
-    color: const Color(0xFFF5EDD3), // Light beige color
-    child: Container(
-      // Remove padding from Padding widget and add to Container
-      padding: const EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        image: DecorationImage(
-          image: AssetImage('lib/assets/images/read_articles.png'), // Replace with your image path
-          fit: BoxFit.cover,
-        ),
-      ),
- 
- 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 155), // Add space if you need it between image and button row
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const UserArticle()),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            // New rounded corner box for appointments
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: const Color(0xFFFAF9F5).withOpacity(0.9), // Light background with transparency
+                color: const Color(0xFFFAF9F5), // Change this color as needed
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Row(
@@ -455,13 +415,13 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                       text: 'Go to ',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 18,
+                        fontSize: 17,
                       ),
                       children: [
                         TextSpan(
-                          text: 'articles',
+                          text: 'Make Appointment',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 17,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
@@ -471,16 +431,17 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Optional: You can leave this or remove it
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const UserArticle()),
+                        MaterialPageRoute(
+                            builder: (context) => const AppointmentsScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(0),
                       shape: const CircleBorder(),
-                      backgroundColor: const Color(0xFFFFE86C), // Yellowish button color
+                      backgroundColor:
+                          const Color(0xFFFFE86C), // Yellowish button color
                     ),
                     child: const Icon(
                       Icons.play_arrow,
@@ -490,12 +451,100 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-}
+  Widget _buildArticlesCard(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      color: const Color(0xFFF5EDD3), // Light beige color
+      child: Container(
+        // Remove padding from Padding widget and add to Container
+        padding: const EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          image: DecorationImage(
+            image: AssetImage(
+                'lib/assets/images/read_articles.png'), // Replace with your image path
+            fit: BoxFit.cover,
+          ),
+        ),
 
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+                height:
+                    155), // Add space if you need it between image and button row
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UserArticle()),
+                );
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFAF9F5)
+                      .withOpacity(0.9), // Light background with transparency
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      text: const TextSpan(
+                        text: 'Go to ',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'articles',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Optional: You can leave this or remove it
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const UserArticle()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                        shape: const CircleBorder(),
+                        backgroundColor:
+                            const Color(0xFFFFE86C), // Yellowish button color
+                      ),
+                      child: const Icon(
+                        Icons.play_arrow,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
