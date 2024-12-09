@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:nuranest/screens/signup_screen.dart';
 import 'package:nuranest/screens/user_home.dart';
 import 'package:nuranest/utils/userValidators.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -59,6 +60,16 @@ class _LoginScreenState extends State<LoginScreen> {
         _showMessage(
             '${responseData['message'] ?? 'Login successful. Welcome!'}');
 
+        // Extract and print the token from the response headers
+        final token = response.headers['set-cookie']
+            ?.split(';')
+            .firstWhere((cookie) => cookie.startsWith('accessToken='))
+            ?.split('=')[1];
+
+        //Store user data in local storage
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user', jsonEncode(responseData['user']));
+        await prefs.setString('token', token!);
         // If the form is valid, navigate to the HomeScreen
         Navigator.push(
           context,

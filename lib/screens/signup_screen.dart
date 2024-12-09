@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'package:nuranest/screens/login_screen.dart';
 import 'package:nuranest/utils/userValidators.dart';
 
@@ -23,6 +27,81 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+
+// Define the loading state
+  bool _isLoading = false;
+
+  Future<void> _register() async {
+    try {
+      // Get the API URL from the environment
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the register URL
+      final registerUrl = '$apiUrl/auth/register';
+
+      // Get the user input
+      final username = nameController.text;
+      final email = emailController.text;
+      final phone = phoneController.text;
+      final password = passwordController.text;
+
+      // set the _isLoading variable to true
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Make a POST request to the register URL
+      final response = await http.post(
+        Uri.parse(registerUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'username': username,
+          'email': email,
+          'phone': phone,
+          'password': password,
+        }),
+      );
+
+      // Check if the response status code is 200
+      if (response.statusCode == 201) {
+        final responseData = jsonDecode(response.body);
+        _showMessage(
+            '${responseData['message'] ?? 'Register successful. Welcome!'}');
+
+        // If the form is valid, navigate to the LoginScreen
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
+
+        // Clear the text fields
+        nameController.clear();
+        emailController.clear();
+        phoneController.clear();
+        passwordController.clear();
+        confirmPasswordController.clear();
+        print("hello 3"); //////////////////////////////////////
+      } else {
+        // If the response status code is not 200, show an error message
+        final errorData = jsonDecode(response.body);
+        _showMessage(
+            '${errorData['message'] ?? 'An error occurred. Please try again'}');
+      }
+    } catch (error) {
+      _showMessage('An error occurred. Please try again');
+    } finally {
+      // Set the _isLoading variable to false
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  // Define the _showMessage method
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
 
   @override
   void dispose() {
@@ -284,19 +363,22 @@ class _SignupScreenState extends State<SignupScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // If the form is valid, navigate to the HomeScreen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
+                      // Call the _register method
+                      _register();
 
-                      // Clear the text fields
-                      nameController.clear();
-                      emailController.clear();
-                      phoneController.clear();
-                      passwordController.clear();
-                      confirmPasswordController.clear();
+                      // If the form is valid, navigate to the HomeScreen
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const LoginScreen()),
+                      // );
+
+                      // // Clear the text fields
+                      // nameController.clear();
+                      // emailController.clear();
+                      // phoneController.clear();
+                      // passwordController.clear();
+                      // confirmPasswordController.clear();
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -308,16 +390,32 @@ class _SignupScreenState extends State<SignupScreen> {
                     backgroundColor: const Color.fromRGBO(239, 222, 214, 1),
                     minimumSize: const Size(360, 48),
                   ),
-                  child: const Text(
-                    "Create and Log In",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0,
-                      color: Colors.black,
-                    ),
-                  ),
+                  // child: const Text(
+                  //   "Create and Log In",
+                  //   style: TextStyle(
+                  //     fontFamily: 'Poppins',
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.w500,
+                  //     letterSpacing: 0,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
+
+                  child: _isLoading
+                      ? const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                      : const Text(
+                          'Create and Log In',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0,
+                            color: Colors.black,
+                          ),
+                        ),
                 ),
 
                 const SizedBox(
