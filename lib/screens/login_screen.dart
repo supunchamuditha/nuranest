@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final token = response.headers['set-cookie']
             ?.split(';')
             .firstWhere((cookie) => cookie.startsWith('accessToken='))
-            ?.split('=')[1];
+            .split('=')[1];
 
         //Store user data in local storage
         final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -185,6 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (!validateEmail(value)) {
                       return 'Please enter a valid email.';
                     }
+                    return null;
                   },
                 ),
 
@@ -233,6 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (!validatePassword(value)) {
                       return 'Password must be at least 8 characters.';
                     }
+                    return null;
                   }, // Password input field
                 ),
 

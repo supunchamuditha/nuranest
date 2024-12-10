@@ -189,6 +189,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     if (!validateName(value)) {
                       return 'Please enter a valid name.';
                     }
+                    return null;
                   },
                 ),
 
@@ -220,6 +221,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     if (!validateEmail(value)) {
                       return 'Please enter a valid email.';
                     }
+                    return null;
                   },
                 ),
 
@@ -251,6 +253,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     if (!validatePhone(value)) {
                       return 'Please enter a valid phone number.';
                     }
+                    return null;
                   },
                 ),
 
@@ -294,6 +297,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     if (!validatePassword(value)) {
                       return 'Password should contain at least 8 characters, including a letter, a number, and a special character.';
                     }
+                    return null;
                   },
                 ),
 
@@ -354,6 +358,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         confirmPasswordController.text)) {
                       return 'Passwords do not match.';
                     }
+                    return null;
                   },
                 ),
 
