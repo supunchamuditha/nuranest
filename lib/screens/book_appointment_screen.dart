@@ -103,6 +103,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                       if (!validateDate(value)) {
                         return 'Please select a date';
                       }
+                      return null;
                     },
                   ),
                 ),
@@ -125,6 +126,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   if (!validateTime(value)) {
                     return 'Please select a time';
                   }
+                  return null;
                 },
               ),
               const SizedBox(height: 16),
@@ -225,6 +227,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   if (!validateAddress(value)) {
                     return 'Please enter your address';
                   }
+                  return null;
                 },
               ),
               const SizedBox(height: 8),
@@ -242,6 +245,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   if (!validateMessage(value)) {
                     return 'Please enter a message';
                   }
+                  return null;
                 },
               ),
               const SizedBox(height: 16),
