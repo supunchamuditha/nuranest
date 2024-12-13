@@ -5,10 +5,12 @@ class EnrollAsPsychologistScreen extends StatefulWidget {
   const EnrollAsPsychologistScreen({super.key});
 
   @override
-  _EnrollAsPsychologistScreenState createState() => _EnrollAsPsychologistScreenState();
+  _EnrollAsPsychologistScreenState createState() =>
+      _EnrollAsPsychologistScreenState();
 }
 
-class _EnrollAsPsychologistScreenState extends State<EnrollAsPsychologistScreen> {
+class _EnrollAsPsychologistScreenState
+    extends State<EnrollAsPsychologistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +44,8 @@ class _EnrollAsPsychologistScreenState extends State<EnrollAsPsychologistScreen>
               // Profile Image
               const CircleAvatar(
                 radius: 52,
-                backgroundImage: AssetImage('lib/assets/images/psychologist_avatar.png'),
+                backgroundImage:
+                    AssetImage('lib/assets/images/psychologist_avatar.png'),
               ),
 
               const SizedBox(height: 20),
@@ -56,21 +59,24 @@ class _EnrollAsPsychologistScreenState extends State<EnrollAsPsychologistScreen>
               const SizedBox(height: 20),
 
               // Upload Verification Document
-              _buildTextField('Verification Document', 'UPLOAD', isUpload: true),
+              _buildTextField('Verification Document', 'UPLOAD',
+                  isUpload: true),
 
               const SizedBox(height: 30),
 
               // Buttons
-                
+
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>const AfterRequestProfile()),
-                    );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AfterRequestProfile()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 150), // Make it wider
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 14, horizontal: 150), // Make it wider
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -88,17 +94,18 @@ class _EnrollAsPsychologistScreenState extends State<EnrollAsPsychologistScreen>
                 ),
               ),
 
-
               const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>const AfterRequestProfile()),
-                    );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AfterRequestProfile()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 150), // Make it wider
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 14, horizontal: 150), // Make it wider
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -166,7 +173,8 @@ class _EnrollAsPsychologistScreenState extends State<EnrollAsPsychologistScreen>
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none,
             ),
-            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           ),
         ),
       ],
