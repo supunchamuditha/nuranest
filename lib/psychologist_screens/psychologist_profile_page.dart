@@ -4,6 +4,7 @@ import 'package:nuranest/utils/userValidators.dart'; // Import the userValidator
 import 'package:shared_preferences/shared_preferences.dart'; // Import the shared_preferences library
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the flutter_dotenv library
 
 class PsychologistProfilePage extends StatefulWidget {
   const PsychologistProfilePage({super.key});
@@ -19,6 +20,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
   //variables to hold user information
   int? getId = 0;
+  int? getDocId = 0;
   String? getUsername = '';
   String? getFistName = '';
   String? getLastName = '';
@@ -87,6 +89,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   Future<void> _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userDetails = prefs.getString('user');
+    String? doctorDetails = prefs.getString('doctor');
 
     if (userDetails != null) {
       Map<String, dynamic> user = json.decode(userDetails);
@@ -112,6 +115,22 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
         addressController.text = getAddress!;
       });
     }
+
+    if (doctorDetails != null) {
+      Map<String, dynamic> doctor = json.decode(doctorDetails);
+
+      setState(() {
+        getDocId = doctor['id'] ?? '';
+        getHospital = doctor['workplace'] ?? '';
+        getQualification = doctor['qualification'] ?? '';
+        getSpecial = doctor['specialization'] ?? '';
+
+        // Update TextEditingControllers
+        hospitalController.text = getHospital!;
+        qualificationController.text = getQualification!;
+        specialController.text = getSpecial!;
+      });
+    }
   }
 
   // Define the _showMessage method
@@ -123,7 +142,95 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   //
   Future<void> _saveUserInfo() async {
     try {
-      // add this save logic
+      // Get the API URL from the environment
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Get the user token from the shared preferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      // Define the save URL
+      final saveUrl_1 = '$apiUrl/users/$getId';
+      final saveUrl_2 = '$apiUrl/doctors/$getDocId';
+
+      // Set the _isLoading variable to true
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Get the user input
+      final username = usernameController.text;
+      final email = emailController.text;
+      final firstName = 'firstName';
+      final lastName = 'lastName';
+      final gender = genderController.text;
+      final dob = birthDateController.text;
+      final address = addressController.text;
+      final contactNo = phoneController.text;
+      final hospital = hospitalController.text;
+      final qualification = qualificationController.text;
+      final special = specialController.text;
+      final consultationFee = 0;
+      final availableDays = ["MBBS", "MD", "Psychiatry"];
+
+      // print(
+          // 'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo, Hospital: $hospital, Qualification: $qualification, Specialized: $special'); // Print the user input
+
+      // Make a PUT request to the save URL
+      final responseUser = await http.put(Uri.parse(saveUrl_1),
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer $token',
+          },
+          body: jsonEncode({
+            'username': username,
+            'email': email,
+            'firstName': firstName,
+            'lastName': lastName,
+            'gender': gender,
+            'dob': dob,
+            'address': address,
+            'contactNo': contactNo,
+          }));
+
+      final responsDoctor = await http.put(Uri.parse(saveUrl_2),
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer $token',
+          },
+          body: jsonEncode({
+            'userId': getId,
+            'workplace': hospital,
+            'qualification': qualification,
+            'specialization': special,
+            'consultationFee': consultationFee,
+            'availableDays': availableDays,
+          }));
+
+      // Check if the response is successful
+      // print(responseUser.statusCode);
+      // print(responsDoctor.statusCode);
+
+      if (responseUser.statusCode == 200 && responsDoctor.statusCode == 200) {
+        // Decode the response data
+        final responseUserData = json.decode(responseUser.body);
+        final responseDoctorData = json.decode(responsDoctor.body);
+
+        _showMessage('User information saved successfully');
+
+        // Save the user information to the shared preferences
+        await prefs.setString('user', jsonEncode(responseUserData['user']));
+        await prefs.setString(
+            'doctor', jsonEncode(responseDoctorData['doctor']));
+
+        // Print the user and doctor details
+        // String? userDetails = prefs.getString('user');
+        // print(userDetails);
+        // String? doctorDetails = prefs.getString('doctor');
+        // print(doctorDetails);
+      } else {
+        _showMessage('An error occurred. Please try again');
+      }
     } catch (error) {
       _showMessage('An error occurred. Please try again');
     } finally {
@@ -602,7 +709,10 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                 onPressed: () {
                   if (isEditing) {
                     if (_formKey.currentState!.validate()) {
-                      // Save logic here
+                      // Save the user information
+                      _saveUserInfo();
+
+                      // Disable editing
                       setState(() {
                         isEditing = false; // Stop editing
                       });
