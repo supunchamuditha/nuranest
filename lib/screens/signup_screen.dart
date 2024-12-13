@@ -80,7 +80,7 @@ class _SignupScreenState extends State<SignupScreen> {
         phoneController.clear();
         passwordController.clear();
         confirmPasswordController.clear();
-        print("hello 3"); //////////////////////////////////////
+        // print("hello 3"); //////////////////////////////////////
       } else {
         // If the response status code is not 200, show an error message
         final errorData = jsonDecode(response.body);
