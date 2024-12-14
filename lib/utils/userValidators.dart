@@ -66,3 +66,59 @@ bool validatePhone(String? value) {
 
   return true;
 }
+
+bool validateDob(String? value) {
+  if (value == null || value.isEmpty) return false;
+
+  try {
+    DateTime dob = DateTime.parse(value);
+    DateTime today = DateTime.now();
+
+    // Check if the date is in the future
+    if (dob.isAfter(today)) return false;
+
+    return true; // Valid date
+  } catch (e) {
+    return false; // Invalid date format
+  }
+}
+
+bool validateGender(String? value) {
+  // Assuming valid genders are "Male" and "Female"
+  if (value == null || value.isEmpty) return false;
+
+  List<String> validGenders = ['male', 'female', 'other'];
+  return validGenders.contains(value);
+}
+
+bool validateUsername(String? value) {
+  if (value == null || value.isEmpty) return false;
+
+  // Regular expression: 3–15 characters, alphanumeric, underscores allowed
+  final usernameRegex = RegExp(r'^[a-zA-Z0-9_]{3,15}$');
+  return usernameRegex.hasMatch(value);
+}
+
+bool validateQualification(String? value) {
+  if (value == null || value.isEmpty) return false;
+
+  // Regular expression: Allow letters, numbers, dots, hyphens, and spaces; 2–50 characters
+  final qualificationRegex = RegExp(r"^[a-zA-Z0-9\s\.\-]{2,50}$");
+  return qualificationRegex.hasMatch(value);
+}
+
+bool validateSpecial(String? value) {
+  if (value == null || value.isEmpty) return false;
+
+  // Regular expression: Allow letters, numbers, spaces, and basic punctuation; 2–50 characters
+  final specialRegex = RegExp(r"^[a-zA-Z0-9\s\.\,\-]{2,50}$");
+  return specialRegex.hasMatch(value);
+}
+
+bool validateHospital(String? value) {
+  if (value == null || value.isEmpty) return false;
+
+  // Regular expression: Allow letters, numbers, spaces, periods, commas, hyphens, and apostrophes
+  final hospitalRegex = RegExp(r"^[a-zA-Z0-9\s\.\,\-']{2,100}$");
+  return hospitalRegex.hasMatch(value);
+}
