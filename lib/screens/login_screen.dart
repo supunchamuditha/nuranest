@@ -300,7 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             "Log in",
                             style: TextStyle(
                               fontFamily: 'Poppins',
-                              fontSize: 14,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1,
                               color: Colors.black,
@@ -333,14 +333,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    backgroundColor: const Color.fromRGBO(148, 249, 194, 1),
+                    backgroundColor: const Color.fromARGB(255, 214, 219, 253),
                     minimumSize: const Size(360, 48),
                   ),
                   child: const Text(
                     "Google",
                     style: TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 1,
                       color: Colors.black,
@@ -365,7 +365,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     "Apple ID",
                     style: TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 1,
                       color: Colors.black,
