@@ -21,7 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
 
 // Define the text controllers for the input fields
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -40,7 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
       final registerUrl = '$apiUrl/auth/register';
 
       // Get the user input
-      final username = nameController.text;
+      final username = usernameController.text;
       final email = emailController.text;
       final phone = phoneController.text;
       final password = passwordController.text;
@@ -75,7 +75,7 @@ class _SignupScreenState extends State<SignupScreen> {
             MaterialPageRoute(builder: (context) => const LoginScreen()));
 
         // Clear the text fields
-        nameController.clear();
+        usernameController.clear();
         emailController.clear();
         phoneController.clear();
         passwordController.clear();
@@ -106,7 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed
-    nameController.dispose();
+    usernameController.dispose();
     emailController.dispose();
     phoneController.dispose();
     passwordController.dispose();
@@ -140,20 +140,20 @@ class _SignupScreenState extends State<SignupScreen> {
                   "Oh You are New!",
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontSize: 17,
+                    fontSize: 28,
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.43,
                     color: Colors.black,
                   ),
                 ),
 
-                const SizedBox(height: 10), // Space between title and subtitle
+                const SizedBox(height: 20), // Space between title and subtitle
 
                 const Text(
                   "Let's create an account for you",
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontSize: 12,
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
                     letterSpacing: -0.43,
                     color: Colors.black54,
@@ -161,17 +161,17 @@ class _SignupScreenState extends State<SignupScreen> {
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: 20), // Space between subtitle and fields
+                const SizedBox(height: 40), // Space between subtitle and fields
 
                 // Name Field
                 TextFormField(
-                  controller: nameController,
+                  controller: usernameController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     prefixIcon: const Icon(Icons.person,
                         color: Color.fromRGBO(0, 0, 0, 0.5)),
-                    hintText: 'Name',
+                    hintText: 'Username',
                     hintStyle: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 14,
@@ -433,7 +433,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       "Already have an account? ",
                       style: TextStyle(
                         fontFamily: 'Poppins',
-                        fontSize: 13,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
                       ),
@@ -450,9 +450,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         "Sign In",
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color: Color.fromRGBO(150, 139, 255, 1),
+                          color: Color.fromRGBO(0, 0, 255,1),
                         ),
                       ),
                     ),

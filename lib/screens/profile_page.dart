@@ -484,12 +484,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 150), // Make it wider
+                            vertical: 14, horizontal: 20), // Make it wider
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        backgroundColor:
-                            const Color.fromARGB(255, 239, 222, 214),
+                        backgroundColor:const Color.fromARGB(255, 239, 222, 214),
+                        minimumSize: const Size(360, 48),
                       ),
                       // child: const Text(
                       // 'Save',
@@ -516,7 +516,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 letterSpacing: 1,
                                 color: Colors.black,
                               ),
-                            )),
+                              overflow: TextOverflow
+                          .ellipsis, 
+                      )),
 
                   const SizedBox(height: 10), // Space before new buttons
 
@@ -545,7 +547,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 90),
+                          vertical: 14, horizontal: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                         side: const BorderSide(
@@ -554,6 +556,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       backgroundColor: const Color.fromARGB(
                           255, 245, 240, 255), // Remove background color
+                          minimumSize: const Size(360, 48),
                     ),
                     child: const Text(
                       'Enroll as Psychologist',
@@ -582,7 +585,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 90),
+                          vertical: 14, horizontal: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                         side: const BorderSide(
@@ -591,6 +594,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       backgroundColor: const Color.fromARGB(
                           255, 245, 240, 255), // Remove background color
+                          minimumSize: const Size(360, 48),
                     ),
                     child: const Text(
                       'View Payment History',

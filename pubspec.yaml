@@ -29,7 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
 
-  http: ^0.13.3
+  http: ^1.2.2
   flutter_dotenv: ^5.0.2
   shared_preferences: ^2.0.18
   flutter:
@@ -50,7 +50,7 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
