@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nuranest/screens/appointments_screen.dart';
 import 'package:nuranest/screens/chatbot.dart';
 import 'package:nuranest/screens/chatlist.dart';
 import 'package:nuranest/screens/my_appointments_screen.dart';
 import 'package:nuranest/screens/profile_page.dart';
 import 'package:nuranest/screens/user_article.dart';
+import 'package:nuranest/utils/storage_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // Import for JSON decoding
+import 'package:http/http.dart' as http; // Import the http library
+
+// Global variable to hold the doctor's full name
+String? doctorFullName;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -70,14 +76,18 @@ class HomeScreenContent extends StatefulWidget {
 class _HomeScreenContentState extends State<HomeScreenContent> {
   // List of mood labels for easy reference
   final List<String> moodLabels = ["Angry", "Sad", "Calm", "Happy", "Excited"];
-  String? userName = 'User'; // Default username
+  String? userName; // Default username
+
+  bool _isAppointment = false;
 
   @override
   void initState() {
     super.initState();
     _loadUserName();
+    _loadAppointments();
   }
 
+  // Load the user's username from SharedPreferences
   Future<void> _loadUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userDetails = prefs.getString('user'); // Get the user JSON string
@@ -88,14 +98,167 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
 
       setState(() {
         // Retrieve the firstName from the JSON
-        userName = user['firstName'] ?? 'User'; // Default to 'User' if null
+        userName = user['username']; // Default to 'User' if null
       });
 
-      // print('First Name: $userName'); // Log the first name
+      // print('username: $userName'); // Log the first name
     } else {
       setState(() {
         userName = 'User'; // Default to 'User' if no data is found
       });
+    }
+  }
+
+  // Load appointments from the API
+  Future<void> _loadAppointments() async {
+    try {
+      // Get the API URL from the .env file
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the API endpoint
+      final getAppointmentUrl = Uri.parse('$apiUrl/appointments');
+
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      // Set the _isAppointment variable to false
+      setState(() {
+        _isAppointment = false;
+      });
+
+      // Send a GET request to the API endpoint
+      final response = await http.get(getAppointmentUrl, headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+
+      // Decode the response
+      final resAppData = json.decode(response.body);
+
+      // Log the response
+      // debugPrint('response: $response');
+      // Log the response status code
+      // debugPrint('response.statusCode: ${response.statusCode}');
+      // Log the response body
+      // debugPrint('response.body: ${response.body}');
+      // Log the decoded response
+      // debugPrint('resAppData: ${resAppData['appointments']}');
+      // Get the older appointment
+      // debugPrint('resAppData first: ${resAppData['appointments'].first}');
+      // Get the latest appointment
+      // debugPrint('resAppData last: ${resAppData['appointments'].last}');
+      // Get the latest appointment doctor id
+      // debugPrint(
+      // 'resAppData last doctor id: ${resAppData['appointments'].last['doctorId']}');
+
+      // Check if there are any appointments
+      if (response.statusCode == 200 &&
+          resAppData['appointments'] != null &&
+          resAppData['appointments'].isNotEmpty) {
+        // Get the doctorId from the last appointment
+        int? doctorId = resAppData['appointments'].last['doctorId'];
+
+        // Log the doctorId
+        // debugPrint('doctorId: $doctorId');
+
+        // Get the doctor's details from the API
+        final getDoctorUrl = Uri.parse('$apiUrl/doctors/$doctorId');
+
+        // Send a GET request to the API endpoint
+        final doctorResponse = await http.get(getDoctorUrl, headers: {
+          'Content-Type': 'application/json',
+          'authorization': 'Bearer $token',
+        });
+
+        // Decode the response
+        final resDoctorData = json.decode(doctorResponse.body);
+
+        // Log the response
+        // debugPrint('doctorResponse: $doctorResponse');
+        // Log the response status code
+        // debugPrint('doctorResponse.statusCode: ${doctorResponse.statusCode}');
+        // Log the response body
+        // debugPrint('doctorResponse.body: ${doctorResponse.body}');
+        // Log the decoded response
+        // debugPrint('resDoctorData: ${resDoctorData['doctor']}');
+        // Get the doctor's userId
+        // debugPrint('resDoctorData name: ${resDoctorData['doctor']['userId']}');
+
+        // Check if the response is successful
+        if (doctorResponse.statusCode == 200 &&
+            resDoctorData['doctor'] != null &&
+            resDoctorData['doctor'].isNotEmpty) {
+          // Get the doctor's userId
+          int? doctorUserId = resDoctorData['doctor']['userId'];
+
+          // Log the doctor's userId
+          // debugPrint('doctorUserId: $doctorUserId');
+
+          // Get the user's details from the API
+          final getUserUrl = Uri.parse('$apiUrl/users/$doctorUserId');
+
+          // Send a GET request to the API endpoint
+          final userResponse = await http.get(getUserUrl, headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer $token',
+          });
+
+          // Decode the response
+          final resUserData = json.decode(userResponse.body);
+
+          // Log the response
+          // debugPrint('userResponse: $userResponse');
+          // Log the response status code
+          // debugPrint('userResponse.statusCode: ${userResponse.statusCode}');
+          // Log the response body
+          // debugPrint('userResponse.body: ${userResponse.body}');
+          // Log the decoded response
+          // debugPrint('resUserData: ${resUserData['user']}');
+          // Get the user's fistname
+          // debugPrint(
+          // 'resUserData fistname: ${resUserData['user']['firstName']}');
+          // Get the user's lastname
+          // debugPrint(
+          // 'resUserData lastname: ${resUserData['user']['lastName']}');
+
+          // Check if the response is successful
+          if (userResponse.statusCode == 200 &&
+              resUserData['user'] != null &&
+              resUserData['user'].isNotEmpty) {
+            // Get the user's firstName
+            String? doctorFirstName = resUserData['user']['firstName'];
+
+            // Get the user's lastName
+            String? doctorLastName = resUserData['user']['lastName'];
+
+            // Log the doctor's firstName
+            // debugPrint('doctorFirstName: $doctorFirstName');
+            // Log the doctor's lastName
+            // debugPrint('doctorLastName: $doctorLastName');
+
+            // Check if the doctor's firstName and lastName are not null
+            if (doctorFirstName != null && doctorLastName != null) {
+              // Set the doctor's full name
+              doctorFullName = '$doctorFirstName $doctorLastName';
+
+              // Set the _isAppointment variable to true
+              setState(() {
+                _isAppointment = true;
+              });
+
+              // Log the doctor's full name
+              // debugPrint('doctorFullName: $doctorFullName');
+            }
+          }
+        }
+      } else {
+        // Set the _isAppointment variable to false
+        setState(() {
+          _isAppointment = false;
+        });
+      }
+    } catch (error) {
+      debugPrint('Error: $error');
     }
   }
 
@@ -129,7 +292,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                 ),
                 const SizedBox(height: 16),
                 _buildMoodSelector(),
-                const SizedBox(height: 30),
+                // const SizedBox(height: 30),
                 _buildReminderCard(context),
                 const SizedBox(height: 20),
                 _buildPsychologistCard(context),
@@ -270,8 +433,8 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                         left: 10.0), // Left padding for the reminder text
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           "I'm Here To Remind You,",
                           style: TextStyle(
                             fontSize: 16,
@@ -279,10 +442,10 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          "You have a session with \n <Psychologist_name> today.",
-                          style: TextStyle(
+                          "You have a session with \n $doctorFullName today.",
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Colors.black54,
                           ),
