@@ -33,6 +33,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   shared_preferences: ^2.0.18
   intl: ^0.18.0
+  jwt_decoder: ^2.0.1
   flutter:
     sdk: flutter
 
