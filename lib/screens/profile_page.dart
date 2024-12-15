@@ -179,11 +179,11 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          const Color.fromARGB(255, 245, 240, 255), // Same background color
+          const Color.fromARGB(255, 255, 255, 255), // Same background color
       appBar: AppBar(
         title: const Text('My Profile'),
         centerTitle: false,
-        backgroundColor: const Color.fromARGB(255, 245, 240, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -561,7 +561,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 1), // Border color
                       ),
                       backgroundColor: const Color.fromARGB(
-                          255, 245, 240, 255), // Remove background color
+                          255, 255, 255, 255), // Remove background color
                           minimumSize: const Size(360, 48),
                     ),
                     child: const Text(
@@ -570,7 +570,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        letterSpacing: 1,
+                        letterSpacing: 0,
                         color: Colors.black,
                       ),
                       overflow: TextOverflow
@@ -599,7 +599,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 1), // Border color
                       ),
                       backgroundColor: const Color.fromARGB(
-                          255, 245, 240, 255), // Remove background color
+                          255, 255, 255, 255), // Remove background color
                           minimumSize: const Size(360, 48),
                     ),
                     child: const Text(
@@ -608,7 +608,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        letterSpacing: 1,
+                        letterSpacing: 0,
                         color: Colors.black,
                       ),
                       overflow: TextOverflow

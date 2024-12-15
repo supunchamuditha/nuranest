@@ -8,7 +8,7 @@ class MyAppointmentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F0FF), // Light background color
+      backgroundColor: const Color(0xFFFFFFFF), // Light background color
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -46,7 +46,7 @@ class MyAppointmentsScreen extends StatelessWidget {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     decoration: BoxDecoration(
-      color: Colors.grey[200],
+      color: Colors.white,
       borderRadius: BorderRadius.circular(20),
     ),
     child: TextField(
