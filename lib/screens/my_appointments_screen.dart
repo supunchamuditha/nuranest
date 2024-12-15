@@ -274,55 +274,6 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
     );
   }
 
-  Future<void> _loadDoctorDetails(int doctorId) async {
-    try {
-      // Get the API URL from the .env file
-      final apiUrl = dotenv.env['API_URL'];
-
-      // Define the API endpoint
-      final getDoctorUrl = Uri.parse('$apiUrl/doctors/$doctorId');
-
-      // Get the user's token from SharedPreferences
-      String? token = await getToken();
-
-      // Send a GET request to the API endpoint
-      final response = await http.get(getDoctorUrl, headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      });
-
-      // Decode the response
-      final resDocData = json.decode(response.body);
-
-      // Log the response
-      // debugPrint('response: $response');
-      // Log the response status code
-      // debugPrint('response.statusCode: ${response.statusCode}');
-      // Log the response body
-      // debugPrint('response.body: ${response.body}');
-      // Log the decoded response
-      debugPrint('resDocData: $resDocData');
-
-      // Check if 'doctor' exists in the response
-      if (resDocData['doctor'] != null) {
-        // Get the user's firstName
-        String? doctorFirstName = resDocData['firstName'];
-
-        // Get the user's lastName
-        String? doctorLastName = resDocData['lastName'];
-
-        // Get the doctor's full name
-        doctorFullName = '$doctorFirstName $doctorLastName';
-        // Log the doctor's full name
-        debugPrint('doctorFullName: $doctorFullName');
-      } else {
-        debugPrint('Doctor not found');
-      }
-    } catch (error) {
-      debugPrint('Error: $error');
-    }
-  }
-
   Widget _buildPsychologistCard(
       BuildContext context, Map<String, dynamic> appointment) {
     // Get the doctor ID
@@ -344,8 +295,6 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
     appointmentType = appointmentType![0].toUpperCase() +
         appointmentType.substring(1).toLowerCase();
 
-    String? doctorFullName= 'test value';
-
     // Log the appointment details
     // debugPrint("appointment: ${appointment.toString()}");
     // Log the appointment Doctor ID
@@ -358,6 +307,53 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
     // debugPrint('appointmentType: $appointmentType');
     // Log the doctorFullName
     // debugPrint('doctorFullName: $doctorFullName');
+
+    // Define a variable to store the doctor's full name
+    Future<String?> getDoctorFirstName(int userid) async {
+      try {
+        // Get the API URL from the .env file
+        final apiUrl = dotenv.env['API_URL'];
+
+        // Define the API endpoint for fetching doctor details
+        final getDoctorUrl = Uri.parse('$apiUrl/users/$userid');
+
+        // Get the user's token from SharedPreferences
+        String? token = await getToken();
+
+        // Send a GET request to the API endpoint
+        final response = await http.get(getDoctorUrl, headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        });
+
+        // Decode the response
+        final resDocData = json.decode(response.body);
+
+        // Log the response status code
+        // debugPrint('response.statusCode: ${response.statusCode}');
+        // Log the decoded response
+        // debugPrint('resDocData: $resDocData');
+        // debugPrint('resDocData["user"]["first_name"]: ${resDocData["user"]}');
+
+        // Check if the response is successful
+        if (response.statusCode == 200 && resDocData['user'] != null) {
+          // Get the doctor's first name and last name
+          String fistname = resDocData['user']['firstName'];
+          String lastname = resDocData['user']['lastName'];
+
+          // Combine the first name and last name
+          String? doctorFullName = "$fistname $lastname";
+
+          // Log the doctor's full name
+          return doctorFullName;
+        } else {
+          return "Unknown";
+        }
+      } catch (error) {
+        debugPrint('Error: $error');
+        return "Unknown";
+      }
+    }
 
     return Center(
       child: Container(
@@ -389,13 +385,29 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Dr. $doctorFullName",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                        FutureBuilder<String?>(
+                          future: getDoctorFirstName(
+                              int.parse(doctorId)), // Fetch doctor's name
+                          builder: (context, nameSnapshot) {
+                            if (nameSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation(Colors.grey),
+                              );
+                            } else if (nameSnapshot.hasError) {
+                              return Text("Error");
+                            } else {
+                              return Text(
+                                "Dr. ${nameSnapshot.data ?? "Unknown"}",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                              );
+                            }
+                          },
                         ),
                         const SizedBox(height: 4),
                         Row(
