@@ -89,6 +89,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
         // Update TextEditingControllers
         usernameController.text = username!;
+        firstnameController.text = firstName!;
+        lastnameController.text = lastName!;
         emailController.text = userEmail!;
         phoneController.text = userPhone!;
         birthDateController.text = userBirthDate!;
@@ -118,8 +120,8 @@ class _ProfilePageState extends State<ProfilePage> {
       // Get the user input
       final username = usernameController.text;
       final email = emailController.text;
-      final firstName = 'firstName';
-      final lastName = 'lastName';
+      final firstName = firstnameController.text;
+      final lastName = lastnameController.text;
       final gender = genderController.text;
       final dob = birthDateController.text;
       final address = addressController.text;
@@ -304,17 +306,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
-                      // validator: (value) {
-                      //   if(!validateUsername(value)){
-                      //     return 'Please enter a valid username';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (!validateName(value)) {
+                          return 'Please enter a valid name';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
                   const SizedBox(height: 20),
-
 
                   Row(
                     children: [
@@ -359,12 +360,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
-                      // validator: (value) {
-                      //   if(!validateUsername(value)){
-                      //     return 'Please enter a valid username';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (!validateName(value)) {
+                          return 'Please enter a valid name';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
@@ -512,14 +513,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       // Update the controller with selected date
                                       setState(() {
                                         birthDateController.text =
-                                            "${pickedDate.toLocal()}".split(' ')[0];
+                                            "${pickedDate.toLocal()}"
+                                                .split(' ')[0];
                                       });
                                     }
                                   }
                                 : null,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: const Color.fromARGB(255, 255, 249, 249),
+                              fillColor:
+                                  const Color.fromARGB(255, 255, 249, 249),
                               hintText: 'Birthdate',
                               hintStyle: const TextStyle(
                                 fontFamily: 'Poppins',
@@ -532,8 +535,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 borderRadius: BorderRadius.circular(31.0),
                                 borderSide: BorderSide.none,
                               ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 12, horizontal: 17),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 17),
                             ),
                             validator: (value) {
                               // print("object");
@@ -551,72 +554,72 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 20),
 
                   // Gender DropdownButtonFormField with label
-                  GestureDetector(
-                    onDoubleTap: toggleEditMode,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            ' Gender',
-                            style: const TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 0.5),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: DropdownButtonFormField<String>(
-                            value: genderController.text.isNotEmpty
-                                ? genderController.text
-                                : null, // Set initial value
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color.fromARGB(255, 255, 249, 249),
-                              hintText: 'Select Gender',
-                              hintStyle: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: -0.43,
-                                color: Color.fromRGBO(0, 0, 0, 0.5),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(31.0),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 12, horizontal: 17),
-                            ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'Male',
-                                child: Text('Male'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'Female',
-                                child: Text('Female'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'Other',
-                                child: Text('Other'),
-                              ),
-                            ],
-                            onChanged: isEditing
-                                ? (value) {
-                                    setState(() {
-                                      genderController.text = value ?? '';
-                                    });
-                                  }
-                                : null, // Disable dropdown if not in edit mode
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
+                  // GestureDetector(
+                  //   onDoubleTap: toggleEditMode,
+                  //   child: Row(
+                  //     children: [
+                  //       Expanded(
+                  //         flex: 1,
+                  //         child: Text(
+                  //           ' Gender',
+                  //           style: const TextStyle(
+                  //             color: Color.fromRGBO(0, 0, 0, 0.5),
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.w500,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //         flex: 2,
+                  //         child: DropdownButtonFormField<String>(
+                  //           value: genderController.text.isNotEmpty
+                  //               ? genderController.text
+                  //               : null, // Set initial value
+                  //           decoration: InputDecoration(
+                  //             filled: true,
+                  //             fillColor:
+                  //                 const Color.fromARGB(255, 255, 249, 249),
+                  //             hintText: 'Select Gender',
+                  //             hintStyle: const TextStyle(
+                  //               fontFamily: 'Poppins',
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.w500,
+                  //               letterSpacing: -0.43,
+                  //               color: Color.fromRGBO(0, 0, 0, 0.5),
+                  //             ),
+                  //             border: OutlineInputBorder(
+                  //               borderRadius: BorderRadius.circular(31.0),
+                  //               borderSide: BorderSide.none,
+                  //             ),
+                  //             contentPadding: const EdgeInsets.symmetric(
+                  //                 vertical: 12, horizontal: 17),
+                  //           ),
+                  //           items: const [
+                  //             DropdownMenuItem(
+                  //               value: 'Male',
+                  //               child: Text('Male'),
+                  //             ),
+                  //             DropdownMenuItem(
+                  //               value: 'Female',
+                  //               child: Text('Female'),
+                  //             ),
+                  //             DropdownMenuItem(
+                  //               value: 'Other',
+                  //               child: Text('Other'),
+                  //             ),
+                  //           ],
+                  //           onChanged: isEditing
+                  //               ? (value) {
+                  //                   setState(() {
+                  //                     genderController.text = value ?? '';
+                  //                   });
+                  //                 }
+                  //               : null, // Disable dropdown if not in edit mode
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
 
                   const SizedBox(height: 20),
 
@@ -643,7 +646,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             enabled: isEditing,
                             decoration: InputDecoration(
                               filled: true,
-                        fillColor: const Color.fromARGB(255, 255, 249, 249),
+                              fillColor:
+                                  const Color.fromARGB(255, 255, 249, 249),
                               hintText: 'Address',
                               hintStyle: const TextStyle(
                                 fontFamily: 'Poppins',
@@ -693,7 +697,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        backgroundColor:const Color.fromARGB(255, 239, 222, 214),
+                        backgroundColor:
+                            const Color.fromARGB(255, 239, 222, 214),
                         minimumSize: const Size(360, 48),
                       ),
                       // child: const Text(
@@ -721,9 +726,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 letterSpacing: 1,
                                 color: Colors.black,
                               ),
-                              overflow: TextOverflow
-                          .ellipsis, 
-                      )),
+                              overflow: TextOverflow.ellipsis,
+                            )),
 
                   const SizedBox(height: 10), // Space before new buttons
 
@@ -739,7 +743,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
 
                   const SizedBox(height: 10),
-
 
                   ElevatedButton(
                     onPressed: () {
@@ -760,7 +763,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       backgroundColor: const Color.fromARGB(
                           255, 255, 255, 255), // Remove background color
-                          minimumSize: const Size(360, 48),
+                      minimumSize: const Size(360, 48),
                     ),
                     child: const Text(
                       'View Payment History',
@@ -776,15 +779,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
 
-                   const SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
-
-                   ElevatedButton(
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => LoginScreen()),
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -796,8 +797,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Color.fromARGB(255, 239, 222, 214),
                             width: 1), // Border color
                       ),
-                      backgroundColor: const Color.fromARGB(255, 248, 220, 220), // Remove background color
-                          minimumSize: const Size(360, 48),
+                      backgroundColor: const Color.fromARGB(
+                          255, 248, 220, 220), // Remove background color
+                      minimumSize: const Size(360, 48),
                     ),
                     child: const Text(
                       'Sign Out',
@@ -813,8 +815,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
 
-                   const SizedBox(height: 10),
-
+                  const SizedBox(height: 10),
 
                   // Enroll as Psychologist Button
                   ElevatedButton(
@@ -837,7 +838,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       backgroundColor: const Color.fromARGB(
                           255, 255, 255, 255), // Remove background color
-                          minimumSize: const Size(360, 48),
+                      minimumSize: const Size(360, 48),
                     ),
                     child: const Text(
                       'Enroll as Psychologist',
@@ -854,8 +855,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
 
                   const SizedBox(height: 20),
-
-                  
                 ],
               ),
             )),
