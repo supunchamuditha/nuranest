@@ -5,8 +5,8 @@ import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
 import 'package:intl/intl.dart'; // Import the intl library
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv library
-import 'package:nuranest/screens/user_home.dart';
 import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
+import 'package:nuranest/utils/loadOldAppointment.dart'; // Import the loadOldAppointment.dart file
 
 class MyAppointmentsScreen extends StatefulWidget {
   const MyAppointmentsScreen({Key? key}) : super(key: key);
@@ -15,11 +15,25 @@ class MyAppointmentsScreen extends StatefulWidget {
   _MyAppointmentsScreenState createState() => _MyAppointmentsScreenState();
 }
 
+// Global variable to hold the doctor's full name
+String? doctorFullName;
+String? appointmentTime;
+String? appointmentDate;
+
 class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
   @override
   void initState() {
     super.initState();
     _loadAppointments();
+    _loadAppointmentDetails();
+  }
+
+  // Load appointment details asynchronously
+  Future<void> _loadAppointmentDetails() async {
+    doctorFullName = await getDoctorFullName();
+    appointmentTime = await getAppointmentTime();
+    appointmentDate = await getAppointmentDate();
+    setState(() {});
   }
 
   // Define a list to store the appointments details
@@ -192,9 +206,9 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                         left: 10.0), // Left padding for the reminder text
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          "Dr.Shanesz Fernando",
+                          "Dr.$doctorFullName",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -203,7 +217,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          "07.00 PM - 08.00 PM",
+                          "$appointmentTime, $appointmentDate",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black54,

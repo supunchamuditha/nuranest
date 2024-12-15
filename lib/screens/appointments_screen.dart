@@ -4,6 +4,7 @@ import 'package:nuranest/screens/psychologist_profile_screen.dart';
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv package
+import 'package:nuranest/utils/loadOldAppointment.dart'; // Import the loadOldAppointment.dart file
 import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
 
 class AppointmentsScreen extends StatefulWidget {
@@ -13,7 +14,29 @@ class AppointmentsScreen extends StatefulWidget {
   _AppointmentsScreenState createState() => _AppointmentsScreenState();
 }
 
+// Global variable to hold the doctor's full name
+String? doctorFullName;
+String? appointmentType;
+String? specialization;
+
 class _AppointmentsScreenState extends State<AppointmentsScreen> {
+// Load the doctor details when the screen is initialized
+  @override
+  void initState() {
+    super.initState();
+    _loadDoctorDetails(); // Call the method with a sample doctorId
+    loadOldAppointment(); // Call the method to load the old appointment
+    _loadAppointmentDetails(); // Call the method to load the appointment details
+  }
+
+  // Load appointment details asynchronously
+  Future<void> _loadAppointmentDetails() async {
+    doctorFullName = await getDoctorFullName();
+    appointmentType = await getAppointmentType();
+    specialization = await getSpecialization();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,8 +257,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Dr. Shanesh Fernando",
+                        Text(
+                          "Dr. $doctorFullName",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -246,8 +269,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Psychologist",
+                            Text(
+                              "$specialization",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
@@ -265,8 +288,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                   ),
                                 ),
                                 const SizedBox(width: 4),
-                                const Text(
-                                  "Online      ",
+                                Text(
+                                  "$appointmentType      ",
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 0, 0, 0),
                                     fontSize: 12,
@@ -434,13 +457,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
     } catch (error) {
       debugPrint('Error: $error');
     }
-  }
-
-// Load the doctor details when the screen is initialized
-  @override
-  void initState() {
-    super.initState();
-    _loadDoctorDetails(); // Call the method with a sample doctorId
   }
 
   Widget _buildPsychologistPopularGrid() {
