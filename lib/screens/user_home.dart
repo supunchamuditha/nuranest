@@ -163,9 +163,9 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       // Log the response
       // debugPrint('response: $response');
       // Log the response status code
-      debugPrint('response.statusCode: ${response.statusCode}');
+      // debugPrint('response.statusCode: ${response.statusCode}');
       // Log the response body
-      debugPrint('response.body: ${response.body}');
+      // debugPrint('response.body: ${response.body}');
       // Log the decoded response
       // debugPrint('resAppData: ${resAppData['appointments']}');
       // Get the older appointment
