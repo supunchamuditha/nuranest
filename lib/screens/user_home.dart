@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
 import 'package:intl/intl.dart'; // Import the intl library
+import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder library
 
 // Global variable to hold the doctor's full name
 String? doctorFullName;
@@ -56,8 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_outlined),
-              label: 'Appointments'),
+              icon: Icon(Icons.calendar_today_outlined), label: 'Appointments'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         selectedItemColor: Colors.black,
@@ -129,12 +129,22 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       // Get the API URL from the .env file
       final apiUrl = dotenv.env['API_URL'];
 
-      // Define the API endpoint
-      final getAppointmentUrl =
-          Uri.parse('$apiUrl/appointments/patients/1/upcoming');
-
       // Get the user's token from SharedPreferences
       String? token = await getToken();
+
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract the user ID (or any other field you need)
+      int? userId = decodedToken['id'];
+
+      // Define the API endpoint
+      final getAppointmentUrl =
+          Uri.parse('$apiUrl/appointments/patients/$userId/upcoming');
 
       // Set the _isAppointment variable to false
       setState(() {
@@ -153,9 +163,9 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       // Log the response
       // debugPrint('response: $response');
       // Log the response status code
-      // debugPrint('response.statusCode: ${response.statusCode}');
+      debugPrint('response.statusCode: ${response.statusCode}');
       // Log the response body
-      // debugPrint('response.body: ${response.body}');
+      debugPrint('response.body: ${response.body}');
       // Log the decoded response
       // debugPrint('resAppData: ${resAppData['appointments']}');
       // Get the older appointment
