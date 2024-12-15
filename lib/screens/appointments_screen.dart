@@ -464,13 +464,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
         // Decode the response
         final resDocData = json.decode(response.body);
-        
+
         // Log the response status code
         // debugPrint('response.statusCode: ${response.statusCode}');
         // Log the decoded response
         // debugPrint('resDocData: $resDocData');
         // debugPrint('resDocData["user"]["first_name"]: ${resDocData["user"]}');
-
 
         // Check if the response is successful
         if (response.statusCode == 200 && resDocData['user'] != null) {
@@ -521,8 +520,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         ),
                         const SizedBox(height: 4),
                         FutureBuilder<String?>(
-                          future:
-                              getDoctorFirstName(index), // Fetch doctor's name
+                          future: getDoctorFirstName(DoctorDetails[index]
+                              ['userId']), // Fetch doctor's name
                           builder: (context, nameSnapshot) {
                             if (nameSnapshot.connectionState ==
                                 ConnectionState.waiting) {
