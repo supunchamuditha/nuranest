@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_outlined),
-              label: ' My Appointments'),
+              label: 'Appointments'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         selectedItemColor: Colors.black,
@@ -314,7 +314,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                       ),
                       children: [
                         TextSpan(
-                          text: 'my Appointments',
+                          text: 'My Appointments',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,

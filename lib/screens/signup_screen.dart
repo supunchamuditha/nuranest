@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
 import 'dart:convert';
 
 import 'package:nuranest/screens/login_screen.dart';
@@ -118,7 +119,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          const Color.fromARGB(255, 245, 240, 255), // Background color
+          const Color.fromARGB(255, 255, 255, 255), // Background color
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -168,7 +169,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: usernameController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 250, 245, 245),
                     prefixIcon: const Icon(Icons.person,
                         color: Color.fromRGBO(0, 0, 0, 0.5)),
                     hintText: 'Username',
@@ -200,7 +201,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: emailController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 250, 245, 245),
                     prefixIcon: const Icon(Icons.email,
                         color: Color.fromRGBO(0, 0, 0, 0.5)),
                     hintText: 'Email',
@@ -232,7 +233,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: phoneController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 250, 245, 245),
                     prefixIcon: const Icon(Icons.phone,
                         color: Color.fromRGBO(0, 0, 0, 0.5)),
                     hintText: 'Phone',
@@ -264,7 +265,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: passwordController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 250, 245, 245),
                     prefixIcon: const Icon(Icons.lock,
                         color: Color.fromRGBO(0, 0, 0, 0.5)),
                     hintText: 'Password',
@@ -322,7 +323,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: confirmPasswordController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 250, 245, 245),
                     prefixIcon: const Icon(Icons.lock,
                         color: Color.fromRGBO(0, 0, 0, 0.5)),
                     hintText: 'Confirm Password',
@@ -423,8 +424,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                 ),
 
-                const SizedBox(
-                    height: 20), // Space between button and login text
+                const SizedBox(height: 20), // Space between button and login text
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -458,6 +458,46 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ],
                 ),
+
+                                const SizedBox(height: 20), // Space between button and login text
+
+
+                 // Enroll as Psychologist Button
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const EnrollAsPsychologistScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: const BorderSide(
+                            color: Color.fromARGB(255, 239, 222, 214),
+                            width: 1), // Border color
+                      ),
+                      backgroundColor: const Color.fromARGB(
+                          255, 255, 255, 255), // Remove background color
+                          minimumSize: const Size(360, 48),
+                    ),
+                    child: const Text(
+                      'Enroll as Psychologist',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow
+                          .ellipsis, // Ensure the text is in one line
+                    ),
+                  ),
 
                 const SizedBox(height: 20), // Space at the bottom
               ],

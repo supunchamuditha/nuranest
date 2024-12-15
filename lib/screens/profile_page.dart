@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
+import 'package:nuranest/screens/login_screen.dart';
 import 'package:nuranest/screens/payment_details.dart';
 import 'package:nuranest/utils/appointmentValidators.dart';
 import 'package:nuranest/utils/userValidators.dart';
@@ -35,6 +36,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // Text controllers to hold profile information
   late TextEditingController usernameController;
+  late TextEditingController firstnameController;
+  late TextEditingController lastnameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
   late TextEditingController birthDateController;
@@ -47,6 +50,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     usernameController = TextEditingController();
+    firstnameController = TextEditingController();
+    lastnameController = TextEditingController();
     emailController = TextEditingController();
     phoneController = TextEditingController();
     birthDateController = TextEditingController();
@@ -191,11 +196,27 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 20), // Space from top
 
                   const CircleAvatar(
-                    radius: 52, // Profile image
+                    radius: 80, // Profile image
                     backgroundImage: AssetImage('lib/assets/images/18.png'),
                   ),
 
-                  const SizedBox(height: 20), // Space
+                  const SizedBox(height: 30), // Space
+
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'User Name',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
 
                   // Username TextFormField
                   GestureDetector(
@@ -206,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       enabled: isEditing, // Enable only in edit mode
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: const Color.fromARGB(255, 255, 249, 249),
                         hintText: 'Username',
                         hintStyle: const TextStyle(
                           fontFamily: 'Poppins',
@@ -235,6 +256,131 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   const SizedBox(height: 20),
 
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'First Name',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Username TextFormField
+                  GestureDetector(
+                    onDoubleTap:
+                        toggleEditMode, // Enables editing on double-tap
+                    child: TextFormField(
+                      controller: firstnameController,
+                      enabled: isEditing, // Enable only in edit mode
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 255, 249, 249),
+                        hintText: 'First Name',
+                        hintStyle: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: -0.43,
+                          color: Color.fromRGBO(0, 0, 0, 0.5),
+                        ),
+                        prefixIcon: const Icon(Icons.person,
+                            color: Color.fromRGBO(0, 0, 0, 0.5)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(31.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 17),
+                      ),
+                      // validator: (value) {
+                      //   if(!validateUsername(value)){
+                      //     return 'Please enter a valid username';
+                      //   }
+                      //   return null;
+                      // },
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'Last Name',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Username TextFormField
+                  GestureDetector(
+                    onDoubleTap:
+                        toggleEditMode, // Enables editing on double-tap
+                    child: TextFormField(
+                      controller: lastnameController,
+                      enabled: isEditing, // Enable only in edit mode
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 255, 249, 249),
+                        hintText: 'Last Name',
+                        hintStyle: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: -0.43,
+                          color: Color.fromRGBO(0, 0, 0, 0.5),
+                        ),
+                        prefixIcon: const Icon(Icons.person,
+                            color: Color.fromRGBO(0, 0, 0, 0.5)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(31.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 17),
+                      ),
+                      // validator: (value) {
+                      //   if(!validateUsername(value)){
+                      //     return 'Please enter a valid username';
+                      //   }
+                      //   return null;
+                      // },
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'E-mail',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
                   // Email TextFormField
                   GestureDetector(
                     onDoubleTap: toggleEditMode,
@@ -243,7 +389,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       enabled: isEditing,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: const Color.fromARGB(255, 255, 249, 249),
                         hintText: 'Email',
                         hintStyle: const TextStyle(
                           fontFamily: 'Poppins',
@@ -272,6 +418,23 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   const SizedBox(height: 20),
 
+                  // Phone number label
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          ' Phone number',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
                   // Phone TextFormField
                   GestureDetector(
                     onDoubleTap: toggleEditMode,
@@ -280,7 +443,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       enabled: isEditing,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: const Color.fromARGB(255, 255, 249, 249),
                         hintText: 'Phone Number',
                         hintStyle: const TextStyle(
                           fontFamily: 'Poppins',
@@ -329,10 +492,29 @@ class _ProfilePageState extends State<ProfilePage> {
                           flex: 2,
                           child: TextFormField(
                             controller: birthDateController,
-                            enabled: isEditing,
+                            readOnly: true, // Disable keyboard input
+                            onTap: isEditing
+                                ? () async {
+                                    // Show Date Picker
+                                    DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1900),
+                                      lastDate: DateTime.now(),
+                                    );
+
+                                    if (pickedDate != null) {
+                                      // Update the controller with selected date
+                                      setState(() {
+                                        birthDateController.text =
+                                            "${pickedDate.toLocal()}".split(' ')[0];
+                                      });
+                                    }
+                                  }
+                                : null,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor: const Color.fromARGB(255, 255, 249, 249),
                               hintText: 'Birthdate',
                               hintStyle: const TextStyle(
                                 fontFamily: 'Poppins',
@@ -345,15 +527,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 borderRadius: BorderRadius.circular(31.0),
                                 borderSide: BorderSide.none,
                               ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 17),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 12, horizontal: 17),
                             ),
-                            // validator: (value) {
-                            //   if (!validateDob(value)) {
-                            //     return 'Please enter a valid date of birth';
-                            //   }
-                            //   return null;
-                            // },
                           ),
                         ),
                       ],
@@ -362,7 +538,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   const SizedBox(height: 20),
 
-                  // Gender TextFormField with label
+                  // Gender DropdownButtonFormField with label
                   GestureDetector(
                     onDoubleTap: toggleEditMode,
                     child: Row(
@@ -380,13 +556,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         Expanded(
                           flex: 2,
-                          child: TextFormField(
-                            controller: genderController,
-                            enabled: isEditing,
+                          child: DropdownButtonFormField<String>(
+                            value: genderController.text.isNotEmpty
+                                ? genderController.text
+                                : null, // Set initial value
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
-                              hintText: 'Gender',
+                              fillColor: const Color.fromARGB(255, 255, 249, 249),
+                              hintText: 'Select Gender',
                               hintStyle: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
@@ -398,20 +575,36 @@ class _ProfilePageState extends State<ProfilePage> {
                                 borderRadius: BorderRadius.circular(31.0),
                                 borderSide: BorderSide.none,
                               ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 17),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 12, horizontal: 17),
                             ),
-                            // validator: (value) {
-                            //   if (!validateGender(value)) {
-                            //    return 'Please select gender';
-                            //   }
-                            //   return null;
-                            // },
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'Male',
+                                child: Text('Male'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Female',
+                                child: Text('Female'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Other',
+                                child: Text('Other'),
+                              ),
+                            ],
+                            onChanged: isEditing
+                                ? (value) {
+                                    setState(() {
+                                      genderController.text = value ?? '';
+                                    });
+                                  }
+                                : null, // Disable dropdown if not in edit mode
                           ),
                         ),
                       ],
                     ),
                   ),
+
 
                   const SizedBox(height: 20),
 
@@ -438,7 +631,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             enabled: isEditing,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                        fillColor: const Color.fromARGB(255, 255, 249, 249),
                               hintText: 'Address',
                               hintStyle: const TextStyle(
                                 fontFamily: 'Poppins',
@@ -528,12 +721,88 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      letterSpacing: 1,
+                      letterSpacing: 0,
                       color: Color.fromARGB(90, 0, 0, 0),
                     ),
                   ),
 
                   const SizedBox(height: 10),
+
+
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaymentDetailsScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: const BorderSide(
+                            color: Color.fromARGB(255, 239, 222, 214),
+                            width: 1), // Border color
+                      ),
+                      backgroundColor: const Color.fromARGB(
+                          255, 255, 255, 255), // Remove background color
+                          minimumSize: const Size(360, 48),
+                    ),
+                    child: const Text(
+                      'View Payment History',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow
+                          .ellipsis, // Ensure the text is in one line
+                    ),
+                  ),
+
+                   const SizedBox(height: 10),
+
+
+                   ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoginScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: const BorderSide(
+                            color: Color.fromARGB(255, 239, 222, 214),
+                            width: 1), // Border color
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 248, 220, 220), // Remove background color
+                          minimumSize: const Size(360, 48),
+                    ),
+                    child: const Text(
+                      'Sign Out',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow
+                          .ellipsis, // Ensure the text is in one line
+                    ),
+                  ),
+
+                   const SizedBox(height: 10),
+
 
                   // Enroll as Psychologist Button
                   ElevatedButton(
@@ -574,42 +843,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   const SizedBox(height: 20),
 
-                  // View Payment History Button
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PaymentDetailsScreen()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: const BorderSide(
-                            color: Color.fromARGB(255, 239, 222, 214),
-                            width: 1), // Border color
-                      ),
-                      backgroundColor: const Color.fromARGB(
-                          255, 255, 255, 255), // Remove background color
-                          minimumSize: const Size(360, 48),
-                    ),
-                    child: const Text(
-                      'View Payment History',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0,
-                        color: Colors.black,
-                      ),
-                      overflow: TextOverflow
-                          .ellipsis, // Ensure the text is in one line
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  
                 ],
               ),
             )),
