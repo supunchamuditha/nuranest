@@ -167,7 +167,7 @@ class _WebViewAppState extends State<UserArticle> {
     super.initState();
     controller = WebViewController()
       ..loadRequest(
-        Uri.parse('https://academic.oup.com/mind'),
+        Uri.parse('https://syncraft.dev/'),
       );
   }
 
