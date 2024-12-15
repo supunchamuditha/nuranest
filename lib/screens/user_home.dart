@@ -10,9 +10,12 @@ import 'package:nuranest/utils/storage_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
+import 'package:intl/intl.dart'; // Import the intl library
 
 // Global variable to hold the doctor's full name
 String? doctorFullName;
+String? appointmentTime;
+String? appointmentDate;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -76,7 +79,8 @@ class HomeScreenContent extends StatefulWidget {
 class _HomeScreenContentState extends State<HomeScreenContent> {
   // List of mood labels for easy reference
   final List<String> moodLabels = ["Angry", "Sad", "Calm", "Happy", "Excited"];
-  String? userName; // Default username
+  String? userName; // Default usernamep
+  int? userId; // Default userId
 
   bool _isAppointment = false;
 
@@ -97,8 +101,18 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       Map<String, dynamic> user = json.decode(userDetails);
 
       setState(() {
+        // Log the user data
+        // debugPrint('user: $user');
+
+        // Retrieve the userId from the JSON
+        userId = user['id'];
         // Retrieve the firstName from the JSON
-        userName = user['username']; // Default to 'User' if null
+        userName = user['username'];
+
+        // Log the userId
+        // debugPrint('userId: $userId');
+        // Log the username
+        // debugPrint('username: $userName');
       });
 
       // print('username: $userName'); // Log the first name
@@ -116,7 +130,8 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       final apiUrl = dotenv.env['API_URL'];
 
       // Define the API endpoint
-      final getAppointmentUrl = Uri.parse('$apiUrl/appointments');
+      final getAppointmentUrl =
+          Uri.parse('$apiUrl/appointments/patients/1/upcoming');
 
       // Get the user's token from SharedPreferences
       String? token = await getToken();
@@ -147,16 +162,16 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       // debugPrint('resAppData first: ${resAppData['appointments'].first}');
       // Get the latest appointment
       // debugPrint('resAppData last: ${resAppData['appointments'].last}');
-      // Get the latest appointment doctor id
+      // Get the oldser appointment doctor id
       // debugPrint(
-      // 'resAppData last doctor id: ${resAppData['appointments'].last['doctorId']}');
+      //     'resAppData older doctor id: ${resAppData['appointments'].first['doctorId']}');
 
       // Check if there are any appointments
       if (response.statusCode == 200 &&
           resAppData['appointments'] != null &&
           resAppData['appointments'].isNotEmpty) {
         // Get the doctorId from the last appointment
-        int? doctorId = resAppData['appointments'].last['doctorId'];
+        int? doctorId = resAppData['appointments'].first['doctorId'];
 
         // Log the doctorId
         // debugPrint('doctorId: $doctorId');
@@ -182,7 +197,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
         // Log the decoded response
         // debugPrint('resDoctorData: ${resDoctorData['doctor']}');
         // Get the doctor's userId
-        // debugPrint('resDoctorData name: ${resDoctorData['doctor']['userId']}');
+        // debugPrint('resDoctorData id: ${resDoctorData['doctor']['userId']}');
 
         // Check if the response is successful
         if (doctorResponse.statusCode == 200 &&
@@ -241,6 +256,19 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
               // Set the doctor's full name
               doctorFullName = '$doctorFirstName $doctorLastName';
 
+              // Get the appointment time
+              appointmentTime =
+                  resAppData['appointments'].first['appointmentTime'];
+              //Remove the seconds from the time
+              appointmentTime = appointmentTime?.substring(0, 5);
+
+              // Get the appointment date
+              appointmentDate =
+                  resAppData['appointments'].first['appointmentDate'];
+              // Format the date to "DD-MM-YYYY" format
+              appointmentDate = DateFormat('dd-MM-yyyy')
+                  .format(DateTime.parse(appointmentDate!));
+
               // Set the _isAppointment variable to true
               setState(() {
                 _isAppointment = true;
@@ -248,6 +276,10 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
 
               // Log the doctor's full name
               // debugPrint('doctorFullName: $doctorFullName');
+              // Log the appointment time
+              // debugPrint('appointmentTime: $appointmentTime');
+              // Log the appointment date
+              // debugPrint('appointmentDate: $appointmentDate');
             }
           }
         }
@@ -292,7 +324,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                 ),
                 const SizedBox(height: 16),
                 _buildMoodSelector(),
-                // const SizedBox(height: 30),
+                const SizedBox(height: 30),
                 _buildReminderCard(context),
                 const SizedBox(height: 20),
                 _buildPsychologistCard(context),
@@ -444,7 +476,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "You have a session with \n $doctorFullName today.",
+                          "You have a session with \n Dr. $doctorFullName,\n $appointmentDate, $appointmentTime.",
                           style: const TextStyle(
                             fontSize: 14,
                             color: Colors.black54,
