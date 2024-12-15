@@ -53,7 +53,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
       // Log the response body
       // debugPrint('response.body: ${response.body}');
       // Log the decoded response
-      debugPrint('resAppData: ${resAppData['appointments']}');
+      // debugPrint('resAppData: ${resAppData['appointments']}');
 
       // Check if 'appointments' exists in the response and is a list
       if (resAppData['appointments'] != null &&
@@ -64,7 +64,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
             List<Map<String, dynamic>>.from(resAppData['appointments']));
 
         // Log the psychologists list
-        debugPrint('Psychologists: $appointmentsDetails');
+        // debugPrint('Psychologists: $appointmentsDetails');
       } else {
         debugPrint('Appointments not found');
       }
@@ -104,8 +104,27 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
             const SizedBox(height: 16),
 
             // Generate appointment cards from the appointments list
-            ...appointmentsDetails.map(
-                (appointment) => _buildPsychologistCard(context, appointment)),
+            FutureBuilder(
+              future: _loadAppointments(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (appointmentsDetails.isEmpty) {
+                  return Center(child: Text("No appointments available"));
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true, // ListView will size to fit its children
+                    physics:
+                        const NeverScrollableScrollPhysics(), // Prevent internal scrolling
+                    itemCount: appointmentsDetails.length,
+                    itemBuilder: (context, index) {
+                      return _buildPsychologistCard(
+                          context, appointmentsDetails[index]);
+                    },
+                  );
+                }
+              },
+            ),
             // _buildPsychologistCard(context),
             const SizedBox(height: 16),
           ],
@@ -175,7 +194,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          "DR.Shanesz Fernando",
+                          "Dr.Shanesz Fernando",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -255,9 +274,53 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
     );
   }
 
-  Future<String> _getDoctorsFullName(String doctorId) async {
-    String doctorFullName = 'Pasith Senevirathan';
-    return doctorFullName;
+  Future<void> _loadDoctorDetails(int doctorId) async {
+    try {
+      // Get the API URL from the .env file
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the API endpoint
+      final getDoctorUrl = Uri.parse('$apiUrl/doctors/$doctorId');
+
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      // Send a GET request to the API endpoint
+      final response = await http.get(getDoctorUrl, headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+
+      // Decode the response
+      final resDocData = json.decode(response.body);
+
+      // Log the response
+      // debugPrint('response: $response');
+      // Log the response status code
+      // debugPrint('response.statusCode: ${response.statusCode}');
+      // Log the response body
+      // debugPrint('response.body: ${response.body}');
+      // Log the decoded response
+      debugPrint('resDocData: $resDocData');
+
+      // Check if 'doctor' exists in the response
+      if (resDocData['doctor'] != null) {
+        // Get the user's firstName
+        String? doctorFirstName = resDocData['firstName'];
+
+        // Get the user's lastName
+        String? doctorLastName = resDocData['lastName'];
+
+        // Get the doctor's full name
+        doctorFullName = '$doctorFirstName $doctorLastName';
+        // Log the doctor's full name
+        debugPrint('doctorFullName: $doctorFullName');
+      } else {
+        debugPrint('Doctor not found');
+      }
+    } catch (error) {
+      debugPrint('Error: $error');
+    }
   }
 
   Widget _buildPsychologistCard(
@@ -281,20 +344,20 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
     appointmentType = appointmentType![0].toUpperCase() +
         appointmentType.substring(1).toLowerCase();
 
-    // String? doctorFullName = _getDoctorsFullName(doctorId);
+    String? doctorFullName= 'test value';
 
     // Log the appointment details
-    debugPrint("appointment: ${appointment.toString()}");
+    // debugPrint("appointment: ${appointment.toString()}");
     // Log the appointment Doctor ID
-    debugPrint("Doctor ID: $doctorId");
+    // debugPrint("Doctor ID: $doctorId");
     // Log the appointment time
-    debugPrint('appointmentTime: $appointmentTime');
+    // debugPrint('appointmentTime: $appointmentTime');
     // Log the appointment date
-    debugPrint('appointmentDate: $appointmentDate');
+    // debugPrint('appointmentDate: $appointmentDate');
     // Log the appointmentType
-    debugPrint('appointmentType: $appointmentType');
+    // debugPrint('appointmentType: $appointmentType');
     // Log the doctorFullName
-    debugPrint('doctorFullName: $doctorFullName');
+    // debugPrint('doctorFullName: $doctorFullName');
 
     return Center(
       child: Container(
