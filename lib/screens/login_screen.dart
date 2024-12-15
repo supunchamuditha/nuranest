@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          const Color.fromARGB(255, 245, 240, 255), // Set background color
+          const Color.fromARGB(255, 255, 255, 255), // Set background color
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: emailController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 250, 245, 245),
                     prefixIcon: const Icon(Icons.email,
                         size: 16, color: Color.fromRGBO(0, 0, 0, 0.5)),
                     hintText: 'Email',
@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: passwordController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 250, 245, 245),
                     prefixIcon: const Icon(
                       Icons.lock,
                       size: 16,
@@ -250,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Color.fromRGBO(150, 139, 255, 1),
+                      color: Color.fromRGBO(33, 16, 191, 1),
                     ),
                   ),
                 ),
@@ -403,7 +403,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.43,
-                          color: Color.fromRGBO(150, 139, 255, 1),
+                          color: Color.fromRGBO(33, 16, 191, 1),
                         ),
                       ),
                     ),
