@@ -158,6 +158,11 @@ class _ProfilePageState extends State<ProfilePage> {
         //
         // String? userDetails = prefs.getString('user');
         // print(userDetails);
+      } else {
+        // If the response status code is not 200, show an error message
+        final errorData = jsonDecode(response.body);
+        _showMessage(
+            '${errorData['message'] ?? 'An error occurred. Please try again'}');
       }
     } catch (error) {
       _showMessage('An error occurred. Please try again');
@@ -245,12 +250,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
-                      // validator: (value) {
-                      //   if(!validateUsername(value)){
-                      //     return 'Please enter a valid username';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (!validateUsername(value)) {
+                          return 'Please enter a valid username';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
@@ -530,6 +535,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               contentPadding:
                                   const EdgeInsets.symmetric(vertical: 12, horizontal: 17),
                             ),
+                            validator: (value) {
+                              // print("object");
+                              if (!validateDob(value)) {
+                                return 'Please enter a valid date of birth';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],

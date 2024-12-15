@@ -174,7 +174,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
       final availableDays = ["MBBS", "MD", "Psychiatry"];
 
       // print(
-          // 'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo, Hospital: $hospital, Qualification: $qualification, Specialized: $special'); // Print the user input
+      // 'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo, Hospital: $hospital, Qualification: $qualification, Specialized: $special'); // Print the user input
 
       // Make a PUT request to the save URL
       final responseUser = await http.put(Uri.parse(saveUrl_1),
@@ -301,12 +301,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 12, horizontal: 17),
                   ),
-                  // validator: (value) {
-                  //   if(!validateUsername(value)){
-                  //     return 'Please enter a valid username';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (!validateUsername(value)) {
+                      return 'Please enter a valid username';
+                    }
+                    return null;
+                  },
                 ),
               ),
 
@@ -425,12 +425,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 12, horizontal: 17),
                         ),
-                        // validator: (value) {
-                        //   if (!validateDob(value)) {
-                        //     return 'Please enter a valid date of birth';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (!validateDob(value)) {
+                            return 'Please enter a valid date of birth';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ],
@@ -478,12 +478,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 12, horizontal: 17),
                         ),
-                        // validator: (value) {
-                        //   if (!validateGender(value)) {
-                        //    return 'Please select gender';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (!validateGender(value)) {
+                            return 'Please select gender';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ],
@@ -584,12 +584,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 12, horizontal: 17),
                         ),
-                        //   validator: (value) {
-                        //     if (!validateHospital(value)) {
-                        //       return 'Please enter a valid hospital';
-                        //     }
-                        //     return null;
-                        //   },
+                          validator: (value) {
+                            if (!validateHospital(value)) {
+                              return 'Please enter a valid hospital';
+                            }
+                            return null;
+                          },
                       ),
                     ),
                   ],
@@ -637,12 +637,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 12, horizontal: 17),
                         ),
-                        // validator: (value) {
-                        //   if (!validateQualification(value)) {
-                        //     return 'Please enter a valid qualification';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (!validateQualification(value)) {
+                            return 'Please enter a valid qualification';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ],
@@ -690,12 +690,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 12, horizontal: 17),
                         ),
-                        // validator: (value) {
-                        //   if (!validateSpecial(value)) {
-                        //     return 'Please enter a valid special category';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (!validateSpecial(value)) {
+                            return 'Please enter a valid special category';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ],
