@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/screens/my_appointments_screen.dart';
 import 'package:nuranest/screens/psychologist_profile_screen.dart';
+import 'dart:convert'; // Import for JSON decoding
+import 'package:http/http.dart' as http; // Import the http library
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv package
+import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
 
-class AppointmentsScreen extends StatelessWidget {
+class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({Key? key}) : super(key: key);
 
+  @override
+  _AppointmentsScreenState createState() => _AppointmentsScreenState();
+}
+
+class _AppointmentsScreenState extends State<AppointmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -383,49 +392,168 @@ class AppointmentsScreen extends StatelessWidget {
     );
   }
 
+  // Define a list to store the doctor details
+  final List<Map<String, dynamic>> DoctorDetails = [];
+
+  Future<void> _loadDoctorDetails() async {
+    try {
+      // Get the API URL from the .env file
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the API endpoint
+      final getDoctorUrl = Uri.parse('$apiUrl/doctors/');
+
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      // Send a GET request to the API endpoint
+      final response = await http.get(getDoctorUrl, headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+
+      // Decode the response
+      final resDocData = json.decode(response.body);
+
+      // Log the response status code
+      // debugPrint('response.statusCode: ${response.statusCode}');
+      // Log the decoded response
+      // debugPrint('resDocData: $resDocData');
+
+      // Check if the response is successful
+      if (response.statusCode == 200 &&
+          resDocData['doctors'] != null &&
+          resDocData['doctors'] is List) {
+        DoctorDetails.clear(); // Clear the list before adding new data
+        DoctorDetails.addAll(
+            List<Map<String, dynamic>>.from(resDocData['doctors']));
+
+        // Log the doctor details
+        // debugPrint('DoctorDetails: $DoctorDetails');
+      }
+    } catch (error) {
+      debugPrint('Error: $error');
+    }
+  }
+
+// Load the doctor details when the screen is initialized
+  @override
+  void initState() {
+    super.initState();
+    _loadDoctorDetails(); // Call the method with a sample doctorId
+  }
+
   Widget _buildPsychologistPopularGrid() {
+// Define a variable to store the doctor's full name
+    Future<String?> getDoctorFirstName(int userid) async {
+      try {
+        // Get the API URL from the .env file
+        final apiUrl = dotenv.env['API_URL'];
+
+        // Define the API endpoint for fetching doctor details
+        final getDoctorUrl = Uri.parse('$apiUrl/users/$userid');
+
+        // Get the user's token from SharedPreferences
+        String? token = await getToken();
+
+        // Send a GET request to the API endpoint
+        final response = await http.get(getDoctorUrl, headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        });
+
+        // Decode the response
+        final resDocData = json.decode(response.body);
+        
+        // Log the response status code
+        // debugPrint('response.statusCode: ${response.statusCode}');
+        // Log the decoded response
+        // debugPrint('resDocData: $resDocData');
+        // debugPrint('resDocData["user"]["first_name"]: ${resDocData["user"]}');
+
+
+        // Check if the response is successful
+        if (response.statusCode == 200 && resDocData['user'] != null) {
+          return resDocData['user']['firstName'];
+        } else {
+          return "Unknown";
+        }
+      } catch (error) {
+        debugPrint('Error: $error');
+        return "Unknown";
+      }
+    }
+
     return SizedBox(
       height: 150, // Set the height to fit the CircleAvatar and text
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      PsychologistProfileScreen(), // Replace with the profile screen widget
-                ),
-              );
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width /
-                  3.8, // Show 3 items per screen width
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage(
-                        "lib/assets/images/psychologist_avatar.png"), // Update the path
+      child: FutureBuilder(
+        future: _loadDoctorDetails(), // Provide the future parameter
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center();
+          } else if (DoctorDetails.isEmpty) {
+            return Center(child: Text("No appointments available"));
+          } else {
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: DoctorDetails.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PsychologistProfileScreen(), // Replace with the profile screen widget
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width /
+                        3.8, // Show 3 items per screen width
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: AssetImage(
+                              "lib/assets/images/psychologist_avatar.png"), // Update the path
+                        ),
+                        const SizedBox(height: 4),
+                        FutureBuilder<String?>(
+                          future:
+                              getDoctorFirstName(index), // Fetch doctor's name
+                          builder: (context, nameSnapshot) {
+                            if (nameSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation(Colors.grey),
+                              );
+                            } else if (nameSnapshot.hasError) {
+                              return Text("Error");
+                            } else {
+                              return Text(
+                                "Dr. ${nameSnapshot.data ?? "Unknown"}",
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              );
+                            }
+                          },
+                        ),
+                        Text(
+                          "${DoctorDetails[index]['specialization']}",
+                          style: TextStyle(color: Colors.grey, fontSize: 10),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    "Dr. Example...",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    "Psychologist",
-                    style: TextStyle(color: Colors.grey, fontSize: 10),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
+                );
+              },
+            );
+          }
         },
       ),
     );
