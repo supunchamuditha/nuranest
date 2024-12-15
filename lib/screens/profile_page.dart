@@ -89,6 +89,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
         // Update TextEditingControllers
         usernameController.text = username!;
+        firstnameController.text = firstName!;
+        lastnameController.text = lastName!;
         emailController.text = userEmail!;
         phoneController.text = userPhone!;
         birthDateController.text = userBirthDate!;
@@ -118,8 +120,8 @@ class _ProfilePageState extends State<ProfilePage> {
       // Get the user input
       final username = usernameController.text;
       final email = emailController.text;
-      final firstName = 'firstName';
-      final lastName = 'lastName';
+      final firstName = firstnameController.text;
+      final lastName = lastnameController.text;
       final gender = genderController.text;
       final dob = birthDateController.text;
       final address = addressController.text;
@@ -304,12 +306,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
-                      // validator: (value) {
-                      //   if(!validateUsername(value)){
-                      //     return 'Please enter a valid username';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (!validateName(value)) {
+                          return 'Please enter a valid name';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
@@ -358,12 +360,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
-                      // validator: (value) {
-                      //   if(!validateUsername(value)){
-                      //     return 'Please enter a valid username';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (!validateName(value)) {
+                          return 'Please enter a valid name';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
@@ -552,72 +554,72 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 20),
 
                   // Gender DropdownButtonFormField with label
-                  GestureDetector(
-                    onDoubleTap: toggleEditMode,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            ' Gender',
-                            style: const TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 0.5),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: DropdownButtonFormField<String>(
-                            value: genderController.text.isNotEmpty
-                                ? genderController.text
-                                : null, // Set initial value
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor:
-                                  const Color.fromARGB(255, 255, 249, 249),
-                              hintText: 'Select Gender',
-                              hintStyle: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: -0.43,
-                                color: Color.fromRGBO(0, 0, 0, 0.5),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(31.0),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 17),
-                            ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'Male',
-                                child: Text('Male'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'Female',
-                                child: Text('Female'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'Other',
-                                child: Text('Other'),
-                              ),
-                            ],
-                            onChanged: isEditing
-                                ? (value) {
-                                    setState(() {
-                                      genderController.text = value ?? '';
-                                    });
-                                  }
-                                : null, // Disable dropdown if not in edit mode
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onDoubleTap: toggleEditMode,
+                  //   child: Row(
+                  //     children: [
+                  //       Expanded(
+                  //         flex: 1,
+                  //         child: Text(
+                  //           ' Gender',
+                  //           style: const TextStyle(
+                  //             color: Color.fromRGBO(0, 0, 0, 0.5),
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.w500,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //         flex: 2,
+                  //         child: DropdownButtonFormField<String>(
+                  //           value: genderController.text.isNotEmpty
+                  //               ? genderController.text
+                  //               : null, // Set initial value
+                  //           decoration: InputDecoration(
+                  //             filled: true,
+                  //             fillColor:
+                  //                 const Color.fromARGB(255, 255, 249, 249),
+                  //             hintText: 'Select Gender',
+                  //             hintStyle: const TextStyle(
+                  //               fontFamily: 'Poppins',
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.w500,
+                  //               letterSpacing: -0.43,
+                  //               color: Color.fromRGBO(0, 0, 0, 0.5),
+                  //             ),
+                  //             border: OutlineInputBorder(
+                  //               borderRadius: BorderRadius.circular(31.0),
+                  //               borderSide: BorderSide.none,
+                  //             ),
+                  //             contentPadding: const EdgeInsets.symmetric(
+                  //                 vertical: 12, horizontal: 17),
+                  //           ),
+                  //           items: const [
+                  //             DropdownMenuItem(
+                  //               value: 'Male',
+                  //               child: Text('Male'),
+                  //             ),
+                  //             DropdownMenuItem(
+                  //               value: 'Female',
+                  //               child: Text('Female'),
+                  //             ),
+                  //             DropdownMenuItem(
+                  //               value: 'Other',
+                  //               child: Text('Other'),
+                  //             ),
+                  //           ],
+                  //           onChanged: isEditing
+                  //               ? (value) {
+                  //                   setState(() {
+                  //                     genderController.text = value ?? '';
+                  //                   });
+                  //                 }
+                  //               : null, // Disable dropdown if not in edit mode
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
 
                   const SizedBox(height: 20),
 
