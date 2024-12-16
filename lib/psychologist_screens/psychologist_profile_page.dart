@@ -34,7 +34,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   String? getSpecial = '';
 
   // Define the _isLoading variable
-  bool _isLoading = false;
+  bool isLoading = false;
 
   // Text controllers to hold profile information
   late TextEditingController usernameController;
@@ -155,7 +155,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
       // Set the _isLoading variable to true
       setState(() {
-        _isLoading = true;
+        isLoading = true;
       });
 
       // Get the user input
@@ -236,7 +236,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     } finally {
       // Set the _isLoading variable to false
       setState(() {
-        _isLoading = false;
+        isLoading = false;
       });
     }
   }

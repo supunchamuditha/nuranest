@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/psychologist_screens/after_request_profile.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Import the SharedPreferences library
-import 'dart:convert'; // Import for JSON decoding
-import 'package:http/http.dart' as http; // Import the http library
+// import 'package:shared_preferences/shared_preferences.dart'; // Import the SharedPreferences library
+// import 'dart:convert'; // Import for JSON decoding
+// import 'package:http/http.dart' as http; // Import the http library
 
 class EnrollAsPsychologistScreen extends StatefulWidget {
   const EnrollAsPsychologistScreen({super.key});
@@ -15,7 +15,7 @@ class EnrollAsPsychologistScreen extends StatefulWidget {
 class _EnrollAsPsychologistScreenState
     extends State<EnrollAsPsychologistScreen> {
   // Create a global key that uniquely identifies the Form widget
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   // Variables to hold user information
   int? userId;
