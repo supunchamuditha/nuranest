@@ -78,7 +78,7 @@ class GetStartedScreen extends StatelessWidget {
                           ),
                         )),
                     child: const Text(
-                      "Get Start",
+                      "Get Started",
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                   )
