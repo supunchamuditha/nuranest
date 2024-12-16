@@ -779,25 +779,65 @@ class _ProfilePageState extends State<ProfilePage> {
                    const SizedBox(height: 10),
 
 
-                   ElevatedButton(
+                  ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LoginScreen()),
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text(
+                              'Confirm Logout',
+                              style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+                            ),
+                            content: const Text(
+                              'Are you sure you want to logout?',
+                              style: TextStyle(fontFamily: 'Poppins'),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                                  );
+                                },
+                                child: const Text(
+                                  'Logout',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                         side: const BorderSide(
-                            color: Color.fromARGB(255, 239, 222, 214),
-                            width: 1), // Border color
+                          color: Color.fromARGB(255, 239, 222, 214),
+                          width: 1,
+                        ), // Border color
                       ),
-                      backgroundColor: const Color.fromARGB(255, 248, 220, 220), // Remove background color
-                          minimumSize: const Size(360, 48),
+                      backgroundColor: const Color.fromARGB(255, 248, 220, 220),
+                      minimumSize: const Size(360, 48),
                     ),
                     child: const Text(
                       'Sign Out',
@@ -808,12 +848,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         letterSpacing: 0,
                         color: Colors.black,
                       ),
-                      overflow: TextOverflow
-                          .ellipsis, // Ensure the text is in one line
+                      overflow: TextOverflow.ellipsis, // Ensure the text is in one line
                     ),
                   ),
-
-                   const SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
 
                   // Enroll as Psychologist Button

@@ -55,9 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_outlined),
-              label: 'Appointments'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined),label: 'Appointments'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         selectedItemColor: Colors.black,
@@ -78,7 +76,7 @@ class HomeScreenContent extends StatefulWidget {
 
 class _HomeScreenContentState extends State<HomeScreenContent> {
   // List of mood labels for easy reference
-  final List<String> moodLabels = ["Angry", "Sad", "Calm", "Happy", "Excited"];
+  // final List<String> moodLabels = ["Angry", "Sad", "Calm", "Happy", "Excited"];
   String? userName; // Default usernamep
   int? userId; // Default userId
 
@@ -323,13 +321,14 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
                 const SizedBox(height: 16),
-                _buildMoodSelector(),
+                // _buildMoodSelector(),
                 const SizedBox(height: 30),
                 _buildReminderCard(context),
                 const SizedBox(height: 20),
                 _buildPsychologistCard(context),
                 const SizedBox(height: 20),
                 _buildArticlesCard(context),
+                const SizedBox(height: 70),
               ],
             ),
           ),
@@ -350,8 +349,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                 backgroundColor:
                     Color.fromARGB(255, 233, 218, 212), // Gray-beige color
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      50), // Adjust this value for desired rounding
+                  borderRadius: BorderRadius.circular(50), // Adjust this value for desired rounding
                 ),
                 child: Icon(
                   Icons.chat,
@@ -366,65 +364,65 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
     );
   }
 
-  Widget _buildMoodSelector() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF7F0F5),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(moodLabels.length, (index) {
-          return _buildMoodIcon(
-            'lib/assets/icon/${moodLabels[index].toLowerCase()}.png',
-            moodLabels[index],
-            index == selectedMoodIndex, // Highlight the selected mood
-            index,
-          );
-        }),
-      ),
-    );
-  }
+  // Widget _buildMoodSelector() {
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+  //     decoration: BoxDecoration(
+  //       color: const Color(0xFFF7F0F5),
+  //       borderRadius: BorderRadius.circular(30),
+  //     ),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: List.generate(moodLabels.length, (index) {
+  //         return _buildMoodIcon(
+  //           'lib/assets/icon/${moodLabels[index].toLowerCase()}.png',
+  //           moodLabels[index],
+  //           index == selectedMoodIndex, // Highlight the selected mood
+  //           index,
+  //         );
+  //       }),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildMoodIcon(
-      String iconPath, String label, bool isActive, int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedMoodIndex = index; // Update selected mood index
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: isActive
-              ? const Color(0xFFFFE86C)
-              : Colors.transparent, // Yellow background for active icon
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Column(
-          children: [
-            Image.asset(
-              iconPath,
-              width: 40,
-              height: 40,
-              color: const Color(0xFFD4A373), // Icon color
-            ),
-            if (isActive)
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFD4A373),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildMoodIcon(
+  //     String iconPath, String label, bool isActive, int index) {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       setState(() {
+  //         selectedMoodIndex = index; // Update selected mood index
+  //       });
+  //     },
+  //     child: Container(
+  //       padding: const EdgeInsets.all(8),
+  //       decoration: BoxDecoration(
+  //         color: isActive
+  //             ? const Color(0xFFFFE86C)
+  //             : Colors.transparent, // Yellow background for active icon
+  //         borderRadius: BorderRadius.circular(30),
+  //       ),
+  //       child: Column(
+  //         children: [
+  //           Image.asset(
+  //             iconPath,
+  //             width: 40,
+  //             height: 40,
+  //             color: const Color(0xFFD4A373), // Icon color
+  //           ),
+  //           if (isActive)
+  //             Text(
+  //               label,
+  //               style: const TextStyle(
+  //                 fontSize: 12,
+  //                 fontWeight: FontWeight.bold,
+  //                 color: Color(0xFFD4A373),
+  //               ),
+  //             ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildReminderCard(BuildContext context) {
     return Center(
