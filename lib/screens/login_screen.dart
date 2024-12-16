@@ -15,29 +15,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _obscureText = true; // Define the _obscureText variable
-
-// Create a global key that uniquely identifies the Form widget
+  bool _obscureText = true; 
   final _formKey = GlobalKey<FormState>();
-// Define the email and password controllers
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-// Define the _isLoading variable
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus(); // Check login status on initialization
+    _checkLoginStatus(); 
   }
+
+  
   Future<void> _checkLoginStatus() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     final String? user = prefs.getString('user');
 
     if (token != null && user != null) {
-      // If token and user data exist, navigate to the HomeScreen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -45,25 +42,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-// Define the _login method
   Future<void> _login() async {
     try {
-      // Get the API URL from the .env file
       final apiUrl = dotenv.env['API_URL'];
-
-      // Define the login URL
       final loginUrl = '$apiUrl/auth/login';
-
-      // Get the email and password from the text fields
       final email = emailController.text;
       final password = passwordController.text;
 
-      // Set the _isLoading variable to true
       setState(() {
         _isLoading = true;
       });
 
-      // Make a POST request to the login URL
       final response = await http.post(
         Uri.parse(loginUrl),
         headers: {'Content-Type': 'application/json'},
@@ -73,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
         }),
       );
 
-      // Check if the response status code is 200
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         _showMessage(
