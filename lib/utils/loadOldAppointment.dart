@@ -7,11 +7,12 @@ import 'dart:convert'; // Import for JSON decoding
 import 'package:intl/intl.dart'; // Import the intl library
 
 // Global variable to hold the doctor's full name
-String? doctorFullName;
-String? appointmentTime;
-String? appointmentDate;
-String? appointmentType;
-String? specialization;
+// Set default values for the global variables
+String? doctorFullName = 'No doctor assigned';
+String? appointmentTime = 'No time available';
+String? appointmentDate = 'No date available';
+String? appointmentType = 'No type available';
+String? specialization = 'No specialization available';
 
 // Load appointments from the API
 Future<void> loadOldAppointment() async {
@@ -130,8 +131,7 @@ Future<void> loadOldAppointment() async {
         // Log the decoded response
         // debugPrint('resUserData: ${resUserData['user']}');
         // Get the user's fistname
-        // debugPrint(
-        // 'resUserData fistname: ${resUserData['user']['firstName']}');
+        // debugPrint('resUserData fistname: ${resUserData['user']['firstName']}');
         // Get the user's lastname
         // debugPrint(
         // 'resUserData lastname: ${resUserData['user']['lastName']}');
@@ -195,6 +195,13 @@ Future<void> loadOldAppointment() async {
       // setState(() {
       //   _isAppointment = false;
       // });
+
+      // Set default values for the global variables
+      doctorFullName = 'No doctor assigned';
+      appointmentTime = 'No time available';
+      appointmentDate = 'No date available';
+      appointmentType = 'No type available';
+      specialization = 'No specialization available';
     }
   } catch (error) {
     debugPrint('Error: $error');
