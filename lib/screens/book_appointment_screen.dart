@@ -1,6 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:nuranest/screens/make_payment.dart';
-import 'package:nuranest/utils/appointmentValidators.dart';
+import 'package:flutter/material.dart'; // Import the material package
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv package
+import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder library
+import 'package:nuranest/screens/make_payment.dart'; // Import the make_payment.dart file
+import 'package:nuranest/utils/appointmentValidators.dart'; // Import the appointmentValidators.dart file
+import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
+import 'dart:convert'; // Import for JSON decoding
+import 'package:http/http.dart' as http; // Import the http library
+import 'package:intl/intl.dart'; // Import the intl library
 
 class BookAppointmentPage extends StatefulWidget {
   final Map<String, dynamic> doctorDetails;
@@ -28,7 +34,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
   String? availableDays;
   String? consultationFee;
   String? doctorLocation;
-  int? doctorId;
+  int? docId;
 
   void initState() {
     super.initState();
@@ -50,7 +56,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
       final doctorMoreDetails = doctorDetails['doctorDeails']['DoctorDetails'];
 
       // Set doctor id
-      doctorId = doctorMoreDetails['id'];
+      docId = doctorMoreDetails['id'];
 
       // Set doctor available days
       availableDays =
@@ -87,7 +93,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
     if (pickedDate != null) {
       setState(() {
         dateController.text =
-            "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+            "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
       });
     }
   }
@@ -113,6 +119,124 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         _selectedAppointmentLocation = location;
       });
     }
+  }
+
+  // Define the loading state
+  bool isLoading = false;
+
+  Future<void> _bookAppointment() async {
+    try {
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract the user ID (or any other field you need)
+      int? userId = decodedToken['id'];
+
+      // Get the user input
+      final appointmentDate = dateController.text;
+      String? appointmentTime = timeController.text;
+      final appointmentType = _selectedAppointmentType;
+      final appointmentLocation = _selectedAppointmentLocation;
+      final additionalInfo = messageController.text;
+      final patientId = userId;
+      final doctorId = docId;
+
+      // Convert appointment type to lowercase
+      final appointmentTypeLowerCase = appointmentType?.toLowerCase();
+
+      // set the _isLoading variable to true
+      setState(() {
+        isLoading = true;
+      });
+
+      // debugPrint(
+          // 'Appointment Date: $appointmentDate, Appointment Time: $appointmentTime, Appointment Type: $appointmentType, Appointment Location: $appointmentLocation, Additional Info: $additionalInfo, Patient ID: $patientId, Doctor ID: $doctorId');
+
+      // Get the API URL from the environment
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the register URL
+      final appointmentUrl = '$apiUrl/appointments';
+
+      // Send a POST request to the API
+      final response = await http.post(Uri.parse(appointmentUrl),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode(
+            {
+              'appointmentDate': appointmentDate,
+              'appointmentTime': appointmentTime,
+              'appointmentType': appointmentTypeLowerCase,
+              'appointmentLocation': appointmentLocation,
+              'additionalInfo': additionalInfo,
+              'patientId': patientId,
+              'doctorId': doctorId,
+            },
+          ));
+
+      // Decode the response
+      final resData = json.decode(response.body);
+
+      // Log the response
+      // debugPrint('response: $response');
+      // Log the response status code
+      // debugPrint('response.statusCode: ${response.statusCode}');
+      // Log the response body
+      // debugPrint('response.body: ${response.body}');
+      // Log the decoded response
+      // debugPrint('resData: $resData');
+
+      // Check if the response status code is 201
+      if (response.statusCode == 201) {
+        // Show a success message
+        _showMessage('Appointment booked successfully');
+
+        // Navigate to the MakePaymentPage
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MakePaymentPage(),
+          ),
+        );
+
+        // Clear all inputs and selectors
+        dateController.clear();
+        timeController.clear();
+        addressController.clear();
+        messageController.clear();
+        setState(() {
+          _selectedTime = null;
+          _selectedAppointmentType = null;
+          _selectedAppointmentLocation = null;
+        });
+      } else {
+        // Show an error message
+        _showMessage('An error occurred. Please try again');
+      }
+    } catch (error) {
+      debugPrint('Error: $error');
+      _showMessage('An error occurred. Please try again');
+    } finally {
+      // Set the _isLoading variable to false
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  // Define the _showMessage method
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -193,12 +317,12 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
               Wrap(
                 spacing: 8,
                 children: [
-                  "7:00 AM",
-                  "8:00 AM",
-                  "10:00 AM",
-                  "12:00 PM",
-                  "2:00 PM",
-                  "5:00 PM"
+                  "07:00",
+                  "8:00",
+                  "10:00",
+                  "12:00",
+                  "14:00",
+                  "17:00"
                 ].map((time) {
                   return OutlinedButton(
                     onPressed: () => _onTimeSlotSelected(time),
@@ -314,23 +438,26 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MakePaymentPage(),
-                        ),
-                      );
+                      // Call the _bookAppointment method
+                      _bookAppointment();
 
-                      // Clear all inputs and selectors
-                      dateController.clear();
-                      timeController.clear();
-                      addressController.clear();
-                      messageController.clear();
-                      setState(() {
-                        _selectedTime = null;
-                        _selectedAppointmentType = null;
-                        _selectedAppointmentLocation = null;
-                      });
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => MakePaymentPage(),
+                      //   ),
+                      // );
+
+                      // // Clear all inputs and selectors
+                      // dateController.clear();
+                      // timeController.clear();
+                      // addressController.clear();
+                      // messageController.clear();
+                      // setState(() {
+                      //   _selectedTime = null;
+                      //   _selectedAppointmentType = null;
+                      //   _selectedAppointmentLocation = null;
+                      // });
                     }
                   },
                   style: ElevatedButton.styleFrom(
