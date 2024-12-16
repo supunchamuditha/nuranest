@@ -144,7 +144,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         left: 10.0), // Left padding for the reminder text
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           "I'm Here To Remind You,",
                           style: TextStyle(
@@ -155,7 +155,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          "You have a session with Mr. Fernando today.",
+                          "You have a session with Dr. $doctorFullName today.",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black54,
@@ -346,74 +346,74 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
     );
   }
 
-  Widget _buildPsychologistOnlineGrid() {
-    return SizedBox(
-      height: 150, // Set the height to fit the CircleAvatar and text
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      PsychologistProfileScreen(), // Replace with the profile screen widget
-                ),
-              );
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width /
-                  3.8, // Show 3 items per screen width
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: AssetImage(
-                            "lib/assets/images/psychologist_avatar.png"), // Update the path
-                      ),
-                      Positioned(
-                        top: 4,
-                        right: 4,
-                        child: Container(
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                            color:
-                                Colors.green, // Green color for "online" status
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: Colors.white,
-                                width:
-                                    1), // White border to separate from avatar
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    "Dr. Example...",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    "Psychologist",
-                    style: TextStyle(color: Colors.grey, fontSize: 10),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+  // Widget _buildPsychologistOnlineGrid() {
+  //   return SizedBox(
+  //     height: 150, // Set the height to fit the CircleAvatar and text
+  //     child: ListView.builder(
+  //       scrollDirection: Axis.horizontal,
+  //       itemCount: 6,
+  //       itemBuilder: (context, index) {
+  //         return GestureDetector(
+  //           onTap: () {
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) =>
+  //                     PsychologistProfileScreen(), // Replace with the profile screen widget
+  //               ),
+  //             );
+  //           },
+  //           child: Container(
+  //             width: MediaQuery.of(context).size.width /
+  //                 3.8, // Show 3 items per screen width
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 Stack(
+  //                   children: [
+  //                     CircleAvatar(
+  //                       radius: 40,
+  //                       backgroundImage: AssetImage(
+  //                           "lib/assets/images/psychologist_avatar.png"), // Update the path
+  //                     ),
+  //                     Positioned(
+  //                       top: 4,
+  //                       right: 4,
+  //                       child: Container(
+  //                         width: 12,
+  //                         height: 12,
+  //                         decoration: BoxDecoration(
+  //                           color:
+  //                               Colors.green, // Green color for "online" status
+  //                           shape: BoxShape.circle,
+  //                           border: Border.all(
+  //                               color: Colors.white,
+  //                               width:
+  //                                   1), // White border to separate from avatar
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 const SizedBox(height: 4),
+  //                 Text(
+  //                   "Dr. Example...",
+  //                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+  //                   textAlign: TextAlign.center,
+  //                 ),
+  //                 Text(
+  //                   "Psychologist",
+  //                   style: TextStyle(color: Colors.grey, fontSize: 10),
+  //                   textAlign: TextAlign.center,
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   // Define a list to store the doctor details
   final List<Map<String, dynamic>> DoctorDetails = [];
@@ -518,8 +518,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            PsychologistProfileScreen(), // Replace with the profile screen widget
+                        builder: (context) => PsychologistProfileScreen(
+                          doctorDetails: {
+                            'DoctorDetails':
+                                DoctorDetails[index], // Pass specialization
+                          },
+                        ), // Replace with the profile screen widget
                       ),
                     );
                   },

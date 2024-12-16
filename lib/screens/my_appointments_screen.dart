@@ -272,11 +272,11 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PsychologistProfileScreen()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => PsychologistProfileScreen("he")),
+                      // );
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(0),
@@ -367,7 +367,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
           int userId = resDocData['doctor']['userId'];
 
           // Log the user ID
-          debugPrint('userId: $userId');
+          // debugPrint('userId: $userId');
 
           // Define the API endpoint for fetching user details
           final getUserUrl = Uri.parse('$apiUrl/users/$userId');
@@ -382,11 +382,11 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
           final resUserData = json.decode(userResponse.body);
 
           // Log the response status code
-          debugPrint('userResponse.statusCode: ${userResponse.statusCode}');
+          // debugPrint('userResponse.statusCode: ${userResponse.statusCode}');
           // Log the response body
           // debugPrint('userResponse.body: ${userResponse.body}');
           // Log the decoded response
-          debugPrint('resUserData: ${resUserData['user']}');
+          // debugPrint('resUserData: ${resUserData['user']}');
 
           // Get the doctor's first name and last name
           String fistname = resUserData['user']['firstName'];
