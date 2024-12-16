@@ -6,7 +6,7 @@ import 'package:nuranest/utils/appointmentValidators.dart'; // Import the appoin
 import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
-import 'package:intl/intl.dart'; // Import the intl library
+// import 'package:intl/intl.dart'; // Import the intl library
 
 class BookAppointmentPage extends StatefulWidget {
   final Map<String, dynamic> doctorDetails;
@@ -184,7 +184,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
           ));
 
       // Decode the response
-      final resData = json.decode(response.body);
+      // final resData = json.decode(response.body);
 
       // Log the response
       // debugPrint('response: $response');
