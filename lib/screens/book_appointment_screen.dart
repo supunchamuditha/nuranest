@@ -3,6 +3,11 @@ import 'package:nuranest/screens/make_payment.dart';
 import 'package:nuranest/utils/appointmentValidators.dart';
 
 class BookAppointmentPage extends StatefulWidget {
+  final Map<String, dynamic> doctorDetails;
+
+  BookAppointmentPage({required this.doctorDetails, Key? key})
+      : super(key: key);
+
   @override
   _BookAppointmentPageState createState() => _BookAppointmentPageState();
 }
@@ -18,6 +23,59 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
   String? _selectedTime;
   String? _selectedAppointmentType; // "Physical" or "Online"
   String? _selectedAppointmentLocation; // "Doctors" or "My"
+
+  String? doctorFullName;
+  String? availableDays;
+  String? consultationFee;
+  String? doctorLocation;
+  int? doctorId;
+
+  void initState() {
+    super.initState();
+    _loadDoctorDetails();
+  }
+
+  Future<void> _loadDoctorDetails() async {
+    setState(() {
+      // Extract doctor details from widget property
+      final Map<String, dynamic> doctorDetails = widget.doctorDetails;
+
+      // Log doctor details widget property
+      debugPrint("Doctor details: $doctorDetails");
+
+      // Set doctor full name
+      doctorFullName = doctorDetails['doctorFullName'];
+
+      // Extract doctor more details
+      final doctorMoreDetails = doctorDetails['doctorDeails']['DoctorDetails'];
+
+      // Set doctor id
+      doctorId = doctorMoreDetails['id'];
+
+      // Set doctor available days
+      availableDays =
+          "${doctorMoreDetails['availableDays'].first} to ${doctorMoreDetails['availableDays'].last}";
+
+      // Set doctor consultation fee
+      consultationFee = doctorMoreDetails['consultationFee'];
+
+      // Set doctor location
+      doctorLocation = doctorMoreDetails['workplace'];
+
+      // Log doctor id
+      // debugPrint("Doctor id: $doctorId");
+      // Log doctor full name
+      // debugPrint("Doctor full name: $doctorFullName");
+      //Log doctor more details
+      // debugPrint("Doctor more details: $doctorMoreDetails");
+      // Log doctor available days
+      // debugPrint("Doctor available days: $availableDays");
+      // Log doctor consultation fee
+      // debugPrint("Doctor consultation fee: $consultationFee");
+      // Log doctor location
+      // debugPrint("Doctor location: $doctorLocation");
+    });
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -77,12 +135,12 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Doctor Details
-              const Text(
-                "Dr. Shanez Fernando",
+              Text(
+                "Dr. ${doctorFullName ?? 'Unknown Doctor'}",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              const Text("Monday to Sunday, 8:00 AM to 6:00 PM"),
-              const Text("Consultation Fee for 1-hour session: \$5"),
+              Text("$availableDays, 8:00 AM to 6:00 PM"),
+              Text("Consultation Fee for 1-hour session: Rs. $consultationFee"),
               const SizedBox(height: 16),
 
               // Date input field
@@ -187,7 +245,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                 "If you want to meet the doctor in a private hospital, you can make an appointment via hospital websites.",
               ),
               const SizedBox(height: 8),
-              const Text("Doctor's location: No 123, Vidya Mawatha, Colombo 7"),
+              Text("Doctor's location: $doctorLocation"),
               const SizedBox(height: 18),
 
               // Appointment location

@@ -193,7 +193,12 @@ class _PsychologistProfileScreenState extends State<PsychologistProfileScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BookAppointmentPage()),
+                        builder: (context) => BookAppointmentPage(
+                          doctorDetails: {
+                            'doctorFullName': doctorFullName,
+                            'doctorDeails': widget.doctorDetails,
+                          },
+                        )),
                   );
                 },
                 style: ElevatedButton.styleFrom(
