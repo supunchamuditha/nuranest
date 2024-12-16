@@ -7,6 +7,7 @@ import 'package:intl/intl.dart'; // Import the intl library
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv library
 import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
 import 'package:nuranest/utils/loadOldAppointment.dart'; // Import the loadOldAppointment.dart file
+import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder library
 
 class MyAppointmentsScreen extends StatefulWidget {
   const MyAppointmentsScreen({Key? key}) : super(key: key);
@@ -45,11 +46,25 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
       // Get the API URL from the .env file
       final apiUrl = dotenv.env['API_URL'];
 
-      // Define the API endpoint
-      final getAppointmentUrl = Uri.parse('$apiUrl/appointments/patients/1');
-
       // Get the user's token from SharedPreferences
       String? token = await getToken();
+
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract the user ID (or any other field you need)
+      int? userId = decodedToken['id'];
+
+      // Define the API endpoint
+      final getAppointmentUrl =
+          Uri.parse('$apiUrl/appointments/patients/$userId');
+
+      // Get the user's token from SharedPreferences
+      token = await getToken();
 
       // Send a GET request to the API endpoint
       final response = await http.get(getAppointmentUrl, headers: {
@@ -323,13 +338,13 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
     // debugPrint('doctorFullName: $doctorFullName');
 
     // Define a variable to store the doctor's full name
-    Future<String?> getDoctorFirstName(int userid) async {
+    Future<String?> getDoctorFirstName(int doctorId) async {
       try {
         // Get the API URL from the .env file
         final apiUrl = dotenv.env['API_URL'];
 
         // Define the API endpoint for fetching doctor details
-        final getDoctorUrl = Uri.parse('$apiUrl/users/$userid');
+        final getDoctorUrl = Uri.parse('$apiUrl/doctors/$doctorId');
 
         // Get the user's token from SharedPreferences
         String? token = await getToken();
@@ -345,18 +360,47 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
 
         // Log the response status code
         // debugPrint('response.statusCode: ${response.statusCode}');
+        // Log the response body
+        // debugPrint('response.body: ${response.body}');
         // Log the decoded response
-        // debugPrint('resDocData: $resDocData');
+        // debugPrint('resDocData: ${resDocData['doctor']}');
         // debugPrint('resDocData["user"]["first_name"]: ${resDocData["user"]}');
 
         // Check if the response is successful
-        if (response.statusCode == 200 && resDocData['user'] != null) {
+        if (response.statusCode == 200 && resDocData['doctor'] != null) {
+          // Get user ID
+          int userId = resDocData['doctor']['userId'];
+
+          // Log the user ID
+          debugPrint('userId: $userId');
+
+          // Define the API endpoint for fetching user details
+          final getUserUrl = Uri.parse('$apiUrl/users/$userId');
+
+          // Send a GET request to the API endpoint
+          final userResponse = await http.get(getUserUrl, headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          });
+
+          // Decode the response
+          final resUserData = json.decode(userResponse.body);
+
+          // Log the response status code
+          debugPrint('userResponse.statusCode: ${userResponse.statusCode}');
+          // Log the response body
+          // debugPrint('userResponse.body: ${userResponse.body}');
+          // Log the decoded response
+          debugPrint('resUserData: ${resUserData['user']}');
+
           // Get the doctor's first name and last name
-          String fistname = resDocData['user']['firstName'];
-          String lastname = resDocData['user']['lastName'];
+          String fistname = resUserData['user']['firstName'];
+          String lastname = resUserData['user']['lastName'];
 
           // Combine the first name and last name
           String? doctorFullName = "$fistname $lastname";
+
+          // debugPrint("Fuk u this code is working");
 
           // Log the doctor's full name
           return doctorFullName;
