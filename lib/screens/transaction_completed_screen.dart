@@ -20,7 +20,6 @@ class TransactionCompletedPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Adjusted image position (slightly higher)
-            SizedBox(height: 20), // Added space above the image
             Image.asset(
               'lib/assets/images/transaction_completed.png', // Replace with your image path
               width: 150, // Adjust the width as per your preference
@@ -28,17 +27,12 @@ class TransactionCompletedPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Your Payment was Successful!',
+              'Booked Appointment Sucessfully!',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.green,
               ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Thank you for booking an appointment.',
-              style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -48,7 +42,14 @@ class TransactionCompletedPage extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => const HomeScreen()),
                       );
               },
-              child: Text('Back to Home'),
+                child: Text(
+                  'Back to Home',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFE6CDB7),
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
