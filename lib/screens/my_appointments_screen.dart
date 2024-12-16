@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/screens/appointments_screen.dart';
-import 'package:nuranest/screens/psychologist_profile_screen.dart';
+// import 'package:nuranest/screens/psychologist_profile_screen.dart';
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
 import 'package:intl/intl.dart'; // Import the intl library
