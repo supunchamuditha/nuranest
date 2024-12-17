@@ -60,7 +60,7 @@ class _SignupScreenState extends State<SignupScreen> {
         body: jsonEncode({
           'username': username,
           'email': email,
-          'phone': phone,
+          'contactNo': phone,
           'password': password,
         }),
       );
