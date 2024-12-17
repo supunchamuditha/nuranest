@@ -84,8 +84,20 @@ class _EnrollAsPsychologistScreenState
           }));
 
       // Check if the response is successful
-      print(response.body);
-      print(response.statusCode);
+      debugPrint('Response: ${response.body}');
+      debugPrint('Response Code: ${response.statusCode}');
+
+      if (response.statusCode == 201) {
+        // Show a success message
+        _showMessage('Profile updated successfully');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AfterRequestProfile()),
+        );
+      } else {
+        // Show an error message
+        _showMessage('An error occurred. Please try again');
+      }
     } catch (error) {
       debugPrint('Error: $error');
     }
