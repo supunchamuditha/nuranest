@@ -328,7 +328,9 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
             const SizedBox(height: 16),
 
             // New rounded corner box for appointments
+            
             Container(
+              
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: const Color(0xFFFAF9F5), // Change this color as needed
