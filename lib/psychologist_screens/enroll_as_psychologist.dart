@@ -36,6 +36,14 @@ class _EnrollAsPsychologistScreenState
   // Define the _submitForm function
   void _submitForm() async {
     try {
+      // Check if any of the fields are empty
+      if (hospitalController.text.isEmpty ||
+          qualificationsController.text.isEmpty ||
+          specialController.text.isEmpty) {
+        _showMessage('Please fill in all fields.');
+        return;
+      }
+
       // Get the API URL from the environment
       final apiUrl = dotenv.env['API_URL'];
 
