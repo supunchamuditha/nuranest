@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nuranest/psychologist_screens/after_request_profile.dart';
+import 'package:nuranest/utils/storage_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import the SharedPreferences library
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
+import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder library
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv library
 
 class EnrollAsPsychologistScreen extends StatefulWidget {
   const EnrollAsPsychologistScreen({super.key});
@@ -15,7 +18,7 @@ class EnrollAsPsychologistScreen extends StatefulWidget {
 class _EnrollAsPsychologistScreenState
     extends State<EnrollAsPsychologistScreen> {
   // Create a global key that uniquely identifies the Form widget
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   // Variables to hold user information
   int? userId;
@@ -31,6 +34,68 @@ class _EnrollAsPsychologistScreenState
   final TextEditingController verificationController = TextEditingController();
 
   // Define the _submitForm function
+  void _submitForm() async {
+    try {
+      // Get the API URL from the environment
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
+
+      // Get the user's ID from the token
+      userId = decodedToken['id'];
+
+      // Define the register URL
+      final url = '$apiUrl/doctors/';
+
+      // Show loading indicator
+      setState(() {
+        isLoading = true;
+      });
+
+      // Get user inputs
+      final hospital = hospitalController.text;
+      final qualifications = qualificationsController.text;
+      final special = specialController.text;
+
+      debugPrint('Hospital: $hospital');
+      debugPrint('Qualifications: $qualifications');
+      debugPrint('Special: $special');
+
+      // Hide loading indicator
+      setState(() {
+        isLoading = false;
+      });
+
+      final response = await http.post(Uri.parse(url),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode({
+            'userId': userId,
+            'workplace': hospital,
+            'qualification': qualifications,
+            'specialization': special,
+            // 'verification': verificationController.text,
+          }));
+
+      // Check if the response is successful
+      print(response.body);
+      print(response.statusCode);
+    } catch (error) {
+      debugPrint('Error: $error');
+    }
+  }
+
+  // Define the _showMessage method
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,15 +137,18 @@ class _EnrollAsPsychologistScreenState
               const SizedBox(height: 20),
 
               // Input Fields
-              _buildTextField('Hospital', 'Add Hospital'),
+              _buildTextField('Hospital', 'Add Hospital', hospitalController),
               const SizedBox(height: 20),
-              _buildTextField('Qualifications', 'Add Qualifications'),
+              _buildTextField('Qualifications', 'Add Qualifications',
+                  qualificationsController),
               const SizedBox(height: 20),
-              _buildTextField('Special', 'Anything special to say'),
+              _buildTextField(
+                  'Special', 'Anything special to say', specialController),
               const SizedBox(height: 20),
 
               // Upload Verification Document
-              _buildTextField('Verification Document', 'UPLOAD',
+              _buildTextField(
+                  'Verification Document', 'UPLOAD', verificationController,
                   isUpload: true),
 
               const SizedBox(height: 30),
@@ -89,11 +157,13 @@ class _EnrollAsPsychologistScreenState
 
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AfterRequestProfile()),
-                  );
+                  _submitForm();
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => const AfterRequestProfile()),
+                  // );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
@@ -164,7 +234,9 @@ class _EnrollAsPsychologistScreenState
     );
   }
 
-  Widget _buildTextField(String label, String hint, {bool isUpload = false}) {
+  Widget _buildTextField(
+      String label, String hint, TextEditingController $controller,
+      {bool isUpload = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -180,6 +252,7 @@ class _EnrollAsPsychologistScreenState
         const SizedBox(height: 5),
         TextField(
           readOnly: isUpload,
+          controller: $controller,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
