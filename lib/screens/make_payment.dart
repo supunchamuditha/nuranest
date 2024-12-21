@@ -2,14 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:nuranest/screens/transaction_completed_screen.dart';
 
 class MakePaymentPage extends StatefulWidget {
+  String? consultationFee;
   @override
   _MakePaymentPageState createState() => _MakePaymentPageState();
+
+  MakePaymentPage({Key? key, this.consultationFee}) : super(key: key);
 }
 
 class _MakePaymentPageState extends State<MakePaymentPage> {
   bool isCheckboxChecked = false;
   bool isVisaSelected = false; // Track whether Visa is selected
-  bool isPaymentMethodSelected = false; // Track if any payment method is selected
+  bool isPaymentMethodSelected =
+      false; // Track if any payment method is selected
+  String? consultationFee;
+  int? totalFee;
+
+  @override
+  void initState() {
+    super.initState();
+    consultationFee = widget.consultationFee;
+    calculateTotalFee(consultationFee!, 250.00);
+  }
+
+  void calculateTotalFee(String consultationFee, double taxFee) {
+    int consultationFeeInt = int.tryParse(consultationFee) ?? 0;
+    debugPrint("Consultation Fee: $consultationFeeInt");
+    totalFee = consultationFeeInt + taxFee.toInt();
+    debugPrint("Total Fee: $totalFee");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +58,10 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Consultation Fee: 5\$"),
-                  Text("Tax Fee: 0.8\$"),
+                  Text("Consultation Fee: Rs. $consultationFee"),
+                  Text("Tax Fee: Rs. 250.00"),
                   Text(
-                    "Total Fee: 5.8\$",
+                    "Total Fee: Rs. $totalFee",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -67,15 +87,20 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
                   Column(
                     children: [
                       Card(
-                        color: isVisaSelected ? Colors.blue[50] : Colors.white, // Change color when selected
+                        color: isVisaSelected
+                            ? Colors.blue[50]
+                            : Colors.white, // Change color when selected
                         child: ListTile(
-                          leading: Image.asset('lib/assets/images/visa.png', width: 70, height: 70),
+                          leading: Image.asset('lib/assets/images/visa.png',
+                              width: 70, height: 70),
                           title: Text.rich(
                             TextSpan(
                               children: [
                                 TextSpan(
                                   text: "1234 5678 9123 4567\n",
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: "Example Name\n",
@@ -83,18 +108,24 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
                                 ),
                                 TextSpan(
                                   text: "12/26",
-                                  style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontStyle: FontStyle.italic),
                                 ),
                               ],
                             ),
                           ),
                           trailing: isVisaSelected
-                              ? Icon(Icons.check, color: Colors.green) // Show checkmark when selected
+                              ? Icon(Icons.check,
+                                  color: Colors
+                                      .green) // Show checkmark when selected
                               : null,
                           onTap: () {
                             setState(() {
-                              isVisaSelected = !isVisaSelected; // Toggle the Visa selection
-                              isPaymentMethodSelected = isVisaSelected; // Update the payment method selected status
+                              isVisaSelected =
+                                  !isVisaSelected; // Toggle the Visa selection
+                              isPaymentMethodSelected =
+                                  isVisaSelected; // Update the payment method selected status
                             });
                           },
                         ),
@@ -105,12 +136,15 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
                   Row(
                     children: [
                       Checkbox(
-                        value: isCheckboxChecked && isPaymentMethodSelected, // Disable checkbox if no payment method is selected
-                        onChanged: isPaymentMethodSelected ? (value) {
-                          setState(() {
-                            isCheckboxChecked = value!;
-                          });
-                        } : null, // Only allow checkbox change when a payment method is selected
+                        value: isCheckboxChecked &&
+                            isPaymentMethodSelected, // Disable checkbox if no payment method is selected
+                        onChanged: isPaymentMethodSelected
+                            ? (value) {
+                                setState(() {
+                                  isCheckboxChecked = value!;
+                                });
+                              }
+                            : null, // Only allow checkbox change when a payment method is selected
                       ),
                       Expanded(
                         child: Text(
@@ -123,19 +157,24 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
                   SizedBox(height: 16),
                   // Fade the "Make Payment" button based on both conditions
                   AnimatedOpacity(
-                    opacity: (isCheckboxChecked && isPaymentMethodSelected) ? 1.0 : 0.3,
+                    opacity: (isCheckboxChecked && isPaymentMethodSelected)
+                        ? 1.0
+                        : 0.3,
                     duration: Duration(seconds: 1),
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: (isCheckboxChecked && isPaymentMethodSelected)
-                            ? () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => TransactionCompletedPage()),
-                                );
-                              }
-                            : null,
+                        onPressed:
+                            (isCheckboxChecked && isPaymentMethodSelected)
+                                ? () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              TransactionCompletedPage()),
+                                    );
+                                  }
+                                : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFFE6CDB7),
                           padding: const EdgeInsets.symmetric(vertical: 16),
