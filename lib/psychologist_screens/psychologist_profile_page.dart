@@ -252,11 +252,11 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          const Color.fromARGB(255, 245, 240, 255), // Same background color
+          const Color.fromARGB(255, 255, 255, 255), // Same background color
       appBar: AppBar(
         title: const Text('My Profile'),
         centerTitle: false,
-        backgroundColor: const Color.fromARGB(255, 245, 240, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: SingleChildScrollView(
           child: Padding(
@@ -770,8 +770,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                         color: Color.fromARGB(255, 239, 222, 214),
                         width: 1), // Border color
                   ),
-                  backgroundColor: const Color.fromARGB(
-                      255, 245, 240, 255), // Remove background color
+                  backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Remove background color
                 ),
                 child: const Text(
                   'View Payment History',

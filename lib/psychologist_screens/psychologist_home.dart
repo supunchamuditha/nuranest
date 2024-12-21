@@ -35,7 +35,7 @@ class _PsychologistHomeState extends State<PsychologistHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F0FF),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: _pages[_selectedIndex], // Display the selected screen
 
       bottomNavigationBar: BottomNavigationBar(

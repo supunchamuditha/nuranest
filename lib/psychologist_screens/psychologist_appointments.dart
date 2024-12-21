@@ -8,9 +8,9 @@ class PsychologistAppointments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F0FF), // Light pinkish background
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Light pinkish background
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF5F0FF),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 0,
         title: const Text(
           'Appointments',
@@ -31,76 +31,6 @@ class PsychologistAppointments extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 10), // Top padding
-
-          // Profile card
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Dr. Shanez Fernando',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Poppins',
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      'Psychologist',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                        fontFamily: 'Poppins',
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade100,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.circle, color: Colors.green, size: 12),
-                      SizedBox(width: 4),
-                      Text(
-                        'Online',
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 15), // Space between card and button
-
           // "Change my appointment details" button
           ElevatedButton(
             onPressed: () {
@@ -112,9 +42,10 @@ class PsychologistAppointments extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFEFE0D6), // Light peach color for button background
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8), // Rounded corners
+                borderRadius: BorderRadius.circular(30), // Rounded corners
               ),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Button padding
+              minimumSize: const Size(370, 50), // Button width and height
             ),
             child: const Text(
               'Change my appointment details',
@@ -129,37 +60,6 @@ class PsychologistAppointments extends StatelessWidget {
 
           const SizedBox(height: 15), // Space between button and search bar
 
-          // Search bar
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                color: const Color(0xFFEFE0D6), // Light peach color
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: const [
-                  Icon(Icons.search, color: Colors.grey),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 20), // Space before "No more Appointments" text
 
           SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

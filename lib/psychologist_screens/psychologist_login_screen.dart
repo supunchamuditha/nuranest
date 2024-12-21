@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:nuranest/psychologist_screens/psychologist_login_screen.dart';
+import 'package:nuranest/psychologist_screens/psychologist_home.dart';
 import 'dart:convert';
 import 'package:nuranest/screens/signup_screen.dart';
 import 'package:nuranest/screens/user_home.dart';
 import 'package:nuranest/utils/userValidators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class PsychologistLoginScreen extends StatefulWidget {
+  const PsychologistLoginScreen({super.key});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<PsychologistLoginScreen> {
   bool _obscureText = true; 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -154,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 10), // Space between welcome text and subtitle
 
                 const Text(
-                  "Log into your existing account of NuraNest",
+                  "Log into your Psychologist Account",
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 12,
@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
 
                 const SizedBox(
-                    height: 20), // Space between subtitle and email field
+                    height: 100), // Space between subtitle and email field
 
                 TextFormField(
                   controller: emailController,
@@ -268,102 +268,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         60), // Space between forgot password and login button
 
                 ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _login();
-                        // If the form is valid, navigate to the HomeScreen
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => HomeScreen()),
-                        // );
-
-                        // // Clear the text fields
-                        // emailController.clear();
-                        // passwordController.clear();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      backgroundColor: const Color.fromRGBO(239, 222, 214, 1),
-                      minimumSize: const Size(360, 48),
-                    ),
-                    // child: const Text(
-                    //   "Log in",
-                    //   style: TextStyle(
-                    //     fontFamily: 'Poppins',
-                    //     fontSize: 14,
-                    //     fontWeight: FontWeight.w500,
-                    //     letterSpacing: 1,
-                    //     color: Colors.black,
-                    //   ),
-                    // ),
-
-                    child: _isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text(
-                            "Log in",
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1,
-                              color: Colors.black,
-                            ),
-                          )),
-
-                const SizedBox(height: 20),
-                // Space between login button and connect with text
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Or connect with,",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -0.43,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    backgroundColor: const Color.fromARGB(255, 214, 219, 253),
-                    minimumSize: const Size(360, 48),
-                  ),
-                  child: const Text(
-                    "Google",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const PsychologistLoginScreen()),
+                          builder: (context) => const PsychologistHome()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -372,11 +281,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    backgroundColor: const Color.fromRGBO(193, 207, 212, 1),
+                    backgroundColor: const Color.fromRGBO(239, 222, 214, 1),
                     minimumSize: const Size(360, 48),
                   ),
                   child: const Text(
-                    "Log In as a Psychologist",
+                    "Log In",
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
@@ -386,44 +295,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-
-                const SizedBox(
-                    height: 40), // Space between buttons and sign up text
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Don't have an account? ",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: -0.43,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignupScreen()),
-                        );
-                      },
-                      child: const Text(
-                        "Sign up",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.43,
-                          color: Color.fromRGBO(33, 16, 191, 1),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
                 const SizedBox(height: 20), // Space at the bottom
               ],
             ),

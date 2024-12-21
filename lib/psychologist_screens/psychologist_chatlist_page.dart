@@ -29,7 +29,7 @@ class PsychologistChatlistPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Chats"),
-        backgroundColor: const Color(0xFFF5F0FF),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(10.0),
@@ -90,7 +90,7 @@ class _HumanChatPageState extends State<HumanChatPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.chatPartner),
-        backgroundColor: const Color(0xFFF5F0FF),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: Column(
         children: [
