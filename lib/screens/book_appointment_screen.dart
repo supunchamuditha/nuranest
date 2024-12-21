@@ -204,7 +204,9 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MakePaymentPage(),
+            builder: (context) => MakePaymentPage(
+              consultationFee: consultationFee,
+            ),
           ),
         );
 
