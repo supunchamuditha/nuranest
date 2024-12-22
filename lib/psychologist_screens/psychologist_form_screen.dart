@@ -100,7 +100,6 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        labelText: label,
         labelStyle: TextStyle(color: Colors.black),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
