@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
+// import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
 import 'dart:convert';
 
 import 'package:nuranest/screens/login_screen.dart';
