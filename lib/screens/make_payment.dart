@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nuranest/screens/transaction_completed_screen.dart';
 
 class MakePaymentPage extends StatefulWidget {
-  String? consultationFee;
+  final String? consultationFee;
   @override
   _MakePaymentPageState createState() => _MakePaymentPageState();
 

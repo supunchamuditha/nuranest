@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
+// import 'package:nuranest/psychologist_screens/enroll_as_psychologist.dart';
 import 'package:nuranest/screens/get_started_screen.dart';
-import 'package:nuranest/screens/login_screen.dart';
+// import 'package:nuranest/screens/login_screen.dart';
 import 'package:nuranest/screens/payment_details.dart';
 import 'package:nuranest/utils/appointmentValidators.dart';
 import 'package:nuranest/utils/userValidators.dart';
