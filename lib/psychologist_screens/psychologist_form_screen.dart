@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:nuranest/psychologist_screens/psychologist_home.dart';
 import 'package:nuranest/psychologist_screens/psychologist_login_screen.dart';
 
 class PsychologistFormScreen extends StatefulWidget {
+  const PsychologistFormScreen({super.key});
+
   @override
   _PsychologistFormScreenState createState() => _PsychologistFormScreenState();
 }
 
 class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _birthdayController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _qualificationsController = TextEditingController();
-  TextEditingController _specializationController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _birthdayController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _qualificationsController =
+      TextEditingController();
+  final TextEditingController _specializationController =
+      TextEditingController();
 
   String? _selectedGender;
 
@@ -22,7 +25,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Psychologist Profile Setup', style: TextStyle(color: Colors.black)),
+        title: Text('Psychologist Profile Setup',
+            style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -56,11 +60,13 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
 
             SizedBox(height: 10),
             Text('Qualifications', style: _sectionTitleStyle()),
-            _buildTextField('Enter your qualifications', _qualificationsController),
+            _buildTextField(
+                'Enter your qualifications', _qualificationsController),
 
             SizedBox(height: 10),
             Text('Specialization', style: _sectionTitleStyle()),
-            _buildTextField('Enter your specialization', _specializationController),
+            _buildTextField(
+                'Enter your specialization', _specializationController),
 
             SizedBox(height: 30),
             // Save Profile Button
@@ -69,23 +75,25 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                             PsychologistLoginScreen()),
-                      );
-
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PsychologistLoginScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 239, 222, 214),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 ),
                 child: const Text(
                   'Save Profile',
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
                 ),
               ),
             ),
@@ -96,7 +104,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
   }
 
   // Helper function to build text fields
-  Widget _buildTextField(String label, TextEditingController controller, {int maxLines = 1}) {
+  Widget _buildTextField(String label, TextEditingController controller,
+      {int maxLines = 1}) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
@@ -123,7 +132,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               });
             },
             style: OutlinedButton.styleFrom(
-              backgroundColor: _selectedGender == 'Male' ? Colors.blue[100] : Colors.white,
+              backgroundColor:
+                  _selectedGender == 'Male' ? Colors.blue[100] : Colors.white,
               side: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
               padding: EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
@@ -145,7 +155,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               });
             },
             style: OutlinedButton.styleFrom(
-              backgroundColor: _selectedGender == 'Female' ? Colors.blue[100] : Colors.white,
+              backgroundColor:
+                  _selectedGender == 'Female' ? Colors.blue[100] : Colors.white,
               side: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
               padding: EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
