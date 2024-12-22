@@ -317,41 +317,53 @@ class _LoginScreenState extends State<LoginScreen> {
                           )),
 
                 const SizedBox(height: 20),
-                // Space between login button and connect with text
+
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Don't have an account? ",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -0.43,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignupScreen()),
+                        );
+                      },
+                      child: const Text(
+                        "Sign up",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.43,
+                          color: Color.fromRGBO(33, 16, 191, 1),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 40), // Space at the bottom                
+                
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Or connect with,",
+                    "Are you a Psychologist",
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      letterSpacing: -0.43,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    backgroundColor: const Color.fromARGB(255, 214, 219, 253),
-                    minimumSize: const Size(360, 48),
-                  ),
-                  child: const Text(
-                    "Google",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1,
+                      letterSpacing: -0.5,
                       color: Colors.black,
                     ),
                   ),
@@ -386,79 +398,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.black,
                     ),
                   ),
-                ),
-
-                const SizedBox(
-                    height: 40), // Space between buttons and sign up text
-
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const EnrollAsPsychologistScreen()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: const BorderSide(
-                            color: Color.fromARGB(255, 239, 222, 214),
-                            width: 1), // Border color
-                      ),
-                      backgroundColor: const Color.fromARGB(
-                          255, 255, 255, 255), // Remove background color
-                          minimumSize: const Size(360, 48),
-                    ),
-                    child: const Text(
-                      'Enroll as Psychologist',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0,
-                        color: Colors.black,
-                      ),
-                      overflow: TextOverflow
-                          .ellipsis, // Ensure the text is in one line
-                    ),
-                  ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Don't have an account? ",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: -0.43,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignupScreen()),
-                        );
-                      },
-                      child: const Text(
-                        "Sign up",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.43,
-                          color: Color.fromRGBO(33, 16, 191, 1),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
 
                 const SizedBox(height: 20), // Space at the bottom

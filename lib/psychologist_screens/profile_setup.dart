@@ -93,7 +93,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFB0E5FC),
+                  backgroundColor: Color.fromARGB(255, 239, 222, 214),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -123,7 +123,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         filled: true,
-        fillColor: Colors.grey[200],
+        fillColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       maxLines: maxLines,
     );
@@ -157,7 +157,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           },
           style: OutlinedButton.styleFrom(
             backgroundColor: _selectedSessionTime == time ? Colors.blue[100] : Colors.white,
-            side: BorderSide(color: Colors.blue),
+            side: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -185,7 +185,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             },
             style: OutlinedButton.styleFrom(
               backgroundColor: _appointmentMode == 'Physical' ? Colors.blue[100] : Colors.white,
-              side: BorderSide(color: Colors.blue),
+              side: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
               padding: EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -207,7 +207,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             },
             style: OutlinedButton.styleFrom(
               backgroundColor: _appointmentMode == 'Online' ? Colors.blue[100] : Colors.white,
-              side: BorderSide(color: Colors.blue),
+              side: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
               padding: EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
