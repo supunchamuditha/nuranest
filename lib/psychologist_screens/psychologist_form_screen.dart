@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:nuranest/psychologist_screens/psychologist_home.dart';
 import 'package:nuranest/psychologist_screens/psychologist_login_screen.dart';
 
 class PsychologistFormScreen extends StatefulWidget {
+  const PsychologistFormScreen({super.key});
+
   @override
   _PsychologistFormScreenState createState() => _PsychologistFormScreenState();
 }
 
 class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _birthdayController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _qualificationsController = TextEditingController();
-  TextEditingController _specializationController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _birthdayController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _qualificationsController =
+      TextEditingController();
+  final TextEditingController _specializationController =
+      TextEditingController();
 
   String? _selectedGender;
 
