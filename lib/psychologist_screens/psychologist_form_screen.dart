@@ -22,7 +22,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Psychologist Profile Setup', style: TextStyle(color: Colors.black)),
+        title: Text('Psychologist Profile Setup',
+            style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -56,11 +57,13 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
 
             SizedBox(height: 10),
             Text('Qualifications', style: _sectionTitleStyle()),
-            _buildTextField('Enter your qualifications', _qualificationsController),
+            _buildTextField(
+                'Enter your qualifications', _qualificationsController),
 
             SizedBox(height: 10),
             Text('Specialization', style: _sectionTitleStyle()),
-            _buildTextField('Enter your specialization', _specializationController),
+            _buildTextField(
+                'Enter your specialization', _specializationController),
 
             SizedBox(height: 30),
             // Save Profile Button
@@ -69,23 +72,25 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                             PsychologistLoginScreen()),
-                      );
-
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PsychologistLoginScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 239, 222, 214),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 ),
                 child: const Text(
                   'Save Profile',
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
                 ),
               ),
             ),
@@ -96,7 +101,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
   }
 
   // Helper function to build text fields
-  Widget _buildTextField(String label, TextEditingController controller, {int maxLines = 1}) {
+  Widget _buildTextField(String label, TextEditingController controller,
+      {int maxLines = 1}) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
@@ -124,7 +130,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               });
             },
             style: OutlinedButton.styleFrom(
-              backgroundColor: _selectedGender == 'Male' ? Colors.blue[100] : Colors.white,
+              backgroundColor:
+                  _selectedGender == 'Male' ? Colors.blue[100] : Colors.white,
               side: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
               padding: EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
@@ -146,7 +153,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               });
             },
             style: OutlinedButton.styleFrom(
-              backgroundColor: _selectedGender == 'Female' ? Colors.blue[100] : Colors.white,
+              backgroundColor:
+                  _selectedGender == 'Female' ? Colors.blue[100] : Colors.white,
               side: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
               padding: EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
