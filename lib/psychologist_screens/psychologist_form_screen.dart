@@ -145,7 +145,7 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // _validateAndSaveProfile();
+                    _validateAndSaveProfile();
                     if (_formKey.currentState!.validate() &&
                         _validateAndSaveProfile()) {
                       // Process the form
