@@ -270,36 +270,48 @@ class _LoginScreenState extends State<PsychologistLoginScreen> {
                         60), // Space between forgot password and login button
 
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _login();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => const PsychologistHome()),
-                      // );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _login();
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const PsychologistHome()),
+                        // );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      backgroundColor: const Color.fromRGBO(239, 222, 214, 1),
+                      minimumSize: const Size(360, 48),
                     ),
-                    backgroundColor: const Color.fromRGBO(239, 222, 214, 1),
-                    minimumSize: const Size(360, 48),
-                  ),
-                  child: const Text(
-                    "Log In",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                    child: isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text(
+                            "Log in",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1,
+                              color: Colors.black,
+                            ),
+                          )),
+                // child: const Text(
+                //   "Log In",
+                //   style: TextStyle(
+                //     fontFamily: 'Poppins',
+                //     fontSize: 16,
+                //     fontWeight: FontWeight.w500,
+                //     letterSpacing: 0,
+                //     color: Colors.black,
+                //   ),
+                // ),
+                // ),
                 const SizedBox(height: 20), // Space at the bottom
 
                 ElevatedButton(
