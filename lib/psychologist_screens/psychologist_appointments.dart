@@ -6,6 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv packag
 import 'package:http/http.dart' as http; // Import the http package
 import 'dart:convert'; // Import the convert package
 import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder package
+import 'package:intl/intl.dart'; // Import the intl library
+
 
 class PsychologistAppointments extends StatefulWidget {
   const PsychologistAppointments({super.key});
@@ -225,7 +227,9 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
 
     String? patientName = '${patient['firstName']} ${patient['lastName']}';
     String? appointmentTime = appointment['appointmentTime'];
+    appointmentTime = appointmentTime?.substring(0, 5); // Remove seconds
     String? appointmentDate = appointment['appointmentDate'];
+    appointmentDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(appointmentDate!));
     String? appointmentType = appointment['appointmentType'];
 
     return Column(
