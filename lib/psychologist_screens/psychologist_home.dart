@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nuranest/psychologist_screens/articles.dart';
 import 'package:nuranest/psychologist_screens/profile_setup.dart';
 import 'package:nuranest/psychologist_screens/psychologist_appointments.dart';
 import 'package:nuranest/psychologist_screens/psychologist_chatlist_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv package
+import 'package:http/http.dart' as http; // Import the http package
+import 'dart:convert'; // Import the convert package
 import 'package:nuranest/psychologist_screens/psychologist_profile_page.dart';
-import 'dart:convert'; // Import for JSON decoding
 
 class PsychologistHome extends StatefulWidget {
   const PsychologistHome({Key? key}) : super(key: key);
@@ -45,8 +48,7 @@ class _PsychologistHomeState extends State<PsychologistHome> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_outlined),
-              label: 'Appointments'),
+              icon: Icon(Icons.calendar_today_outlined), label: 'Appointments'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         selectedItemColor: Colors.black,
@@ -77,33 +79,56 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
 
 // Load the user's username from SharedPreferences
   Future<void> _loadUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userDetails = prefs.getString('user'); // Get the user JSON string
+    try {
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
 
-    if (userDetails != null) {
-      // Parse the JSON string into a Map
-      Map<String, dynamic> user = json.decode(userDetails);
+      if (token == null) {
+        throw Exception("Token not found");
+      }
 
-      setState(() {
-        // Log the user data
-        // debugPrint('user: $user');
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
 
-        // Retrieve the userId from the JSON
-        userId = user['id'];
-        // Retrieve the firstName from the JSON
-        userName = user['username'];
+      // Extract the user ID (or any other field you need)
+      int? userId = decodedToken['id'];
 
-        // Log the userId
-        // debugPrint('userId: $userId');
-        // Log the username
-        // debugPrint('username: $userName');
+      // Get the API URL from the .env file
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the endpoint for the user's profile
+      final profileEndpoint = '$apiUrl/users/$userId';
+
+      // Make a GET request to the profile endpoint
+      final response =
+          await http.get(Uri.parse(profileEndpoint), headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
       });
 
-      // print('username: $userName'); // Log the first name
-    } else {
-      setState(() {
-        userName = 'User'; // Default to 'User' if no data is found
-      });
+      final responseBody = json.decode(response.body);
+
+      // Logs for debugging
+      // debugPrint('Response status: ${response.statusCode}');
+      // debugPrint('Response body: $responseBody');
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        // Extract the user's username from the response
+        String? username = responseBody['user']['username'];
+
+        // Logs for debugging
+        // debugPrint('Username: $username');
+
+        // Update the state with the user's username
+        setState(() {
+          userName = username;
+        });
+      } else {
+        throw Exception('Failed to load user profile');
+      }
+    } catch (error) {
+      debugPrint('error: $error');
     }
   }
 
