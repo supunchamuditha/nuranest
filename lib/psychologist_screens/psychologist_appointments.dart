@@ -2,8 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:nuranest/psychologist_screens/profile_setup.dart';
 import 'package:nuranest/psychologist_screens/view_user_profile.dart';
 
-class PsychologistAppointments extends StatelessWidget {
+class PsychologistAppointments extends StatefulWidget {
   const PsychologistAppointments({super.key});
+
+  @override
+  _PsychologistAppointmentsState createState() =>
+      _PsychologistAppointmentsState();
+}
+
+class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
