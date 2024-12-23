@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nuranest/psychologist_screens/profile_setup.dart';
+// import 'package:nuranest/psychologist_screens/profile_setup.dart';
 import 'package:nuranest/psychologist_screens/view_user_profile.dart';
 import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv package
@@ -223,7 +223,7 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
     final appointment = data['appointment'];
     final patient = data['patient'];
 
-    String? patientName = '${patient['lastName']} ${patient['firstName']}';
+    String? patientName = '${patient['firstName']} ${patient['lastName']}';
     String? appointmentTime = appointment['appointmentTime'];
     String? appointmentDate = appointment['appointmentDate'];
     String? appointmentType = appointment['appointmentType'];
