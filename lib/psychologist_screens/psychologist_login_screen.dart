@@ -352,42 +352,6 @@ class _LoginScreenState extends State<PsychologistLoginScreen> {
 
 
 
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PsychologistProfilePage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      side: const BorderSide(
-                          color: Color.fromARGB(255, 239, 222, 214),
-                          width: 1), // Border color
-                    ),
-                    backgroundColor: const Color.fromARGB(
-                        255, 255, 255, 255), // Remove background color
-                    minimumSize: const Size(360, 48),
-                  ),
-                  child: const Text(
-                    'redirect to profile',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0,
-                      color: Colors.black,
-                    ),
-                    overflow:
-                        TextOverflow.ellipsis, // Ensure the text is in one line
-                  ),
-                ),
-
-
               ],
             ),
           ),
