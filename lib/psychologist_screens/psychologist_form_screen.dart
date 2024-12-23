@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import the dotenv package
+import 'package:http/http.dart' as http; // Import the http package
+import 'dart:convert'; // Import the convert package
 import 'package:nuranest/psychologist_screens/psychologist_login_screen.dart';
 
 class PsychologistFormScreen extends StatefulWidget {
@@ -11,6 +14,9 @@ class PsychologistFormScreen extends StatefulWidget {
 class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // Define the text editing controllers
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -20,8 +26,146 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
       TextEditingController();
   final TextEditingController _specializationController =
       TextEditingController();
+  final TextEditingController _workplaceController = TextEditingController();
+  final TextEditingController _consultationFeeController =
+      TextEditingController();
 
   String? _selectedGender;
+
+  // Define the loading state
+  bool isLoading = false;
+
+  // Define the _showMessage method
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Future<void> _submit() async {
+    try {
+      // Get the API URL from the .env file
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the submit URL
+      final submitUrl = '$apiUrl/applications';
+
+      // Get the user inputs
+      final username = _usernameController.text;
+      final fistName = _firstNameController.text;
+      final lastName = _lastNameController.text;
+      final email = _emailController.text;
+      final address = _addressController.text;
+      final phone = _phoneController.text;
+      final birthday = _birthdayController.text;
+      final gender = _selectedGender;
+      final qualifications = _qualificationsController.text;
+      final specialization = _specializationController.text;
+      final workplace = _workplaceController.text;
+      // final consultationFee = _consultationFeeController.text;
+      final availableDays = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+      ];
+      // final availableDays = _availableDaysController.text
+      //     .split(',')
+      //     .map((day) => day.trim())
+      //     .toList();
+
+      // Set the isLoading variable to true
+      setState(() {
+        isLoading = true;
+      });
+
+      // Debug print all inputs
+      // debugPrint('Username: $username');
+      // debugPrint('First Name: $fistName');
+      // debugPrint('Last Name: $lastName');
+      // debugPrint('Email: $email');
+      // debugPrint('Address: $address');
+      // debugPrint('Phone: $phone');
+      // debugPrint('Birthday: $birthday');
+      // debugPrint('Gender: $gender');
+      // debugPrint('Qualifications: $qualifications');
+      // debugPrint('Specialization: $specialization');
+      // debugPrint('Workplace: $workplace');
+      // debugPrint('Consultation Fee: $consultationFee');
+      // debugPrint('Available Days: $availableDays');
+
+      // Simulate a delay for demonstration purposes
+      // await Future.delayed(Duration(seconds: 2));
+
+      // Make a POST request to the API
+      final response = await http.post(
+        Uri.parse(submitUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'username': username,
+          'firstName': fistName,
+          'lastName': lastName,
+          'email': email,
+          'address': address,
+          'contactNo': phone,
+          'dob': birthday,
+          'gender': gender,
+          'qualification': qualifications,
+          'specialization': specialization,
+          'workplace': workplace,
+          'consultationFee': 500.00,
+          'availableDays': availableDays,
+        }),
+      );
+
+      // Get the response body
+      // final responseBody = json.decode(response.body);
+
+      // Debug print the response status
+      // debugPrint('status: ${response.statusCode}');
+      // Debug print the response body
+      // debugPrint('Response: $responseBody');
+
+      if (response.statusCode == 201) {
+        // Show a success message
+        _showMessage('Profile submitted successfully');
+
+        // Clear the user inputs
+        _usernameController.clear();
+        _firstNameController.clear();
+        _lastNameController.clear();
+        _emailController.clear();
+        _addressController.clear();
+        _phoneController.clear();
+        _birthdayController.clear();
+        _qualificationsController.clear();
+        _specializationController.clear();
+        _workplaceController.clear();
+        _consultationFeeController.clear();
+        setState(() {
+          _selectedGender = null;
+        });
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PsychologistLoginScreen()),
+        );
+      } else {
+        _showMessage('Failed to submit profile. Please try again.');
+      }
+    } catch (error) {
+      _showMessage('An error occurred. Please try again');
+    } finally {
+      // Set the _isLoading variable to false
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,12 +292,13 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
                     _validateAndSaveProfile();
                     if (_formKey.currentState!.validate() &&
                         _validateAndSaveProfile()) {
-                      // Process the form
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Profile saved successfully!'),
-                        ),
-                      );
+                      _submit();
+                      // // Process the form
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     content: Text('Profile saved successfully!'),
+                      //   ),
+                      // );
                     }
                   },
                   style: ElevatedButton.styleFrom(
