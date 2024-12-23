@@ -70,11 +70,14 @@ class HomeScreenContent extends StatefulWidget {
 class _HomeScreenContentState extends State<HomeScreenContent> {
   String? userName; // Default usernamep
   int? userId; // Default userId
+  bool? isShowSetupProfile =
+      false; // Default value for showing the setup profile reminder
 
   @override
   void initState() {
     super.initState();
     _loadUserName();
+    isShowSetupProfile = false; // Set to false to show the reminder
   }
 
 // Load the user's username from SharedPreferences
@@ -149,13 +152,22 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
             ),
           ),
           const SizedBox(height: 30),
-          _buildReminderCard(context),
-          const SizedBox(height: 20),
+          if (isShowSetupProfile == true) _buildReminderSection(context),
           _buildPsychologistCard(context),
           const SizedBox(height: 20),
           _buildArticlesCard(context),
         ],
       ),
+    );
+  }
+
+  // Widget for the reminder section
+  Widget _buildReminderSection(BuildContext context) {
+    return Column(
+      children: [
+        _buildReminderCard(context),
+        const SizedBox(height: 20),
+      ],
     );
   }
 
