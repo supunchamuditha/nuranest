@@ -186,7 +186,7 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               Text('Username', style: _sectionTitleStyle()),
               _buildTextField(
                 'Enter your username',
-                _usernameController,
+                _firstNameController,
                 (value) {
                   if (value == null || value.isEmpty) {
                     return 'Username is required.';
@@ -194,8 +194,34 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
                   return null;
                 },
               ),
-
               SizedBox(height: 10),
+
+              Text('FirstName', style: _sectionTitleStyle()),
+              _buildTextField(
+                'Enter your firt name',
+                _lastNameController,
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'firstname is required.';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 10),
+
+              Text('LastName', style: _sectionTitleStyle()),
+              _buildTextField(
+                'Enter your last name',
+                _usernameController,
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'lastname is required.';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 10),
+
               Text('Email', style: _sectionTitleStyle()),
               _buildTextField(
                 'Enter your email',
@@ -206,6 +232,19 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
                   }
                   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                     return 'Enter a valid email address.';
+                  }
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 10),
+              Text('Address', style: _sectionTitleStyle()),
+              _buildTextField(
+                'Enter your address',
+                _addressController,
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Address is required.';
                   }
                   return null;
                 },
@@ -228,34 +267,47 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               ),
 
               SizedBox(height: 10),
-              Text('Birthday', style: _sectionTitleStyle()),
-              _buildTextField(
-                'Enter your birthday',
-                _birthdayController,
-                (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Birthday is required.';
-                  }
-                  return null;
-                },
-              ),
+                Text('Birthday', style: _sectionTitleStyle()),
+                TextFormField(
+                  controller: _birthdayController,
+                  readOnly: true, // Prevents manual editing
+                  decoration: InputDecoration(
+                    labelText: 'Enter your birthday',
+                    suffixIcon: Icon(Icons.calendar_today), // Adds a calendar icon
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900), // Earliest selectable date
+                      lastDate: DateTime(2100), // Latest selectable date
+                    );
+
+                    if (pickedDate != null) {
+                      // Format the date and update the controller
+                      _birthdayController.text =
+                          '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
+                    }
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Birthday is required.';
+                    }
+                    return null;
+                  },
+                ),
+
 
               SizedBox(height: 10),
               Text('Gender', style: _sectionTitleStyle()),
               _buildGenderButtons(),
 
+
               SizedBox(height: 10),
-              Text('Address', style: _sectionTitleStyle()),
-              _buildTextField(
-                'Enter your address',
-                _addressController,
-                (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Address is required.';
-                  }
-                  return null;
-                },
-              ),
+              Text('Available Days', style: _sectionTitleStyle()),
+              _buildAvailableDatesButtons(),
+
+              
 
               SizedBox(height: 10),
               Text('Qualifications', style: _sectionTitleStyle()),
@@ -278,6 +330,32 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
                 (value) {
                   if (value == null || value.isEmpty) {
                     return 'Specialization is required.';
+                  }
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 10),
+              Text('Workplace', style: _sectionTitleStyle()),
+              _buildTextField(
+                'Enter your workplace location',
+                _workplaceController,
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Workplace location is required.';
+                  }
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 10),
+              Text('Consultation Fee', style: _sectionTitleStyle()),
+              _buildTextField(
+                'Enter your consultation fee',
+                _consultationFeeController,
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'consultation fee is required.';
                   }
                   return null;
                 },
@@ -435,6 +513,72 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
     );
   }
 
+// State variable to track selected weekdays
+Set<String> _selectedWeekdays = {}; 
+
+// Weekdays selection buttons
+Widget _buildAvailableDatesButtons() {
+  // List of weekdays
+  List<String> weekdays = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Wrap(
+        spacing: 10, // Space between buttons horizontally
+        runSpacing: 10, // Space between rows vertically
+        children: weekdays.map((day) {
+          bool isSelected = _selectedWeekdays.contains(day);
+          return OutlinedButton(
+            onPressed: () {
+              setState(() {
+                if (isSelected) {
+                  _selectedWeekdays.remove(day); // Deselect day
+                } else {
+                  _selectedWeekdays.add(day); // Select day
+                }
+              });
+            },
+            style: OutlinedButton.styleFrom(
+              backgroundColor: isSelected
+                  ? Colors.blue[100]
+                  : Colors.white, // Highlight if selected
+              side: BorderSide(
+                color: Colors.black, // Black border for all buttons
+              ),
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              day,
+              style: TextStyle(color: Colors.black), // Text color
+            ),
+          );
+        }).toList(),
+      ),
+      if (_selectedWeekdays.isEmpty)
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            'Please select at least one weekday.',
+            style: TextStyle(color: Colors.red, fontSize: 12),
+          ),
+        ),
+    ],
+  );
+}
+
+
 // Validate gender before saving the profile
   bool _validateAndSaveProfile() {
     bool isValid = true;
@@ -449,3 +593,5 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
     return isValid;
   }
 }
+
+
