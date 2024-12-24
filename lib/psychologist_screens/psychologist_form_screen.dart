@@ -63,7 +63,8 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
       final workplace = _workplaceController.text;
       final consultationFee = _consultationFeeController.text;
       final availableDays = _selectedWeekdays.toList();
-      debugPrint('Available Days: $availableDays');
+      
+      // debugPrint('Available Days: $availableDays');
 
       // Set the isLoading variable to true
       setState(() {
