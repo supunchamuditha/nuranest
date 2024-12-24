@@ -11,6 +11,7 @@ import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
 import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
 import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder library
+import 'package:intl/intl.dart'; // Import the intl library
 
 Future<void> logout(BuildContext context) async {
   // Access SharedPreferences
@@ -129,11 +130,14 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
         'authorization': 'Bearer $token',
       });
 
-        final resAppData = json.decode(response.body);
+      final resAppData = json.decode(response.body);
 
       // Check if the response is successful
       if (response.statusCode == 200) {
         final userDetails = resAppData['user'];
+
+        String? dob = userDetails['dob'];
+        dob = DateFormat('yyyy-MM-dd').format(DateTime.parse(dob!));
 
         // Set the user information to the text controllers
         setState(() {
@@ -142,7 +146,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
           lastnameController.text = userDetails['lastName'];
           emailController.text = userDetails['email'];
           phoneController.text = userDetails['contactNo'];
-          birthDateController.text = userDetails['dob'];
+          birthDateController.text = dob!;
           genderController.text = userDetails['gender'];
           addressController.text = userDetails['address'];
         });
@@ -191,8 +195,9 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
       final address = addressController.text;
       final contactNo = phoneController.text;
 
-      // print(
-      //     'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo');
+      // debugPrint(
+      // 'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo');
+
       // Make a PUT request to the save URL
       final response = await http.put(Uri.parse(saveUrl),
           headers: {
@@ -210,9 +215,9 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
             'contactNo': contactNo,
           }));
 
-      // Check if the response is successful
-      // print(response.statusCode);
+      // debugPrint('response: $response');
 
+      // Check if the response is successful
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         _showMessage(
