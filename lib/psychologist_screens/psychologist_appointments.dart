@@ -310,14 +310,16 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
     String? patientName = '${patient['firstName']} ${patient['lastName']}';
     String? appointmentTime = appointment['appointmentTime'];
     appointmentTime = appointmentTime?.substring(0, 5); // Remove seconds
-    // String? appointmentDate = appointment['appointmentDate'];
-    // appointmentDate =
-    //     DateFormat('yyyy-MM-dd').format(DateTime.parse(appointmentDate!));
 
-// debugPrint('name $patientName,  time $appointmentTime');
+    int? patientId = patient['id'];
+    int? appointmentId = appointment['id'];
+
+    // debugPrint(
+    //     'id $patientId, appointment id $appointmentId name $patientName,  time $appointmentTime');
     return Column(
       children: [
-        _buildReminderCard(patientName, appointmentTime),
+        _buildReminderCard(
+            patientId, appointmentId, patientName, appointmentTime),
         const SizedBox(height: 16),
       ],
     );
@@ -344,7 +346,8 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
     );
   }
 
-  Widget _buildReminderCard(String? patientName, String? appointmentTime) {
+  Widget _buildReminderCard(int? patientId, int? appointmentId,
+      String? patientName, String? appointmentTime) {
     return Center(
       child: Container(
         padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
@@ -442,7 +445,12 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ViewUserProfileScreen()),
+                            builder: (context) => ViewUserProfileScreen(
+                                  user: {
+                                    'id': patientId,
+                                    'appointmentId': appointmentId,
+                                  },
+                                )),
                       );
                     },
                     style: ElevatedButton.styleFrom(
