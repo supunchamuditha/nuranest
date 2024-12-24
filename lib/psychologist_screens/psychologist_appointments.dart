@@ -8,7 +8,6 @@ import 'dart:convert'; // Import the convert package
 import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder package
 import 'package:intl/intl.dart'; // Import the intl library
 
-
 class PsychologistAppointments extends StatefulWidget {
   const PsychologistAppointments({super.key});
 
@@ -21,7 +20,10 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
   @override
   void initState() {
     super.initState();
-    _loadAppointments();
+    // _loadAppointments();
+    _loadAppointments().then((_) async {
+      await filterTodayAppointments();
+    });
   }
 
   // Define a list to store the appointments data
@@ -67,8 +69,8 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
         });
       }
 
-      debugPrint(
-          'Appointments Full Details: ${appointmentsFullDetails.length}');
+      // debugPrint(
+      //     'Appointments Full Details: ${appointmentsFullDetails.length}');
     } catch (error) {
       debugPrint('Error: $error');
     } finally {
@@ -106,7 +108,7 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
   Future<List<Map<String, dynamic>>> _fetchDoctorAppointments(
       int doctorId, String token) async {
     final apiUrl = dotenv.env['API_URL'];
-    final endpoint = '$apiUrl/appointments/doctors/$doctorId/upcoming';
+    final endpoint = '$apiUrl/appointments/doctors/$doctorId/';
 
     final response = await http.get(Uri.parse(endpoint), headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -143,6 +145,58 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
   void _validateResponse(http.Response response, String errorMessage) {
     if (response.statusCode != 200) {
       throw Exception('$errorMessage: ${response.reasonPhrase}');
+    }
+  }
+
+  List<Map<String, dynamic>> todayAppointments = [];
+
+  bool _isShow = false;
+
+  Future<void> filterTodayAppointments() async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Get today's date
+      final today = DateTime.now();
+
+      // Clear the todayAppointments list before filtering
+      todayAppointments.clear();
+
+      if (appointmentsFullDetails.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          return;
+        });
+      }
+
+      // Filter appointmentsFullDetails to find today's appointments
+      todayAppointments = appointmentsFullDetails.where((details) {
+        final appointmentDate =
+            DateTime.parse(details['appointment']['appointmentDate']);
+
+        // Check if the appointment date is today
+        return appointmentDate.year == today.year &&
+            appointmentDate.month == today.month &&
+            appointmentDate.day == today.day;
+      }).toList();
+
+      // debugPrint("Today's Appointments: ${todayAppointments.length}");
+
+      if (todayAppointments.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          _isShow = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          _isShow = true;
+        });
+      }
+    } catch (error) {
+      debugPrint("Error filtering today's appointments: $error");
     }
   }
 
@@ -203,21 +257,69 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               children: [
-                _buildReminderCard(context),
-                const SizedBox(height: 16),
+                // _buildReminderCard(context),
+                // const SizedBox(height: 16),
+
                 if (_isLoading)
                   const Center(child: CircularProgressIndicator())
                 else if (appointmentsFullDetails.isEmpty)
                   const Center(child: Text('No more Appointments'))
                 else
-                  ...appointmentsFullDetails
-                      .map((data) => _buildAppointmentCardSection(data))
-                      .toList(),
+                  _buildReminderCardSection(context),
+                ...appointmentsFullDetails
+                    .map((data) => _buildAppointmentCardSection(data))
+                    .toList(),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildReminderCardSection(BuildContext context) {
+    return Column(
+      children: [
+        if (!_isShow)
+          Column(
+            children: [
+              const Center(
+                child: Text(
+                  'No appointments for today',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          )
+        else
+          ...todayAppointments
+              .map((data) => _buildReminderCards(data))
+              .toList(),
+      ],
+    );
+  }
+
+  Widget _buildReminderCards(Map<String, dynamic> data) {
+    final appointment = data['appointment'];
+    final patient = data['patient'];
+
+    String? patientName = '${patient['firstName']} ${patient['lastName']}';
+    String? appointmentTime = appointment['appointmentTime'];
+    appointmentTime = appointmentTime?.substring(0, 5); // Remove seconds
+    // String? appointmentDate = appointment['appointmentDate'];
+    // appointmentDate =
+    //     DateFormat('yyyy-MM-dd').format(DateTime.parse(appointmentDate!));
+
+// debugPrint('name $patientName,  time $appointmentTime');
+    return Column(
+      children: [
+        _buildReminderCard(patientName, appointmentTime),
+        const SizedBox(height: 16),
+      ],
     );
   }
 
@@ -229,7 +331,8 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
     String? appointmentTime = appointment['appointmentTime'];
     appointmentTime = appointmentTime?.substring(0, 5); // Remove seconds
     String? appointmentDate = appointment['appointmentDate'];
-    appointmentDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(appointmentDate!));
+    appointmentDate =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(appointmentDate!));
     String? appointmentType = appointment['appointmentType'];
 
     return Column(
@@ -241,7 +344,7 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
     );
   }
 
-  Widget _buildReminderCard(BuildContext context) {
+  Widget _buildReminderCard(String? patientName, String? appointmentTime) {
     return Center(
       child: Container(
         padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 0),
@@ -280,9 +383,9 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
                         left: 10.0), // Left padding for the reminder text
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          "Supun Maduranga",
+                          "$patientName",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -291,7 +394,7 @@ class _PsychologistAppointmentsState extends State<PsychologistAppointments> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          "07.00 PM - 08.00 PM",
+                          "$appointmentTime",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black54,
