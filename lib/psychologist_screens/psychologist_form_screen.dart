@@ -61,7 +61,7 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
       final qualifications = _qualificationsController.text;
       final specialization = _specializationController.text;
       final workplace = _workplaceController.text;
-      // final consultationFee = _consultationFeeController.text;
+      final consultationFee = _consultationFeeController.text;
       final availableDays = [
         'Monday',
         'Tuesday',
@@ -117,7 +117,7 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
           'qualification': qualifications,
           'specialization': specialization,
           'workplace': workplace,
-          'consultationFee': 500.00,
+          'consultationFee': consultationFee,
           'availableDays': availableDays,
         }),
       );
@@ -267,47 +267,44 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
               ),
 
               SizedBox(height: 10),
-                Text('Birthday', style: _sectionTitleStyle()),
-                TextFormField(
-                  controller: _birthdayController,
-                  readOnly: true, // Prevents manual editing
-                  decoration: InputDecoration(
-                    labelText: 'Enter your birthday',
-                    suffixIcon: Icon(Icons.calendar_today), // Adds a calendar icon
-                  ),
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900), // Earliest selectable date
-                      lastDate: DateTime(2100), // Latest selectable date
-                    );
-
-                    if (pickedDate != null) {
-                      // Format the date and update the controller
-                      _birthdayController.text =
-                          '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
-                    }
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Birthday is required.';
-                    }
-                    return null;
-                  },
+              Text('Birthday', style: _sectionTitleStyle()),
+              TextFormField(
+                controller: _birthdayController,
+                readOnly: true, // Prevents manual editing
+                decoration: InputDecoration(
+                  labelText: 'Enter your birthday',
+                  suffixIcon:
+                      Icon(Icons.calendar_today), // Adds a calendar icon
                 ),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900), // Earliest selectable date
+                    lastDate: DateTime(2100), // Latest selectable date
+                  );
 
+                  if (pickedDate != null) {
+                    // Format the date and update the controller
+                    _birthdayController.text =
+                        '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
+                  }
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Birthday is required.';
+                  }
+                  return null;
+                },
+              ),
 
               SizedBox(height: 10),
               Text('Gender', style: _sectionTitleStyle()),
               _buildGenderButtons(),
 
-
               SizedBox(height: 10),
               Text('Available Days', style: _sectionTitleStyle()),
               _buildAvailableDatesButtons(),
-
-              
 
               SizedBox(height: 10),
               Text('Qualifications', style: _sectionTitleStyle()),
@@ -514,70 +511,69 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
   }
 
 // State variable to track selected weekdays
-Set<String> _selectedWeekdays = {}; 
+  Set<String> _selectedWeekdays = {};
 
 // Weekdays selection buttons
-Widget _buildAvailableDatesButtons() {
-  // List of weekdays
-  List<String> weekdays = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday'
-  ];
+  Widget _buildAvailableDatesButtons() {
+    // List of weekdays
+    List<String> weekdays = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ];
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Wrap(
-        spacing: 10, // Space between buttons horizontally
-        runSpacing: 10, // Space between rows vertically
-        children: weekdays.map((day) {
-          bool isSelected = _selectedWeekdays.contains(day);
-          return OutlinedButton(
-            onPressed: () {
-              setState(() {
-                if (isSelected) {
-                  _selectedWeekdays.remove(day); // Deselect day
-                } else {
-                  _selectedWeekdays.add(day); // Select day
-                }
-              });
-            },
-            style: OutlinedButton.styleFrom(
-              backgroundColor: isSelected
-                  ? Colors.blue[100]
-                  : Colors.white, // Highlight if selected
-              side: BorderSide(
-                color: Colors.black, // Black border for all buttons
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Wrap(
+          spacing: 10, // Space between buttons horizontally
+          runSpacing: 10, // Space between rows vertically
+          children: weekdays.map((day) {
+            bool isSelected = _selectedWeekdays.contains(day);
+            return OutlinedButton(
+              onPressed: () {
+                setState(() {
+                  if (isSelected) {
+                    _selectedWeekdays.remove(day); // Deselect day
+                  } else {
+                    _selectedWeekdays.add(day); // Select day
+                  }
+                });
+              },
+              style: OutlinedButton.styleFrom(
+                backgroundColor: isSelected
+                    ? Colors.blue[100]
+                    : Colors.white, // Highlight if selected
+                side: BorderSide(
+                  color: Colors.black, // Black border for all buttons
+                ),
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+              child: Text(
+                day,
+                style: TextStyle(color: Colors.black), // Text color
               ),
-            ),
-            child: Text(
-              day,
-              style: TextStyle(color: Colors.black), // Text color
-            ),
-          );
-        }).toList(),
-      ),
-      if (_selectedWeekdays.isEmpty)
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text(
-            'Please select at least one weekday.',
-            style: TextStyle(color: Colors.red, fontSize: 12),
-          ),
+            );
+          }).toList(),
         ),
-    ],
-  );
-}
-
+        if (_selectedWeekdays.isEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              'Please select at least one weekday.',
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          ),
+      ],
+    );
+  }
 
 // Validate gender before saving the profile
   bool _validateAndSaveProfile() {
@@ -593,5 +589,3 @@ Widget _buildAvailableDatesButtons() {
     return isValid;
   }
 }
-
-
