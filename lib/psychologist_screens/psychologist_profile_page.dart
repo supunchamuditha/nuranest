@@ -238,6 +238,16 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     }
   }
 
+  Future<void> _save() async {
+    if (!validateSelectedDays(selectedDays)) {
+      _showMessage("Please select at least two days.");
+      return;
+    }
+
+    _saveUserInfo();
+    _saveDoctorInfo();
+  }
+
   Future<void> _saveUserInfo() async {
     try {
       // Get the API URL from the environment
@@ -433,6 +443,10 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
         selectedDays.clear(); // Deselect all days
       }
     });
+  }
+
+  bool validateSelectedDays(List<int> selectedDays) {
+    return selectedDays.length >= 2;
   }
 
   @override
@@ -1137,10 +1151,13 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                       onPressed: () {
                         if (isEditing) {
                           if (_formKey.currentState!.validate()) {
+                            // Save logic here
+                            _save();
+                            
                             // Save user information
-                            _saveUserInfo();
+                            // _saveUserInfo();
                             // Save doctor information
-                            _saveDoctorInfo();
+                            // _saveDoctorInfo();
                             //   // Save logic here
                             //   setState(() {
                             //     isEditing = false; // Stop editing
