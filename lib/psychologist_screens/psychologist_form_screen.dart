@@ -62,42 +62,13 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
       final specialization = _specializationController.text;
       final workplace = _workplaceController.text;
       final consultationFee = _consultationFeeController.text;
-      final availableDays = [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-      ];
-      // final availableDays = _availableDaysController.text
-      //     .split(',')
-      //     .map((day) => day.trim())
-      //     .toList();
+      final availableDays = _selectedWeekdays.toList();
+      debugPrint('Available Days: $availableDays');
 
       // Set the isLoading variable to true
       setState(() {
         isLoading = true;
       });
-
-      // Debug print all inputs
-      // debugPrint('Username: $username');
-      // debugPrint('First Name: $fistName');
-      // debugPrint('Last Name: $lastName');
-      // debugPrint('Email: $email');
-      // debugPrint('Address: $address');
-      // debugPrint('Phone: $phone');
-      // debugPrint('Birthday: $birthday');
-      // debugPrint('Gender: $gender');
-      // debugPrint('Qualifications: $qualifications');
-      // debugPrint('Specialization: $specialization');
-      // debugPrint('Workplace: $workplace');
-      // debugPrint('Consultation Fee: $consultationFee');
-      // debugPrint('Available Days: $availableDays');
-
-      // Simulate a delay for demonstration purposes
-      // await Future.delayed(Duration(seconds: 2));
 
       // Make a POST request to the API
       final response = await http.post(
