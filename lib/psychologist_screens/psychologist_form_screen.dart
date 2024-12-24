@@ -62,42 +62,13 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
       final specialization = _specializationController.text;
       final workplace = _workplaceController.text;
       final consultationFee = _consultationFeeController.text;
-      final availableDays = [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-      ];
-      // final availableDays = _availableDaysController.text
-      //     .split(',')
-      //     .map((day) => day.trim())
-      //     .toList();
+      final availableDays = _selectedWeekdays.toList();
+      debugPrint('Available Days: $availableDays');
 
       // Set the isLoading variable to true
       setState(() {
         isLoading = true;
       });
-
-      // Debug print all inputs
-      // debugPrint('Username: $username');
-      // debugPrint('First Name: $fistName');
-      // debugPrint('Last Name: $lastName');
-      // debugPrint('Email: $email');
-      // debugPrint('Address: $address');
-      // debugPrint('Phone: $phone');
-      // debugPrint('Birthday: $birthday');
-      // debugPrint('Gender: $gender');
-      // debugPrint('Qualifications: $qualifications');
-      // debugPrint('Specialization: $specialization');
-      // debugPrint('Workplace: $workplace');
-      // debugPrint('Consultation Fee: $consultationFee');
-      // debugPrint('Available Days: $availableDays');
-
-      // Simulate a delay for demonstration purposes
-      // await Future.delayed(Duration(seconds: 2));
 
       // Make a POST request to the API
       final response = await http.post(
@@ -148,6 +119,7 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
         _consultationFeeController.clear();
         setState(() {
           _selectedGender = null;
+          _selectedWeekdays.clear();
         });
 
         Navigator.push(
@@ -364,9 +336,11 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    _validateAndSaveProfile();
+                    _validateGender();
+                    _validateDays();
                     if (_formKey.currentState!.validate() &&
-                        _validateAndSaveProfile()) {
+                        _validateGender() &&
+                        _validateDays()) {
                       _submit();
                       // // Process the form
                       // ScaffoldMessenger.of(context).showSnackBar(
@@ -563,11 +537,11 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
             );
           }).toList(),
         ),
-        if (_selectedWeekdays.isEmpty)
+        if (_selectedWeekdays.isEmpty || _selectedWeekdays.length < 2)
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'Please select at least one weekday.',
+              'Please select at least two weekdays.',
               style: TextStyle(color: Colors.red, fontSize: 12),
             ),
           ),
@@ -576,7 +550,7 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
   }
 
 // Validate gender before saving the profile
-  bool _validateAndSaveProfile() {
+  bool _validateGender() {
     bool isValid = true;
     setState(() {
       if (_selectedGender == null) {
@@ -584,6 +558,23 @@ class _PsychologistFormScreenState extends State<PsychologistFormScreen> {
         isValid = false;
       } else {
         _genderError = null;
+      }
+
+      // Validate available days
+      if (_selectedWeekdays.length < 2) {
+        isValid = false;
+      }
+    });
+    return isValid;
+  }
+
+// Validate days before saving the profile
+  bool _validateDays() {
+    bool isValid = true;
+    setState(() {
+      // Validate available days
+      if (_selectedWeekdays.length < 2) {
+        isValid = false;
       }
     });
     return isValid;
