@@ -42,7 +42,6 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   final _formKey = GlobalKey<FormState>();
 
   // Variables to hold user information
-  int? id = 0;
   String? username = '';
   String? firstName = '';
   String? lastName = '';
@@ -175,7 +174,19 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
       // Get the user token from the shared preferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('token');
+
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract the user ID (or any other field you need)
+      int? id = decodedToken['id'];
 
       // Define the save URL
       final saveUrl = '$apiUrl/users/$id';
