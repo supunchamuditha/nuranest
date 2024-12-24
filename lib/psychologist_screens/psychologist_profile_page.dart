@@ -165,7 +165,65 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     }
   }
 
-  Future<void> _loadDoctorInfo() async {}
+  Future<void> _loadDoctorInfo() async {
+    try {
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract the user ID (or any other field you need)
+      int? userId = decodedToken['id'];
+
+      // Get the API URL from the environment
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Define the endpoint
+      final endpoint = '$apiUrl/doctors/user/$userId';
+
+      // Make a GET request to the endpoint
+      final response = await http.get(Uri.parse(endpoint), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      });
+
+      // Decode the response
+      final doctorData = json.decode(response.body);
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        // Get the doctor information
+        final doctorDetails = doctorData['doctor'];
+
+        // debugPrint('doctorDetails: $doctorDetails');
+
+        // Set the doctor information to the text controllers
+        setState(() {
+          qalificationController.text = doctorDetails['qualification'];
+          specializationController.text = doctorDetails['specialization'];
+          workplaceController.text = doctorDetails['workplace'];
+          consultationFeeController.text = doctorDetails['consultationFee'];
+        });
+      } else {
+        // If the response status code is not 200, show an error message
+        final errorData = jsonDecode(response.body);
+        _showMessage(
+            '${errorData['message'] ?? 'An error occurred. Please try again'}');
+      }
+    } catch (error) {
+      _showMessage('An error occurred. Please try again');
+    } finally {
+      // Set the _isLoading variable to false
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   Future<void> _saveUserInfo() async {
     try {
