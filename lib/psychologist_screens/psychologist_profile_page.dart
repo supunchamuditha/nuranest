@@ -73,6 +73,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   // Store doctor ID
   int? doctorId;
 
+  List<int> selectedDays = [];
+
   @override
   void initState() {
     super.initState();
@@ -345,10 +347,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
       final specialization = specializationController.text;
       final workplace = workplaceController.text;
       final consultationFee = consultationFeeController.text;
+      final availableDays = getSelectedDays();
 
       // Log the doctor information
       // debugPrint(
       // 'Qualification: $qualification, Specialization: $specialization, Workplace: $workplace, Consultation Fee: $consultationFee');
+      // debugPrint('availableDays: $availableDays');
 
       // Make a PUT request to the save URL
       final response = await http.put(Uri.parse(saveUrl),
@@ -361,6 +365,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
             'specialization': specialization,
             'workplace': workplace,
             'consultationFee': consultationFee,
+            'availableDays': availableDays,
           }));
 
       // Check if the response is successful
@@ -393,14 +398,27 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  List<int> selectedDays = [];
-
   void toggleDaySelection(int dayIndex) {
     setState(() {
       if (selectedDays.contains(dayIndex)) {
         selectedDays.remove(dayIndex);
       } else {
         selectedDays.add(dayIndex);
+      }
+    });
+  }
+
+  List<String> getSelectedDays() {
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return selectedDays.map((index) => days[index]).toList();
+  }
+
+  void toggleAllDays(bool selectAll) {
+    setState(() {
+      if (selectAll) {
+        selectedDays = List.generate(7, (index) => index); // Select all days
+      } else {
+        selectedDays.clear(); // Deselect all days
       }
     });
   }
@@ -1098,112 +1116,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
                   const SizedBox(height: 20),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Available days',
-                        style: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.5),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 10), // Add spacing
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(4, (index) {
-                              // First 4 days (Mon, Tue, Wed, Thu)
-                              final days = ['Mon', 'Tue', 'Wed', 'Thu'];
-                              return GestureDetector(
-                                onTap: () {
-                                  // Handle day selection
-                                  toggleDaySelection(
-                                      index); // Add logic to toggle day selection
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: selectedDays.contains(index)
-                                        ? const Color.fromARGB(255, 229, 209,
-                                            183) // Beige color for selected
-                                        : const Color.fromARGB(255, 255, 249,
-                                            249), // Default color
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    border: Border.all(
-                                      color: selectedDays.contains(index)
-                                          ? const Color.fromARGB(255, 229, 209,
-                                              183) // Beige border for selected
-                                          : const Color.fromRGBO(0, 0, 0, 0.1),
-                                    ),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 20),
-                                  child: Text(
-                                    days[index],
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: selectedDays.contains(index)
-                                          ? Colors.black
-                                          : const Color.fromRGBO(0, 0, 0, 0.5),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                          const SizedBox(
-                              height: 10), // Add spacing between rows
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(3, (index) {
-                              // Last 3 days (Fri, Sat, Sun)
-                              final days = ['Fri', 'Sat', 'Sun'];
-                              return GestureDetector(
-                                onTap: () {
-                                  // Handle day selection
-                                  toggleDaySelection(
-                                      index + 4); // Offset for second row
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: selectedDays.contains(index + 4)
-                                        ? const Color.fromARGB(255, 229, 209,
-                                            183) // Beige color for selected
-                                        : const Color.fromARGB(255, 255, 249,
-                                            249), // Default color
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    border: Border.all(
-                                      color: selectedDays.contains(index + 4)
-                                          ? const Color.fromARGB(255, 229, 209,
-                                              183) // Beige border for selected
-                                          : const Color.fromRGBO(0, 0, 0, 0.1),
-                                    ),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 30),
-                                  child: Text(
-                                    days[index],
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: selectedDays.contains(index + 4)
-                                          ? Colors.black
-                                          : const Color.fromRGBO(0, 0, 0, 0.5),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  _buildAvailableDaysCard(context),
 
                   const SizedBox(height: 20),
 
@@ -1395,6 +1308,90 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                 ],
               ),
             )),
+      ),
+    );
+  }
+
+  Widget _buildAvailableDaysCard(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Available days',
+          style: const TextStyle(
+            color: Color.fromRGBO(0, 0, 0, 0.5),
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Column(
+          children: [
+            // First row (Mon, Tue, Wed, Thu)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(4, (index) {
+                final days = ['Mon', 'Tue', 'Wed', 'Thu'];
+                return buildDayChip(days[index], index);
+              }),
+            ),
+            const SizedBox(height: 10),
+            // Second row (Fri, Sat, Sun)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(3, (index) {
+                final days = ['Fri', 'Sat', 'Sun'];
+                return buildDayChip(days[index], index + 4);
+              }),
+            ),
+            const SizedBox(height: 10),
+            // Select All or Deselect All button
+            ElevatedButton(
+              onPressed: () {
+                toggleAllDays(selectedDays.length != 7); // Select/deselect all
+              },
+              child: Text(
+                  selectedDays.length == 7 ? "Deselect All" : "Select All"),
+            ),
+            // Display selected days
+            const SizedBox(height: 10),
+            Text(
+              "Selected Days: ${getSelectedDays().join(', ')}",
+              style: const TextStyle(fontSize: 14, color: Colors.black),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildDayChip(String day, int index) {
+    return GestureDetector(
+      onTap: () => toggleDaySelection(index),
+      child: Container(
+        decoration: BoxDecoration(
+          color: selectedDays.contains(index)
+              ? const Color.fromARGB(255, 229, 209, 183)
+              : const Color.fromARGB(255, 255, 249, 249),
+          borderRadius: BorderRadius.circular(15.0),
+          border: Border.all(
+            color: selectedDays.contains(index)
+                ? const Color.fromARGB(255, 229, 209, 183)
+                : const Color.fromRGBO(0, 0, 0, 0.1),
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        child: Text(
+          day,
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: selectedDays.contains(index)
+                ? Colors.black
+                : const Color.fromRGBO(0, 0, 0, 0.5),
+          ),
+        ),
       ),
     );
   }
