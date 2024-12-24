@@ -9,6 +9,9 @@ import 'package:nuranest/utils/userValidators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
+import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
+import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder library
+import 'package:intl/intl.dart'; // Import the intl library
 
 Future<void> logout(BuildContext context) async {
   // Access SharedPreferences
@@ -61,6 +64,10 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   late TextEditingController birthDateController;
   late TextEditingController genderController;
   late TextEditingController addressController;
+  late TextEditingController qalificationController;
+  late TextEditingController specializationController;
+  late TextEditingController workplaceController;
+  late TextEditingController consultationFeeController;
 
   bool isEditing = false;
 
@@ -75,6 +82,10 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     birthDateController = TextEditingController();
     genderController = TextEditingController();
     addressController = TextEditingController();
+    qalificationController = TextEditingController();
+    specializationController = TextEditingController();
+    workplaceController = TextEditingController();
+    consultationFeeController = TextEditingController();
 
     _loadUserInfo();
     _loadDoctorInfo();
@@ -87,7 +98,73 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     });
   }
 
-  Future<void> _loadUserInfo() async {}
+  Future<void> _loadUserInfo() async {
+    try {
+      // Get the API URL from the environment
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract the user ID (or any other field you need)
+      int? userId = decodedToken['id'];
+
+      // Define the user URL
+      final userUrl = '$apiUrl/users/$userId';
+
+      // Set the _isLoading variable to true
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Make a GET request to the user URL
+      final response = await http.get(Uri.parse(userUrl), headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer $token',
+      });
+
+      final resAppData = json.decode(response.body);
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        final userDetails = resAppData['user'];
+
+        String? dob = userDetails['dob'];
+        dob = DateFormat('yyyy-MM-dd').format(DateTime.parse(dob!));
+
+        // Set the user information to the text controllers
+        setState(() {
+          usernameController.text = userDetails['username'];
+          firstnameController.text = userDetails['firstName'];
+          lastnameController.text = userDetails['lastName'];
+          emailController.text = userDetails['email'];
+          phoneController.text = userDetails['contactNo'];
+          birthDateController.text = dob!;
+          genderController.text = userDetails['gender'];
+          addressController.text = userDetails['address'];
+        });
+      } else {
+        // If the response status code is not 200, show an error message
+        final errorData = jsonDecode(response.body);
+        _showMessage(
+            '${errorData['message'] ?? 'An error occurred. Please try again'}');
+      }
+    } catch (error) {
+      _showMessage('An error occurred. Please try again');
+    } finally {
+      // Set the _isLoading variable to false
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   Future<void> _loadDoctorInfo() async {}
 
@@ -118,8 +195,9 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
       final address = addressController.text;
       final contactNo = phoneController.text;
 
-      // print(
-      //     'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo');
+      // debugPrint(
+      // 'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo');
+
       // Make a PUT request to the save URL
       final response = await http.put(Uri.parse(saveUrl),
           headers: {
@@ -137,9 +215,9 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
             'contactNo': contactNo,
           }));
 
-      // Check if the response is successful
-      // print(response.statusCode);
+      // debugPrint('response: $response');
 
+      // Check if the response is successful
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         _showMessage(
@@ -219,7 +297,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                       Expanded(
                         flex: 1,
                         child: Text(
-                          'User Name',
+                          'Username',
                           style: const TextStyle(
                             color: Color.fromRGBO(0, 0, 0, 0.5),
                             fontSize: 16,
@@ -696,7 +774,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                     onDoubleTap:
                         toggleEditMode, // Enables editing on double-tap
                     child: TextFormField(
-                      controller: lastnameController,
+                      controller: qalificationController,
                       enabled: isEditing, // Enable only in edit mode
                       decoration: InputDecoration(
                         filled: true,
@@ -741,7 +819,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                     onDoubleTap:
                         toggleEditMode, // Enables editing on double-tap
                     child: TextFormField(
-                      controller: lastnameController,
+                      controller: specializationController,
                       enabled: isEditing, // Enable only in edit mode
                       decoration: InputDecoration(
                         filled: true,
@@ -786,7 +864,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                     onDoubleTap:
                         toggleEditMode, // Enables editing on double-tap
                     child: TextFormField(
-                      controller: lastnameController,
+                      controller: workplaceController,
                       enabled: isEditing, // Enable only in edit mode
                       decoration: InputDecoration(
                         filled: true,
@@ -831,7 +909,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                     onDoubleTap:
                         toggleEditMode, // Enables editing on double-tap
                     child: TextFormField(
-                      controller: lastnameController,
+                      controller: consultationFeeController,
                       enabled: isEditing, // Enable only in edit mode
                       decoration: InputDecoration(
                         filled: true,
