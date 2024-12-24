@@ -29,7 +29,7 @@ class _ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
   String? patientName;
   String? patientAge;
   String? patientAddress;
-  String? patientMessage;
+  String? patientAdditionalInfo;
   String? patientDuration;
   String? patientType;
   String? patientAppointmentTime;
@@ -59,7 +59,7 @@ class _ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
       // debugPrint('User details: $userDetails');
 
       // Store or process appointment details
-      // debugPrint('Appointment details: $appointmentDetails');
+      debugPrint('Appointment details: $appointmentDetails');
 
       // Fetch patient name
       final patientname = await _getPatientName(userDetails);
@@ -77,9 +77,9 @@ class _ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
 
         patientAppointmentTime = appointmentTime;
 
-        patientMessage = "----------------";
-        patientDuration = patientMessage;
-        patientType = patientMessage;
+        patientAdditionalInfo = appointmentDetails['additionalInfo'];
+        patientDuration = "1hr";
+        patientType = appointmentDetails['appointmentType'];
       });
     } catch (error) {
       debugPrint('Error: $error');
@@ -290,7 +290,7 @@ class _ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Message',
+                'Additional Info',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -298,7 +298,7 @@ class _ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "$patientMessage",
+                "$patientAdditionalInfo",
                 style: TextStyle(fontSize: 14, color: Colors.black54),
               ),
             ),
