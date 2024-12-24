@@ -70,6 +70,9 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
   bool isEditing = false;
 
+  // Store doctor ID
+  int? doctorId;
+
   @override
   void initState() {
     super.initState();
@@ -208,6 +211,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
           specializationController.text = doctorDetails['specialization'];
           workplaceController.text = doctorDetails['workplace'];
           consultationFeeController.text = doctorDetails['consultationFee'];
+          doctorId = doctorDetails['id'];
         });
       } else {
         // If the response status code is not 200, show an error message
@@ -314,7 +318,74 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     }
   }
 
-  Future<void> _saveDoctorInfo() async {}
+  Future<void> _saveDoctorInfo() async {
+    try {
+      // Get the API URL from the environment
+      final apiUrl = dotenv.env['API_URL'];
+
+      // Get the user token from the shared preferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      // Extract the doctor ID (or any other field you need)
+      int? id = doctorId;
+
+      // Define the save URL
+      final saveUrl = '$apiUrl/doctors/$id';
+
+      // Set the _isLoading variable to true
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Get the user input
+      final qualification = qalificationController.text;
+      final specialization = specializationController.text;
+      final workplace = workplaceController.text;
+      final consultationFee = consultationFeeController.text;
+
+      // Log the doctor information
+      // debugPrint(
+          // 'Qualification: $qualification, Specialization: $specialization, Workplace: $workplace, Consultation Fee: $consultationFee');
+
+      // Make a PUT request to the save URL
+      final response = await http.put(Uri.parse(saveUrl),
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer $token',
+          },
+          body: jsonEncode({
+            'qualification': qualification,
+            'specialization': specialization,
+            'workplace': workplace,
+            'consultationFee': consultationFee,
+          }));
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        _showMessage(
+            '${responseData['message'] ?? 'Doctor information saved successfully'}');
+
+        // Save the doctor information to the shared preferences
+        await prefs.setString('doctor', jsonEncode(responseData['doctor']));
+      } else {
+        // If the response status code is not 200, show an error message
+        final errorData = jsonDecode(response.body);
+        _showMessage(
+            '${errorData['message'] ?? 'An error occurred. Please try again'}');
+      }
+    } catch (error) {
+      _showMessage('An error occurred. Please try again');
+    } finally {
+      // Set the _isLoading variable to false
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   // Define the _showMessage method
   void _showMessage(String message) {
