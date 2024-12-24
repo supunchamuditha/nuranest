@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nuranest/screens/get_started_screen.dart';
 // import 'package:nuranest/screens/login_screen.dart';
 import 'package:nuranest/screens/payment_details.dart';
-import 'package:nuranest/utils/appointmentValidators.dart';
+// import 'package:nuranest/utils/appointmentValidators.dart';
 import 'package:nuranest/utils/userValidators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // Import for JSON decoding
@@ -207,6 +207,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
         // debugPrint('doctorDetails: $doctorDetails');
 
+        // Get the selected days
+        List<String> selectedDayas =
+            doctorDetails['availableDays'].cast<String>();
+        List<int> selectedDayIndices = getDayIndices(selectedDayas);
+        // debugPrint('$selectedDayIndices');
+
         // Set the doctor information to the text controllers
         setState(() {
           qalificationController.text = doctorDetails['qualification'];
@@ -214,6 +220,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
           workplaceController.text = doctorDetails['workplace'];
           consultationFeeController.text = doctorDetails['consultationFee'];
           doctorId = doctorDetails['id'];
+          selectedDays = selectedDayIndices;
         });
       } else {
         // If the response status code is not 200, show an error message
@@ -411,6 +418,11 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   List<String> getSelectedDays() {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return selectedDays.map((index) => days[index]).toList();
+  }
+
+  List<int> getDayIndices(List<String> selectedDayNames) {
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return selectedDayNames.map((day) => days.indexOf(day)).toList();
   }
 
   void toggleAllDays(bool selectAll) {
