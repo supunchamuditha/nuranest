@@ -219,7 +219,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                       Expanded(
                         flex: 1,
                         child: Text(
-                          'User Name',
+                          'Username',
                           style: const TextStyle(
                             color: Color.fromRGBO(0, 0, 0, 0.5),
                             fontSize: 16,
