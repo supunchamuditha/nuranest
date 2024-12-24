@@ -348,7 +348,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
       // Log the doctor information
       // debugPrint(
-          // 'Qualification: $qualification, Specialization: $specialization, Workplace: $workplace, Consultation Fee: $consultationFee');
+      // 'Qualification: $qualification, Specialization: $specialization, Workplace: $workplace, Consultation Fee: $consultationFee');
 
       // Make a PUT request to the save URL
       final response = await http.put(Uri.parse(saveUrl),
@@ -909,7 +909,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                       ),
                     ],
                   ),
-                  // Username TextFormField
+                  // Qalification TextFormField
                   GestureDetector(
                     onDoubleTap:
                         toggleEditMode, // Enables editing on double-tap
@@ -934,6 +934,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
+                      validator: (value) {
+                        if (!validateName(value)) {
+                          return 'Please enter a qalification';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
@@ -979,6 +985,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
+                      validator: (value) {
+                        if (!validateName(value)) {
+                          return 'Please enter a specialization';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
@@ -1024,6 +1036,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
+                      validator: (value) {
+                        if (!validateName(value)) {
+                          return 'Please enter a workplace';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
@@ -1069,6 +1087,12 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
+                      validator: (value) {
+                        if (!validateName(value)) {
+                          return 'Please enter a consultation fee';
+                        }
+                        return null;
+                      },
                     ),
                   ),
 
