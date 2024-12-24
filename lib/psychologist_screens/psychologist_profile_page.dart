@@ -15,7 +15,8 @@ Future<void> logout(BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
 
   // Clear specific flags or all preferences
-  await prefs.clear(); // Clears all preferences (optional: clear only specific keys)
+  await prefs
+      .clear(); // Clears all preferences (optional: clear only specific keys)
 
   // Navigate to GetStartedScreen and clear the navigation stack
   Navigator.pushAndRemoveUntil(
@@ -29,7 +30,8 @@ class PsychologistProfilePage extends StatefulWidget {
   const PsychologistProfilePage({super.key});
 
   @override
-  _PsychologistProfilePageState createState() => _PsychologistProfilePageState();
+  _PsychologistProfilePageState createState() =>
+      _PsychologistProfilePageState();
 }
 
 class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
@@ -75,6 +77,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     addressController = TextEditingController();
 
     _loadUserInfo();
+    _loadDoctorInfo();
   }
 
   // Method to toggle editing state
@@ -84,37 +87,9 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     });
   }
 
-  Future<void> _loadUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userDetails = prefs.getString('user');
+  Future<void> _loadUserInfo() async {}
 
-    if (userDetails != null) {
-      Map<String, dynamic> user = json.decode(userDetails);
-
-      // print(userDetails);
-      setState(() {
-        id = user['id'] ?? '';
-        username = user['username'] ?? '';
-        userEmail = user['email'] ?? '';
-        firstName = user['firstName'] ?? '';
-        lastName = user['lastName'] ?? '';
-        userGender = user['gender'] ?? '';
-        userBirthDate = user['dob'] ?? '';
-        userAddress = user['address'] ?? '';
-        userPhone = user['contactNo'] ?? '';
-
-        // Update TextEditingControllers
-        usernameController.text = username!;
-        firstnameController.text = firstName!;
-        lastnameController.text = lastName!;
-        emailController.text = userEmail!;
-        phoneController.text = userPhone!;
-        birthDateController.text = userBirthDate!;
-        genderController.text = userGender!;
-        addressController.text = userAddress!;
-      });
-    }
-  }
+  Future<void> _loadDoctorInfo() async {}
 
   Future<void> _saveUserInfo() async {
     try {
@@ -192,6 +167,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     }
   }
 
+  Future<void> _saveDoctorInfo() async {}
+
   // Define the _showMessage method
   void _showMessage(String message) {
     ScaffoldMessenger.of(context)
@@ -201,15 +178,14 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
   List<int> selectedDays = [];
 
   void toggleDaySelection(int dayIndex) {
-  setState(() {
-    if (selectedDays.contains(dayIndex)) {
-      selectedDays.remove(dayIndex);
-    } else {
-      selectedDays.add(dayIndex);
-    }
-  });
-}
-
+    setState(() {
+      if (selectedDays.contains(dayIndex)) {
+        selectedDays.remove(dayIndex);
+      } else {
+        selectedDays.add(dayIndex);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -453,7 +429,6 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
                   const SizedBox(height: 20),
 
-
                   Row(
                     children: [
                       Expanded(
@@ -497,12 +472,10 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 17),
                       ),
-                      
                     ),
                   ),
 
                   const SizedBox(height: 20),
-
 
                   // Phone number label
                   Row(
@@ -520,8 +493,6 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                       ),
                     ],
                   ),
-
-                  
 
                   // Phone TextFormField
                   GestureDetector(
@@ -705,7 +676,6 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
                   const SizedBox(height: 20),
 
-
                   Row(
                     children: [
                       Expanded(
@@ -795,7 +765,6 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                   ),
 
                   const SizedBox(height: 20),
-
 
                   Row(
                     children: [
@@ -887,105 +856,112 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
 
                   const SizedBox(height: 20),
 
-
                   Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Text(
-      'Available days',
-      style: const TextStyle(
-        color: Color.fromRGBO(0, 0, 0, 0.5),
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
-    const SizedBox(height: 10), // Add spacing
-    Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(4, (index) {
-            // First 4 days (Mon, Tue, Wed, Thu)
-            final days = ['Mon', 'Tue', 'Wed', 'Thu'];
-            return GestureDetector(
-              onTap: () {
-                // Handle day selection
-                toggleDaySelection(index); // Add logic to toggle day selection
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: selectedDays.contains(index)
-                      ? const Color.fromARGB(255, 229, 209, 183)  // Beige color for selected
-                      : const Color.fromARGB(255, 255, 249, 249), // Default color
-                  borderRadius: BorderRadius.circular(15.0),
-                  border: Border.all(
-                    color: selectedDays.contains(index)
-                        ? const Color.fromARGB(255, 229, 209, 183) // Beige border for selected
-                        : const Color.fromRGBO(0, 0, 0, 0.1),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Available days',
+                        style: const TextStyle(
+                          color: Color.fromRGBO(0, 0, 0, 0.5),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 10), // Add spacing
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(4, (index) {
+                              // First 4 days (Mon, Tue, Wed, Thu)
+                              final days = ['Mon', 'Tue', 'Wed', 'Thu'];
+                              return GestureDetector(
+                                onTap: () {
+                                  // Handle day selection
+                                  toggleDaySelection(
+                                      index); // Add logic to toggle day selection
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: selectedDays.contains(index)
+                                        ? const Color.fromARGB(255, 229, 209,
+                                            183) // Beige color for selected
+                                        : const Color.fromARGB(255, 255, 249,
+                                            249), // Default color
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    border: Border.all(
+                                      color: selectedDays.contains(index)
+                                          ? const Color.fromARGB(255, 229, 209,
+                                              183) // Beige border for selected
+                                          : const Color.fromRGBO(0, 0, 0, 0.1),
+                                    ),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 20),
+                                  child: Text(
+                                    days[index],
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: selectedDays.contains(index)
+                                          ? Colors.black
+                                          : const Color.fromRGBO(0, 0, 0, 0.5),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                          const SizedBox(
+                              height: 10), // Add spacing between rows
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(3, (index) {
+                              // Last 3 days (Fri, Sat, Sun)
+                              final days = ['Fri', 'Sat', 'Sun'];
+                              return GestureDetector(
+                                onTap: () {
+                                  // Handle day selection
+                                  toggleDaySelection(
+                                      index + 4); // Offset for second row
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: selectedDays.contains(index + 4)
+                                        ? const Color.fromARGB(255, 229, 209,
+                                            183) // Beige color for selected
+                                        : const Color.fromARGB(255, 255, 249,
+                                            249), // Default color
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    border: Border.all(
+                                      color: selectedDays.contains(index + 4)
+                                          ? const Color.fromARGB(255, 229, 209,
+                                              183) // Beige border for selected
+                                          : const Color.fromRGBO(0, 0, 0, 0.1),
+                                    ),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 30),
+                                  child: Text(
+                                    days[index],
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: selectedDays.contains(index + 4)
+                                          ? Colors.black
+                                          : const Color.fromRGBO(0, 0, 0, 0.5),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: Text(
-                  days[index],
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: selectedDays.contains(index)
-                        ? Colors.black
-                        : const Color.fromRGBO(0, 0, 0, 0.5),
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-        const SizedBox(height: 10), // Add spacing between rows
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(3, (index) {
-            // Last 3 days (Fri, Sat, Sun)
-            final days = ['Fri', 'Sat', 'Sun'];
-            return GestureDetector(
-              onTap: () {
-                // Handle day selection
-                toggleDaySelection(index + 4); // Offset for second row
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: selectedDays.contains(index + 4)
-                      ? const Color.fromARGB(255, 229, 209, 183) // Beige color for selected
-                      : const Color.fromARGB(255, 255, 249, 249), // Default color
-                  borderRadius: BorderRadius.circular(15.0),
-                  border: Border.all(
-                    color: selectedDays.contains(index + 4)
-                        ? const Color.fromARGB(255, 229, 209, 183) // Beige border for selected
-                        : const Color.fromRGBO(0, 0, 0, 0.1),
-                  ),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 30),
-                child: Text(
-                  days[index],
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: selectedDays.contains(index + 4)
-                        ? Colors.black
-                        : const Color.fromRGBO(0, 0, 0, 0.5),
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ],
-    ),
-  ],
-),
-
-
-
 
                   const SizedBox(height: 20),
 
@@ -996,6 +972,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                           if (_formKey.currentState!.validate()) {
                             // Save user information
                             _saveUserInfo();
+                            // Save doctor information
+                            _saveDoctorInfo();
                             //   // Save logic here
                             //   setState(() {
                             //     isEditing = false; // Stop editing
@@ -1115,7 +1093,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).pop(); // Close the dialog
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
                                 },
                                 child: const Text(
                                   'Cancel',
@@ -1127,8 +1106,10 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  Navigator.of(context).pop(); // Close the dialog
-                                  await logout(context); // Call the logout function
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                  await logout(
+                                      context); // Call the logout function
                                 },
                                 child: const Text(
                                   'Logout',
@@ -1144,7 +1125,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                         side: const BorderSide(
