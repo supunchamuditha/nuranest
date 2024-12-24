@@ -77,6 +77,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     addressController = TextEditingController();
 
     _loadUserInfo();
+    _loadDoctorInfo();
   }
 
   // Method to toggle editing state
@@ -86,37 +87,9 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     });
   }
 
-  Future<void> _loadUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userDetails = prefs.getString('user');
+  Future<void> _loadUserInfo() async {}
 
-    if (userDetails != null) {
-      Map<String, dynamic> user = json.decode(userDetails);
-
-      // print(userDetails);
-      setState(() {
-        id = user['id'] ?? '';
-        username = user['username'] ?? '';
-        userEmail = user['email'] ?? '';
-        firstName = user['firstName'] ?? '';
-        lastName = user['lastName'] ?? '';
-        userGender = user['gender'] ?? '';
-        userBirthDate = user['dob'] ?? '';
-        userAddress = user['address'] ?? '';
-        userPhone = user['contactNo'] ?? '';
-
-        // Update TextEditingControllers
-        usernameController.text = username!;
-        firstnameController.text = firstName!;
-        lastnameController.text = lastName!;
-        emailController.text = userEmail!;
-        phoneController.text = userPhone!;
-        birthDateController.text = userBirthDate!;
-        genderController.text = userGender!;
-        addressController.text = userAddress!;
-      });
-    }
-  }
+  Future<void> _loadDoctorInfo() async {}
 
   Future<void> _saveUserInfo() async {
     try {
@@ -193,6 +166,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
       });
     }
   }
+
+  Future<void> _saveDoctorInfo() async {}
 
   // Define the _showMessage method
   void _showMessage(String message) {
@@ -997,6 +972,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                           if (_formKey.currentState!.validate()) {
                             // Save user information
                             _saveUserInfo();
+                            // Save doctor information
+                            _saveDoctorInfo();
                             //   // Save logic here
                             //   setState(() {
                             //     isEditing = false; // Stop editing
