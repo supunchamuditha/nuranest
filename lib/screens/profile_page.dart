@@ -7,15 +7,19 @@ import 'package:nuranest/screens/payment_details.dart';
 import 'package:nuranest/utils/appointmentValidators.dart';
 import 'package:nuranest/utils/userValidators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart'; // Import for DateFormat
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import the http library
+import 'package:jwt_decoder/jwt_decoder.dart'; // Import the jwt_decoder library
+import 'package:nuranest/utils/storage_helper.dart'; // Import the storage_helper.dart file
 
 Future<void> logout(BuildContext context) async {
   // Access SharedPreferences
   final prefs = await SharedPreferences.getInstance();
 
   // Clear specific flags or all preferences
-  await prefs.clear(); // Clears all preferences (optional: clear only specific keys)
+  await prefs
+      .clear(); // Clears all preferences (optional: clear only specific keys)
 
   // Navigate to GetStartedScreen and clear the navigation stack
   Navigator.pushAndRemoveUntil(
@@ -85,33 +89,71 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userDetails = prefs.getString('user');
+    try {
+      // Get the API URL from the environment
+      final apiUrl = dotenv.env['API_URL'];
 
-    if (userDetails != null) {
-      Map<String, dynamic> user = json.decode(userDetails);
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
 
-      // print(userDetails);
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract the user ID (or any other field you need)
+      int? userId = decodedToken['id'];
+
+      // Define the user URL
+      final userUrl = '$apiUrl/users/$userId';
+
+      // Set the _isLoading variable to true
       setState(() {
-        id = user['id'] ?? '';
-        username = user['username'] ?? '';
-        userEmail = user['email'] ?? '';
-        firstName = user['firstName'] ?? '';
-        lastName = user['lastName'] ?? '';
-        userGender = user['gender'] ?? '';
-        userBirthDate = user['dob'] ?? '';
-        userAddress = user['address'] ?? '';
-        userPhone = user['contactNo'] ?? '';
+        _isLoading = true;
+      });
 
-        // Update TextEditingControllers
-        usernameController.text = username!;
-        firstnameController.text = firstName!;
-        lastnameController.text = lastName!;
-        emailController.text = userEmail!;
-        phoneController.text = userPhone!;
-        birthDateController.text = userBirthDate!;
-        genderController.text = userGender!;
-        addressController.text = userAddress!;
+      // Make a GET request to the user URL
+      final response = await http.get(Uri.parse(userUrl), headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer $token',
+      });
+
+      final resAppData = json.decode(response.body);
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        final userDetails = resAppData['user'];
+
+        String? dob = userDetails['dob'] ?? '';
+        if (dob != '') {
+          dob = DateFormat('yyyy-MM-dd').format(DateTime.parse(dob!));
+        }
+        
+        // Set the user information to the text controllers
+        setState(() {
+          usernameController.text = userDetails['username'] ?? '';
+          firstnameController.text = userDetails['firstName'] ?? '';
+          lastnameController.text = userDetails['lastName'] ?? '';
+          emailController.text = userDetails['email'] ?? '';
+          phoneController.text = userDetails['contactNo'] ?? '';
+          birthDateController.text = dob!;
+          genderController.text = userDetails['gender'] ?? '';
+          addressController.text = userDetails['address'] ?? '';
+        });
+      } else {
+        // If the response status code is not 200, show an error message
+        final errorData = jsonDecode(response.body);
+        _showMessage(
+            '${errorData['message'] ?? 'An error occurred. Please try again'}');
+      }
+    } catch (error) {
+      _showMessage('An error occurred. Please try again');
+    } finally {
+      // Set the _isLoading variable to false
+      setState(() {
+        _isLoading = false;
       });
     }
   }
@@ -123,7 +165,19 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // Get the user token from the shared preferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('token');
+
+      // Get the user's token from SharedPreferences
+      String? token = await getToken();
+
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      // Decode the token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract the user ID (or any other field you need)
+      int? id = decodedToken['id'];
 
       // Define the save URL
       final saveUrl = '$apiUrl/users/$id';
@@ -143,8 +197,9 @@ class _ProfilePageState extends State<ProfilePage> {
       final address = addressController.text;
       final contactNo = phoneController.text;
 
-      // print(
-      //     'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo');
+      // debugPrint(
+      // 'Username: $username, Email: $email, First Name: $firstName, Last Name: $lastName, Gender: $gender, DOB: $dob, Address: $address, Contact No: $contactNo');
+
       // Make a PUT request to the save URL
       final response = await http.put(Uri.parse(saveUrl),
           headers: {
@@ -162,9 +217,9 @@ class _ProfilePageState extends State<ProfilePage> {
             'contactNo': contactNo,
           }));
 
-      // Check if the response is successful
-      // print(response.statusCode);
+      // debugPrint('response: $response');
 
+      // Check if the response is successful
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         _showMessage(
@@ -819,7 +874,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).pop(); // Close the dialog
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
                                 },
                                 child: const Text(
                                   'Cancel',
@@ -831,8 +887,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  Navigator.of(context).pop(); // Close the dialog
-                                  await logout(context); // Call the logout function
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                  await logout(
+                                      context); // Call the logout function
                                 },
                                 child: const Text(
                                   'Logout',
@@ -848,7 +906,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                         side: const BorderSide(

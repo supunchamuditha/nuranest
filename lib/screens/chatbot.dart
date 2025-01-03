@@ -13,7 +13,7 @@ class AIChatPage extends StatefulWidget {
 
 class _AIChatPageState extends State<AIChatPage> {
   List<Map<String, dynamic>> messages = [
-    {"isBot": true, "text": "Hi Jon, How can I help you today?"},
+    {"isBot": true, "text": "Hi Supun, How can I help you today?"},
   ];
 
   final TextEditingController _controller = TextEditingController();
@@ -84,8 +84,8 @@ class _AIChatPageState extends State<AIChatPage> {
                     final message = messages[index];
                     return Align(
                       alignment: message['isBot']
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
                       child: Container(
                         margin: EdgeInsets.symmetric(
                             vertical: 5.0, horizontal: 8.0),
